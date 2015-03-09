@@ -12,5 +12,35 @@ package problema01;
  * @version 1.0
  */
 public class Customer {
+    public void livingNormalLife(){
+        
+    }
     
+    public void goShopping(){
+        
+    }
+    
+    public void isDoorOpen(){
+        
+    }
+    
+    public void tryAgainLater(){
+        
+    }
+    
+    public void enterShop(){
+        
+    }
+    
+    public void perusingAround(){
+        
+    }
+    
+    public void iWantThis(){
+        
+    }
+    
+    public void exitShop(){
+        
+    }
 }
