@@ -12,5 +12,31 @@ package problema01;
  * @version 1.0
  */
 public class Craftman {
+    public void collectMaterial(){
+        
+    }
     
+    public void primeMaterialsNeeded(){
+        
+    }
+    
+    public void backToWork(){
+        
+    }
+    
+    public void prepareToProduce(){
+        
+    }
+    
+    public void shapingItUp(){
+        
+    }
+    
+    public void goToStore(){
+        
+    }
+    
+    public void batchReadyForTransfer(){
+        
+    }
 }
