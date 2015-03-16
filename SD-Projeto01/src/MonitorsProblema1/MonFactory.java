@@ -4,6 +4,6 @@ package MonitorsProblema1;
  *
  * @author Daniel
  */
-public class MonOficina {
+public class MonFactory {
 
 }
