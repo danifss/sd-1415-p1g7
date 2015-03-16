@@ -2,7 +2,6 @@ package MonitorsProblema1;
 
 import genclass.*;
 
-
 /**
  *
  * @author Daniel
@@ -55,6 +54,13 @@ public class MonShop {
 	private int[] StateCustomer;
 	
 	/**
+	 * FIFO with Customers on the Shop
+	 * 
+	 * @serialField sitCustomer
+	 */
+	private MemFIFO sitCustomer;
+	
+	/**
 	 * Number of Shops
 	 * 
 	 * @serialField nShops
@@ -102,13 +108,20 @@ public class MonShop {
 		if (nOwners > 0)
 			this.nOwners = nOwners;
 		
-		/* Inicializar estado interno */
+		/* Inicializar os estados internos */
 		StateCraftsman = new int[this.nCraftsman]; // create array craftsman state
 		for(int i=0;i<this.nCraftsman;i++)
 			StateCraftsman[i] = FETCHING_PRIME_MATERIALS; // Set initial state
 		StateCustomer = new int[this.nCustomer]; // create array customers state
 		for(int i=0;i<this.nCustomer;i++)
 			StateCustomer[i] = CARRYING_OUT_DAILY_CHORES; // Set initial state
+		
+		sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
+		
+		
+		/* inicializar o ficheiro de logging */
+		if ((fName != null) && !("".equals(fName))) this.fName = fName;
+		reportInitialStatus ();
 	}
 
 	/**
