@@ -6,4 +6,8 @@ package MonitorsProblema1;
  */
 public class MonShop {
 
+	public MonShop(int nCraftsman, int nClientes, int nLojas, String fName, int nIter) {
+		
+	}
+
 }
