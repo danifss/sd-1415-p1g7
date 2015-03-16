@@ -5,38 +5,61 @@
  */
 package MainProblema01;
 
+import MonitorsProblema1.*;
+
 /**
  *
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
  */
-public class Craftman {
-    public void collectMaterial(){
+public class Craftman extends Thread{
+    /**
+     * Craftman identity
+     * 
+     * @serialField craftmanId
+     */
+    private int craftmanId;
+    
+    /**
+     * Factory
+     * 
+     * @serialField factory
+     */
+    private MonFactory factory;
+    
+    /**
+     * Create craftman thread
+     * 
+     * @param craftmanId Craftman identity
+     * @param factory Factory
+     */
+    public Craftman(int craftmanId, MonFactory factory){
+        this.craftmanId = craftmanId;
+        this.factory = factory;
+    }
+    
+    /**
+     * Life cycle of the craftman
+     */
+    
+    @Override
+    public void run(){
         
     }
     
-    public void primeMaterialsNeeded(){
-        
-    }
-    
-    public void backToWork(){
-        
-    }
-    
-    public void prepareToProduce(){
-        
-    }
-    
+    /**
+     * Producing new piece
+     */
     public void shapingItUp(){
         
     }
     
+    /**
+     * Goes to store
+     */
     public void goToStore(){
         
     }
     
-    public void batchReadyForTransfer(){
-        
-    }
 }
