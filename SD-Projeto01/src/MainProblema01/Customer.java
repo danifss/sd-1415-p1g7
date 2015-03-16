@@ -13,7 +13,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Customer extends Thread{
+public class Customer extends Thread implements CustomerInterface{
     /**
      * Customer identity
      *
@@ -64,6 +64,7 @@ public class Customer extends Thread{
     /**
      * Living normal life
      */
+	@Override
     public void livingNormalLife(){
         try{
             sleep((long) (1+40*Math.random()));

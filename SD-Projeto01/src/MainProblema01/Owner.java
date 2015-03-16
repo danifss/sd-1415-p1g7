@@ -14,7 +14,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Owner extends Thread{
+public class Owner extends Thread implements OwnerInterface{
     /**
      * Owner identity
      * 
@@ -61,6 +61,7 @@ public class Owner extends Thread{
     /**
      * Return to shop
      */
+	@Override
     public void returnToShop(){
         
     }
