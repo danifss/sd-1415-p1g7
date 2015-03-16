@@ -5,53 +5,62 @@
  */
 package MainProblema01;
 
+import MonitorsProblema1.*;
+
+
 /**
  *
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
  */
-public class Owner {
-    public void prepareToWord(){
-
+public class Owner extends Thread{
+    /**
+     * Owner identity
+     * 
+     * @serialField ownerId
+     */
+    private int ownerId;
+    
+    /**
+     * Factory
+     * 
+     * @serialField factory
+     */
+    private MonFactory factory;
+    
+    /**
+     * Shop
+     * 
+     * @serialField shop
+     */
+    private MonShop shop;
+    
+    /**
+     * Create owner thread
+     * 
+     * @param ownerId Owner identity
+     * @param factory Factory
+     * @param shop Shop
+     */
+    
+    public Owner(int ownerId, MonFactory factory, MonShop shop){
+        this.ownerId = ownerId;
+        this.factory = factory;
+        this.shop = shop;
     }
     
-    public void addressACustomer(){
+    /**
+     * Life cycle of the owner
+     */
+    @Override
+    public void run(){
         
     }
     
-    public void sayGoodByeToCustomer(){
-        
-    }
-    
-    public void serviceCustomer(){
-        
-    }
-    
-    public void appraiseSit(){
-        
-    }
-    
-    public void closeTheDoor(){
-        
-    }
-    
-    public void customersInTheShop(){
-        
-    }
-    
-    public void prepareToLeave(){
-        
-    }
-    
-    public void goToWorkShop(){
-        
-    }
-    
-    public void visitSuppliers(){
-        
-    }
-    
+    /**
+     * Return to shop
+     */
     public void returnToShop(){
         
     }
