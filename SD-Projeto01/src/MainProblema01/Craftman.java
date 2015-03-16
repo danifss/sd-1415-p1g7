@@ -42,7 +42,6 @@ public class Craftman extends Thread{
     /**
      * Life cycle of the craftman
      */
-    
     @Override
     public void run(){
         
