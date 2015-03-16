@@ -17,12 +17,13 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		int nArtesaos = 3;									// Numero de Artesaos
+		int nCraftsman = 3;									// Numero de Artesaos
 		int nClientes = 3;									// Numero de Clientes
 		int nLojas = 1;										// Numero de Lojas
 		MonShop shop;										// Loja
-		Owner dona;											// Dona da loja
-		Craftman[] craftman = new Craftman[nArtesaos];		// Array de threads de Artesaos
+		MonFactory factory;									// Fabrica
+		Owner owner;											// Dona da loja
+		Craftman[] craftman = new Craftman[nCraftsman];		// Array de threads de Artesaos
 		Customer[] customer = new Customer[nClientes];		// Array de threads de Clientes
 		int nIter;											// Numero de iteracoes do ciclo de vida dos clientes
 		String fName;										// Nome do ficheiro de log
@@ -53,15 +54,20 @@ public class Main {
 		} while (!success);
 
 		/* Inicializar intervenientes */
-		shop = new MonShop(nArtesaos, nClientes, nLojas, fName, nIter);
-		dona = new Owner();
-		for(int i=0;i<nArtesaos;i++)
-			craftman[i] = new Craftman(i,shop);
+		shop = new MonShop(nCraftsman, nClientes, nLojas, fName, nIter);
+		factory = new MonFactory();
+		owner = new Owner();
+		for(int i=0;i<nCraftsman;i++)
+			craftman[i] = new Craftman(i,factory);
 		for(int i=0;i<nClientes;i++)
 			customer[i] = new Customer(i, shop, nIter);
 		
 		/* Arranque da simulacao */
-		
+		for(int i=0;i<nCraftsman;i++)
+			craftman[i].start();
+		for(int i=0;i<nClientes;i++)
+			customer[i].start();
+		owner.start();
 	}
 
 }
