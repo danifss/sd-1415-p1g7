@@ -20,6 +20,7 @@ public class Main {
 		int nCraftsman = 3;									// Numero de Artesaos
 		int nClients = 3;									// Numero de Clientes
 		int nShops = 1;										// Numero de Lojas
+		int nOwners = 1;									// Numero de Donos
 		MonShop shop;										// Loja
 		MonFactory factory;									// Fabrica
 		Owner owner;										// Dona da loja
@@ -54,7 +55,7 @@ public class Main {
 		} while (!success);
 
 		/* Inicializar intervenientes */
-		shop = new MonShop(nCraftsman, nClients, nShops, fName, nIter);
+		shop = new MonShop(nCraftsman, nClients, nShops, nOwners, fName, nIter);
 		factory = new MonFactory();
 		owner = new Owner(0, factory, shop);
 		for(int i=0;i<nCraftsman;i++)
