@@ -13,7 +13,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Craftman extends Thread{
+public class Craftman extends Thread implements CraftmanInterface{
     /**
      * Craftman identity
      * 
@@ -50,6 +50,7 @@ public class Craftman extends Thread{
     /**
      * Producing new piece
      */
+	@Override
     public void shapingItUp(){
         
     }
@@ -57,6 +58,7 @@ public class Craftman extends Thread{
     /**
      * Goes to store
      */
+	@Override
     public void goToStore(){
         
     }
