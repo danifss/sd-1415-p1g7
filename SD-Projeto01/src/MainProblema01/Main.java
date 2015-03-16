@@ -56,7 +56,7 @@ public class Main {
 		/* Inicializar intervenientes */
 		shop = new MonShop(nCraftsman, nClientes, nLojas, fName, nIter);
 		factory = new MonFactory();
-		owner = new Owner();
+		owner = new Owner(0, factory, shop);
 		for(int i=0;i<nCraftsman;i++)
 			craftman[i] = new Craftman(i,factory);
 		for(int i=0;i<nClientes;i++)
