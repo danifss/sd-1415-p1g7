@@ -58,8 +58,28 @@ public class Customer extends Thread implements CustomerInterface{
     public void run(){
         for(int i=0; i<nIter; i++){
             livingNormalLife();
+			
+			while(!goShopping(this.customerId)){
+				
+			}
         }
     }
+	
+	/**
+	 * Customer go shopping, first check if the shop door is open
+	 * then enter shop and appraising offer on display and if he wants 
+	 * that he buy goods, and finally exit shop
+	 * 
+	 * @return true if the customer could enter the shop
+	 */
+	public boolean goShopping(int customerId){
+		
+		
+		if(!isDoorOpen())
+			return false;
+		
+		return true;
+	}
         
     /**
      * Living normal life
@@ -70,5 +90,13 @@ public class Customer extends Thread implements CustomerInterface{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
     }
+
+	/**
+	 * 
+	 * @return if the door is open or not
+	 */
+	private boolean isDoorOpen() {
+		return false;
+	}
     
 }
