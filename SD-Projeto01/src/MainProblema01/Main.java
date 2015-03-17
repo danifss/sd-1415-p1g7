@@ -21,6 +21,7 @@ public class Main {
 		int nClients = 3;									// Numero de Clientes
 		int nShops = 1;										// Numero de Lojas
 		int nOwners = 1;									// Numero de Donos
+		MonInfo sharedInfo;									// Repositorio de informacao partilhada
 		MonShop shop;										// Loja
 		MonFactory factory;									// Fabrica
 		Owner owner;										// Dona da loja
@@ -55,13 +56,16 @@ public class Main {
 		} while (!success);
 
 		/* Inicializar intervenientes */
-		shop = new MonShop(nCraftsman, nClients, nShops, nOwners, fName, nIter);
-		factory = new MonFactory();
-		owner = new Owner(0, factory, shop);
+		
+		shop = new MonShop();	// Creating shop
+		factory = new MonFactory();												// Creating Factory
+		owner = new Owner(0, factory, shop);													// Create Owner
+
+		sharedInfo = new MonInfo(shop, factory, owner, nCraftsman, nIter, nShops, nOwners, fName, nIter);				// Create shared repository
 		for(int i=0;i<nCraftsman;i++)
-			craftman[i] = new Craftman(i,factory);
+			craftman[i] = new Craftman(i,factory);												// Create Craftsmans
 		for(int i=0;i<nClients;i++)
-			customer[i] = new Customer(i, shop, nIter);
+			customer[i] = new Customer(i, shop, nIter);											// Create Customers
 		
 		/* Arranque da simulacao */
 		for(int i=0;i<nCraftsman;i++)

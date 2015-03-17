@@ -1,5 +1,6 @@
 package MonitorsProblema1;
 
+import MainProblema01.*;
 import genclass.GenericIO;
 import genclass.TextFile;
 
@@ -80,7 +81,7 @@ public class MonInfo {
 	 */
 	private int nIter = 0;
 
-	public MonInfo(int nCraftsman, int nCustomer, int nShops, int nOwners, String fName, int nIter) {
+	public MonInfo(MonShop shop, MonFactory factory, Owner owner, int nCraftsman, int nCustomer, int nShops, int nOwners, String fName, int nIter) {
 		if (nCraftsman > 0)
 			this.nCraftsman = nCraftsman;
 		if (nCustomer > 0)
