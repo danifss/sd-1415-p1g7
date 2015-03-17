@@ -57,11 +57,13 @@ public class Main {
 
 		/* Inicializar intervenientes */
 		
-		shop = new MonShop();	// Creating shop
-		factory = new MonFactory();												// Creating Factory
-		owner = new Owner(0, factory, shop);													// Create Owner
+		
 
-		sharedInfo = new MonInfo(shop, factory, owner, nCraftsman, nIter, nShops, nOwners, fName, nIter);				// Create shared repository
+		sharedInfo = new MonInfo(nCraftsman, nIter, nShops, nOwners, fName, nIter);				// Create shared repository
+		shop = new MonShop(sharedInfo, nCraftsman, nIter, nShops, nOwners, fName, nIter);	// Creating shop
+		factory = new MonFactory(sharedInfo, shop);												// Creating Factory
+		owner = new Owner(0, factory, shop);													// Create Owner
+		
 		for(int i=0;i<nCraftsman;i++)
 			craftman[i] = new Craftman(i,factory);												// Create Craftsmans
 		for(int i=0;i<nClients;i++)
