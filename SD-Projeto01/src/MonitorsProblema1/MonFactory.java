@@ -26,4 +26,10 @@ public class MonFactory {
      * @serialField nCraftman
      */
     private int nCraftman = 0;
+
+	public MonFactory(MonInfo sharedInfo, MonShop shop) {
+		
+	}
+	
+	
 }

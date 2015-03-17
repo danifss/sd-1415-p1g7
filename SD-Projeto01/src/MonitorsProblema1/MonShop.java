@@ -60,7 +60,7 @@ public class MonShop {
 	 * @param fName
 	 * @param nIter
 	 */
-	public MonShop(int nCraftsman, int nCustomer, int nShops, int nOwners, String fName, int nIter) {
+	public MonShop(MonInfo sharedInfo, int nCraftsman, int nCustomer, int nShops, int nOwners, String fName, int nIter) {
 		if (nCraftsman > 0)
 			this.nCraftsman = nCraftsman;
 		if (nCustomer > 0) 
@@ -74,5 +74,14 @@ public class MonShop {
 		
 	}
 
-
+	/**
+	 * Customer go shopping, first check if the shop door is open
+	 * then enter shop and appraising offer on display and if he wants 
+	 * that he buy goods, and finally exit shop
+	 * 
+	 * @return true if the customer could enter the shop
+	 */
+	public synchronized void goShopping(int customerId){
+		
+	}
 }
