@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package MainProblema01;
 
 import MonitorsProblema1.*;
@@ -63,7 +58,10 @@ public class Owner extends Thread implements OwnerInterface{
      */
 	@Override
     public void returnToShop(){
-        
+		try {
+			sleep ((long) (1 + 10 * Math.random ()));
+		}
+		catch (InterruptedException e) {}
     }
 }
 

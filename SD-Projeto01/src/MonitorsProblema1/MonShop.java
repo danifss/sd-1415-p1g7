@@ -71,8 +71,8 @@ public class MonShop {
 			this.nOwners = nOwners;
 
 		sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
-
 		
 	}
+
 
 }
