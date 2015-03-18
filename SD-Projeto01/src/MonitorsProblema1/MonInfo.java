@@ -13,45 +13,65 @@ public class MonInfo {
 	/**
 	 * CRAFTSMAN STATES
 	 */
-	private final static int FETCHING_PRIME_MATERIALS = 0,		// 
-			PRODUCING_A_NEW_PIECE = 1,							// 
-			STORING_IT_FOR_TRANSFER = 2,						// 
-			CONTACTING_THE_ENTREPRENEUR = 3;					// 
+	private final static int
+			FETCHING_PRIME_MATERIALS = 0,			// 
+			PRODUCING_A_NEW_PIECE = 1,				// 
+			STORING_IT_FOR_TRANSFER = 2,			// 
+			CONTACTING_THE_ENTREPRENEUR = 3;		// 
 	/**
 	 * CUSTOMER STATES
 	 */
-	private final static int CARRYING_OUT_DAILY_CHORES = 0,		// 
-			CHECKING_DOOR_OPEN = 1,								// 
-			APPRAISING_OFFER_IN_DISPLAY = 2,					// 
-			BUYING_SOME_GOODS = 3;								// 
+	private final static int
+			CARRYING_OUT_DAILY_CHORES = 0,			// 
+			CHECKING_DOOR_OPEN = 1,					// 
+			APPRAISING_OFFER_IN_DISPLAY = 2,		// 
+			BUYING_SOME_GOODS = 3;					// 
+	/**
+     * OWNER STATES
+     */
+    private final static int
+			OPENING_THE_SHOP = 0,					// 
+			WAITING_FOR_NEXT_TASK = 1,				// 
+			ATTENDING_A_CUSTOMER = 2,				// 
+			CLOSING_THE_SHOP = 3,					//
+			DELIVERING_PRIME_MATERIALS = 4,			// 
+			COLLECTING_A_BATCH_OF_PRODUCTS = 5,		// 
+			BUYING_PRIME_MATERIALS = 6;				// 
 
 	/**
 	 * Number of Craftsman
 	 *
 	 * @serialField nCraftsman
 	 */
-	private int nCraftsman;
+	private int nCraftsman = 0;
 
 	/**
 	 * Present STATE of Craftsman
 	 *
-	 * @serialField StateCraftsman
+	 * @serialField stateCraftsman
 	 */
-	private int[] StateCraftsman;
+	private int[] stateCraftsman;
 
 	/**
 	 * Number of Customers
 	 *
 	 * @serialField nCustomer
 	 */
-	private int nCustomer;
+	private int nCustomer = 0;
 
 	/**
 	 * Present STATE of Customer
 	 *
-	 * @serialField StateCustomer
+	 * @serialField stateCustomer
 	 */
-	private int[] StateCustomer;
+	private int[] stateCustomer;
+	
+	/**
+	 * Present STATE of Owner
+	 * 
+	 * @serialField stateOwner
+	 */
+	private int stateOwner;
 
 	/**
 	 * Name of the file logging
@@ -59,13 +79,6 @@ public class MonInfo {
 	 * @serialField fName
 	 */
 	private String fName = "log.txt";
-
-	/**
-	 * Number of Owners
-	 *
-	 * @serialField nOwners
-	 */
-	private int nOwners;
 
 	/**
 	 * Number of iteration of life cycle of the customers
@@ -87,18 +100,19 @@ public class MonInfo {
 			this.nCraftsman = nCraftsman;
 		if (nCustomer > 0)
 			this.nCustomer = nCustomer;
-		if (nOwners > 0)
-			this.nOwners = nOwners;
+		if (nIter > 0)
+			this.nIter = nIter;
 
 		/* Inicializar os estados internos */
-		StateCraftsman = new int[this.nCraftsman]; // create array craftsman state
+		stateCraftsman = new int[this.nCraftsman]; // create array craftsman state
 		for (int i = 0; i < this.nCraftsman; i++) {
-			StateCraftsman[i] = FETCHING_PRIME_MATERIALS; // Set initial state
+			stateCraftsman[i] = FETCHING_PRIME_MATERIALS; // Set initial state of Craftsman
 		}
-		StateCustomer = new int[this.nCustomer]; // create array customers state
+		stateCustomer = new int[this.nCustomer]; // create array customers state
 		for (int i = 0; i < this.nCustomer; i++) {
-			StateCustomer[i] = CARRYING_OUT_DAILY_CHORES; // Set initial state
+			stateCustomer[i] = CARRYING_OUT_DAILY_CHORES; // Set initial state of Customer
 		}
+		this.stateOwner = OPENING_THE_SHOP; // Set initial state of Owner
 		
 		/* inicializar o ficheiro de logging */
 		if ((fName != null) && !("".equals(fName))) {
@@ -116,14 +130,14 @@ public class MonInfo {
 	private void reportInitialStatus() {
 		TextFile log = new TextFile();                  // instanciação de uma variável de tipo ficheiro de texto
 
-		if (!log.openForWriting(".", fName)) {
-			GenericIO.writelnString("A operação de criação do ficheiro " + fName + " falhou!");
+		if (!log.openForWriting(".", this.fName)) {
+			GenericIO.writelnString("A operação de criação do ficheiro " + this.fName + " falhou!");
 			System.exit(1);
 		}
 		log.writelnString("\t\tAveiro Handicraft SARL - Description of the internal state");
-		log.writelnString("\nNúmero de iterações = " + nIter + "\n");
+		log.writelnString("\nNúmero de iterações = " + this.nIter + "\n");
 		if (!log.close()) {
-			GenericIO.writelnString("A operação de fecho do ficheiro " + fName + " falhou!");
+			GenericIO.writelnString("A operação de fecho do ficheiro " + this.fName + " falhou!");
 			System.exit(1);
 		}
 		log.writelnString("ENTREPRE CUST_0 CUST_1 CUST_2 CRAFT_0 CRAFT_1 CRAFT_2 SHOP WORKSHOP");
@@ -147,7 +161,7 @@ public class MonInfo {
 			System.exit(1);
 		}
 		for (int i = 0; i < nCraftsman; i++) {
-			switch (StateCraftsman[i]) {
+			switch (stateCraftsman[i]) {
 				case FETCHING_PRIME_MATERIALS:
 					lineStatus += "  ";
 					break;
@@ -163,7 +177,7 @@ public class MonInfo {
 			}
 		}
 		for (int i = 0; i < nCustomer; i++) {
-			switch (StateCustomer[i]) {
+			switch (stateCustomer[i]) {
 				case CARRYING_OUT_DAILY_CHORES:
 					lineStatus += "  ";
 					break;
