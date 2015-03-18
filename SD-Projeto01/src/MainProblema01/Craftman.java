@@ -27,6 +27,13 @@ public class Craftman extends Thread implements CraftmanInterface{
      * @serialField factory
      */
     private MonFactory factory;
+	
+	/**
+	 * Shop
+	 * 
+	 * @serialField shop
+	 */
+	private final MonShop shop;
     
     /**
      * Create craftman thread
@@ -34,9 +41,10 @@ public class Craftman extends Thread implements CraftmanInterface{
      * @param craftmanId Craftman identity
      * @param factory Factory
      */
-    public Craftman(int craftmanId, MonFactory factory){
+    public Craftman(int craftmanId, MonFactory factory, MonShop shop){
         this.craftmanId = craftmanId;
         this.factory = factory;
+		this.shop = shop;
     }
     
     /**
@@ -46,7 +54,7 @@ public class Craftman extends Thread implements CraftmanInterface{
     public void run(){
         while(true){
 			if(!factory.collectMaterials()){ // if can not collect materials
-				primeMaterialsNeeded(); // request prime materials
+				shop.primeMaterialsNeeded(); // request prime materials
 				backToWork(); // return to work
 			} else { // Carftman could collect the materials
 				prepareToProduce(); // preparing to produce

@@ -9,39 +9,11 @@ import genclass.*;
 public class MonShop {
 
 	/**
-	 * Number of Craftsman
-	 *
-	 * @serialField nCraftsman
+	 * General repository
+	 * 
+	 * @serialField sharedInfo
 	 */
-	private int nCraftsman;
-	
-	/**
-	 * Number of Customers
-	 *
-	 * @serialField nCustomer
-	 */
-	private int nCustomer;
-	
-	/**
-	 * Number of Shops
-	 *
-	 * @serialField nShops
-	 */
-	private int nShops;
-
-	/**
-	 * Number of Owners
-	 *
-	 * @serialField nOwners
-	 */
-	private int nOwners;
-
-	/**
-	 * Number of iteration of life cycle of the customers
-	 *
-	 * @serialField nIter
-	 */
-	private int nIter = 0;
+	private MonInfo sharedInfo;
 	
 	/**
 	 * FIFO with Customers on the Shop
@@ -54,23 +26,10 @@ public class MonShop {
 	 * Create Monitor of the Shop
 	 * 
 	 * @param sharedInfo
-	 * @param nCraftsman
-	 * @param nCustomer
-	 * @param nShops
-	 * @param fName
-	 * @param nIter 
 	 */
-	public MonShop(MonInfo sharedInfo, int nCraftsman, int nCustomer, int nShops, String fName, int nIter) {
-		if (nCraftsman > 0)
-			this.nCraftsman = nCraftsman;
-		if (nCustomer > 0) 
-			this.nCustomer = nCustomer;
-		if (nShops > 0)
-			this.nShops = nShops;
-		if (nOwners > 0)
-			this.nOwners = nOwners;
-
-		sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
+	public MonShop(MonInfo sharedInfo) {
+		this.sharedInfo = sharedInfo;
+		sitCustomer = new MemFIFO(this.sharedInfo.getnCraftsman()); // create FIFO for wainting Customers
 		
 	}
 
