@@ -18,16 +18,15 @@ public class Main {
 	public static void main(String[] args) {
 
 		int nCraftsman = 3;									// Numero de Artesaos
-		int nClients = 3;									// Numero de Clientes
-		int nShops = 1;										// Numero de Lojas
-		int nOwners = 1;									// Numero de Donos
-		MonInfo sharedInfo;									// Repositorio de informacao partilhada
+		int nCustomers = 3;									// Numero de Clientes
+		MonInfo repositorioGeral;							// Repositorio de informacao partilhada
 		MonShop shop;										// Loja
 		MonFactory factory;									// Fabrica
+		MonStorage storage;									// Armazem
 		Owner owner;										// Dona da loja
 		Craftman[] craftman = new Craftman[nCraftsman];		// Array de threads de Artesaos
-		Customer[] customer = new Customer[nClients];		// Array de threads de Clientes
-		int nIter;											// Numero de iteracoes do ciclo de vida dos clientes
+		Customer[] customer = new Customer[nCustomers];		// Array de threads de Clientes
+		int nIter = 0;										// Numero de iteracoes do ciclo de vida dos clientes
 		String fName;										// Nome do ficheiro de log
 		boolean success;									// Validacao dos dados de entrada
 		char opt;											// opcao
@@ -56,23 +55,30 @@ public class Main {
 		} while (!success);
 
 		/* Inicializar intervenientes */
-		
-		
 
-		sharedInfo = new MonInfo(nCraftsman, nIter, nShops, nOwners, fName, nIter);				// Create shared repository
-		shop = new MonShop(sharedInfo, nCraftsman, nIter, nShops, nOwners, fName, nIter);	// Creating shop
-		factory = new MonFactory(sharedInfo, shop);												// Creating Factory
+		// nInitialPrimeMaterialsInStorage 20
+		// nPrimeMaterialsInFactory 10
+		// nProductsInShop 0
+		// nPrimeMaterialsByProduct 1
+		// nPrimeMaterialsForRestock 10
+		// nLimitOfProductsInFactory 50
+		
+		repositorioGeral = new MonInfo(nCraftsman, nCustomers, fName, nIter);						
+// Create general repository
+		shop = new MonShop(repositorioGeral, nCraftsman, nCustomers, nIter, fName, nIter);		// Creating shop
+		factory = new MonFactory(repositorioGeral, shop);										// Creating Factory
+		storage = new MonStorage();																// Creating Storage
 		owner = new Owner(0, factory, shop);													// Create Owner
 		
 		for(int i=0;i<nCraftsman;i++)
-			craftman[i] = new Craftman(i,factory);												// Create Craftsmans
-		for(int i=0;i<nClients;i++)
-			customer[i] = new Customer(i, shop, nIter);											// Create Customers
+			craftman[i] = new Craftman(i,factory);									// Create Craftsmans
+		for(int i=0;i<nCustomers;i++)
+			customer[i] = new Customer(i, shop, nIter);								// Create Customers
 		
 		/* Arranque da simulacao */
 		for(int i=0;i<nCraftsman;i++)
 			craftman[i].start();
-		for(int i=0;i<nClients;i++)
+		for(int i=0;i<nCustomers;i++)
 			customer[i].start();
 		owner.start();
 		

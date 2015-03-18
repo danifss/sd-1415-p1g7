@@ -52,15 +52,15 @@ public class MonShop {
 
 	/**
 	 * Create Monitor of the Shop
-	 *
+	 * 
+	 * @param sharedInfo
 	 * @param nCraftsman
 	 * @param nCustomer
 	 * @param nShops
-	 * @param nOwners
 	 * @param fName
-	 * @param nIter
+	 * @param nIter 
 	 */
-	public MonShop(MonInfo sharedInfo, int nCraftsman, int nCustomer, int nShops, int nOwners, String fName, int nIter) {
+	public MonShop(MonInfo sharedInfo, int nCraftsman, int nCustomer, int nShops, String fName, int nIter) {
 		if (nCraftsman > 0)
 			this.nCraftsman = nCraftsman;
 		if (nCustomer > 0) 

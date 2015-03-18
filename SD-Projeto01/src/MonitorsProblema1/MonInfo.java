@@ -61,13 +61,6 @@ public class MonInfo {
 	private String fName = "log.txt";
 
 	/**
-	 * Number of Shops
-	 *
-	 * @serialField nShops
-	 */
-	private int nShops;
-
-	/**
 	 * Number of Owners
 	 *
 	 * @serialField nOwners
@@ -81,13 +74,19 @@ public class MonInfo {
 	 */
 	private int nIter = 0;
 
-	public MonInfo(int nCraftsman, int nCustomer, int nShops, int nOwners, String fName, int nIter) {
+	/**
+	 * General Repository for manage all relevant information
+	 * 
+	 * @param nCraftsman	Number of Craftsmans
+	 * @param nCustomer		Number of Customers
+	 * @param fName			Log file name
+	 * @param nIter			Number of Customers iterations
+	 */
+	public MonInfo(int nCraftsman, int nCustomer, String fName, int nIter) {
 		if (nCraftsman > 0)
 			this.nCraftsman = nCraftsman;
 		if (nCustomer > 0)
 			this.nCustomer = nCustomer;
-		if (nShops > 0)
-			this.nShops = nShops;
 		if (nOwners > 0)
 			this.nOwners = nOwners;
 
