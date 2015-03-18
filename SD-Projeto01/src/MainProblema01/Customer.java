@@ -47,7 +47,6 @@ public class Customer extends Thread {
     /**
      * Life cycle of the customer
      */
-    
     @Override
     public void run(){
         for(int i=0; i<nIter; i++){

@@ -17,6 +17,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		String fName;										// Nome do ficheiro de log
+		int nIter = 0;										// Numero de iteracoes do ciclo de vida dos clientes
 		boolean success;									// Validacao dos dados de entrada
 		char opt;											// opcao
 		/* Inicializacao do Log */
@@ -52,7 +53,6 @@ public class Main {
 		Owner owner;										// Dona da loja
 		Craftman[] craftman = new Craftman[nCraftsman];		// Array de threads de Artesaos
 		Customer[] customer = new Customer[nCustomers];		// Array de threads de Clientes
-		int nIter = 0;										// Numero de iteracoes do ciclo de vida dos clientes
 		int nInitialPrimeMaterialsInStorage = 20;			// 
 		int nPrimeMaterialsInFactory = 10;					// 
 		int nProductsInShop = 0;							// 
