@@ -103,7 +103,9 @@ public class MonInfo {
     private boolean supplyMaterialsToFactory; // Artesao avisa que precisa de materiais no oficina.
     private int nPrimeMaterialsInFactory; // Num. de materias primas na oficina
     private int nFinishedProductsInFactory; // Num. de bens produzidos que estao na oficina
-    private int nSupplyedTimes;////////
+    private int nSuppliedTimes; // Num. vezes que foram fornecidas materias primas para a oficina
+	private int nPrimeMaterialsSupplied; // Num. total de materias primas ja fornecidas
+	private int nProductsManufactured; // Num. total de bens produzidos pela oficina.
     
     private final int nInitialPrimeMaterialsInStorage;
     private final int nProductsInShop;
@@ -148,6 +150,18 @@ public class MonInfo {
         this.nPrimeMaterialsByProduct = nPrimeMaterialsByProduct;
         this.nPrimeMaterialsForRestock = nPrimeMaterialsForRestock;
         this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
+		
+		this.nGoods = new int[this.nCustomer];
+		this.nGoodsCrafted = new int[this.nCraftsman];
+		this.nCustomersInsideShop = 0;
+		this.nGoodsInDisplay = 0;
+		this.tranfsProductsToShop = false;
+		this.supplyMaterialsToFactory = false;
+		this.nFinishedProductsInFactory = 0;
+		this.nSuppliedTimes = 0;
+		this.nPrimeMaterialsSupplied = 0;
+		this.nProductsManufactured = 0;
+		
 
         /* Inicializar os estados internos */
         stateCraftsman = new int[this.nCraftsman];			// create array craftsman state

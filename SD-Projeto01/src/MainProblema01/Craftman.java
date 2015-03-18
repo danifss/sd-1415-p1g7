@@ -13,7 +13,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Craftman extends Thread implements CraftmanInterface{
+public class Craftman extends Thread {
     /**
      * Craftman thread id
      * 
@@ -52,15 +52,15 @@ public class Craftman extends Thread implements CraftmanInterface{
      */
     @Override
     public void run(){
-        while(true){
-			if(!factory.collectMaterials()){ // if can not collect materials
-				shop.primeMaterialsNeeded(); // request prime materials
-				backToWork(); // return to work
-			} else { // Carftman could collect the materials
-				prepareToProduce(); // preparing to produce
-				backToWork(); // return to work
-			}
-		}
+//        while(true){
+//			if(!factory.collectMaterials()){ // if can not collect materials
+//				shop.primeMaterialsNeeded(); // request prime materials
+//				backToWork(); // return to work
+//			}
+//			prepareToProduce(); // preparing to produce
+//			backToWork(); // return to work
+//			
+//		}
     }
     
     /**

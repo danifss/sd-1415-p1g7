@@ -38,9 +38,8 @@ public class MonShop {
 	 * then enter shop and appraising offer on display and if he wants 
 	 * that he buy goods, and finally exit shop
 	 * 
-	 * @return true if the customer could enter the shop
 	 */
 	public synchronized void goShopping(int customerId){
-		
+		this.sharedInfo.setStateCustomer(customerId, MonInfo.CHECKING_DOOR_OPEN);
 	}
 }
