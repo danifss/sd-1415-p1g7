@@ -90,29 +90,52 @@ public class MonInfo {
 	/**
 	 * General Repository for manage all relevant information
 	 * 
-	 * @param nCraftsman	Number of Craftsmans
-	 * @param nCustomer		Number of Customers
-	 * @param fName			Log file name
-	 * @param nIter			Number of Customers iterations
+	 * @param nCraftsman						Number of Craftsmans
+	 * @param nCustomer							Number of Customers
+	 * @param fName								Log file name
+	 * @param nIter								Number of Customers iterations
+	 * @param nInitialPrimeMaterialsInStorage	
+	 * @param nPrimeMaterialsInFactory
+	 * @param nProductsInShop
+	 * @param nPrimeMaterialsByProduct
+	 * @param nPrimeMaterialsForRestock
+	 * @param nLimitOfProductsInFactory 
 	 */
-	public MonInfo(int nCraftsman, int nCustomer, String fName, int nIter) {
-		if (nCraftsman > 0)
+	public MonInfo(
+			int nCraftsman,
+			int nCustomer,
+			String fName,
+			int nIter,
+			int nInitialPrimeMaterialsInStorage,
+			int nPrimeMaterialsInFactory,
+			int nProductsInShop,
+			int nPrimeMaterialsByProduct,
+			int nPrimeMaterialsForRestock,
+			int nLimitOfProductsInFactory
+	) {
+		if (nCraftsman > 0) 
 			this.nCraftsman = nCraftsman;
 		if (nCustomer > 0)
 			this.nCustomer = nCustomer;
 		if (nIter > 0)
 			this.nIter = nIter;
+		this.nInitialPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
+		this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
+		this.nProductsInShop = nProductsInShop;
+		this.nPrimeMaterialsByProduct = nPrimeMaterialsByProduct;
+		this.nPrimeMaterialsForRestock = nPrimeMaterialsForRestock;
+		this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
 
 		/* Inicializar os estados internos */
-		stateCraftsman = new int[this.nCraftsman]; // create array craftsman state
+		stateCraftsman = new int[this.nCraftsman];			// create array craftsman state
 		for (int i = 0; i < this.nCraftsman; i++) {
-			stateCraftsman[i] = FETCHING_PRIME_MATERIALS; // Set initial state of Craftsman
+			stateCraftsman[i] = FETCHING_PRIME_MATERIALS;	// Set initial state of Craftsman
 		}
-		stateCustomer = new int[this.nCustomer]; // create array customers state
+		stateCustomer = new int[this.nCustomer];			// create array customers state
 		for (int i = 0; i < this.nCustomer; i++) {
-			stateCustomer[i] = CARRYING_OUT_DAILY_CHORES; // Set initial state of Customer
+			stateCustomer[i] = CARRYING_OUT_DAILY_CHORES;	// Set initial state of Customer
 		}
-		this.stateOwner = OPENING_THE_SHOP; // Set initial state of Owner
+		this.stateOwner = OPENING_THE_SHOP;					// Set initial state of Owner
 		
 		/* inicializar o ficheiro de logging */
 		if ((fName != null) && !("".equals(fName))) {
@@ -197,5 +220,64 @@ public class MonInfo {
 			GenericIO.writelnString("A operação de fecho do ficheiro " + fName + " falhou!");
 			System.exit(1);
 		}
+	}
+
+	/**
+	 * Set Craftsman[i] state
+	 * @param craftsmanId
+	 * @param state 
+	 */
+	public void setStateCraftsman(int craftsmanId, int state) {
+		this.stateCraftsman[craftsmanId] = state;
+	}
+	/**
+	 * Set Customer[i] State
+	 * @param customerId
+	 * @param state 
+	 */
+	public void setStateCustomer(int customerId, int state) {
+		this.stateCustomer[customerId] = state;
+	}
+	/**
+	 * Set Owner State
+	 * @param state 
+	 */
+	public void setStateOwner(int state) {
+		this.stateOwner = state;
+	}
+	/**
+	 * 
+	 * @return Number of Craftsmans
+	 */
+	public int getnCraftsman() {
+		return nCraftsman;
+	}
+	/**
+	 * 
+	 * @return State of Craftman[i]
+	 */
+	public int getStateCraftsman(int i) {
+		return stateCraftsman[i];
+	}
+	/**
+	 * 
+	 * @return Number of Customers
+	 */
+	public int getnCustomer() {
+		return nCustomer;
+	}
+	/**
+	 * 
+	 * @return State of Customer[i]
+	 */
+	public int getStateCustomer(int i) {
+		return stateCustomer[i];
+	}
+	/**
+	 * 
+	 * @return State of Owner
+	 */
+	public int getStateOwner() {
+		return stateOwner;
 	}
 }
