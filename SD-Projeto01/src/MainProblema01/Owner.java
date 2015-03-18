@@ -9,7 +9,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Owner extends Thread implements OwnerInterface{
+public class Owner extends Thread {
     /**
      * Owner identity
      * 
@@ -56,7 +56,6 @@ public class Owner extends Thread implements OwnerInterface{
     /**
      * Return to shop
      */
-	@Override
     public void returnToShop(){
 		try {
 			sleep ((long) (1 + 10 * Math.random ()));

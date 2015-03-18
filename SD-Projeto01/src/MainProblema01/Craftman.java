@@ -15,14 +15,14 @@ import MonitorsProblema1.*;
  */
 public class Craftman extends Thread implements CraftmanInterface{
     /**
-     * Craftman identity
+     * Craftman thread id
      * 
      * @serialField craftmanId
      */
     private int craftmanId;
     
     /**
-     * Factory
+     * Factory/Workshop
      * 
      * @serialField factory
      */
@@ -44,13 +44,20 @@ public class Craftman extends Thread implements CraftmanInterface{
      */
     @Override
     public void run(){
-        
+        while(true){
+			if(!factory.collectMaterials()){ // if can not collect materials
+				primeMaterialsNeeded(); // request prime materials
+				backToWork(); // return to work
+			} else { // Carftman could collect the materials
+				prepareToProduce(); // preparing to produce
+				backToWork(); // return to work
+			}
+		}
     }
     
     /**
      * Producing new piece
      */
-	@Override
     public void shapingItUp(){
         
     }
@@ -58,7 +65,6 @@ public class Craftman extends Thread implements CraftmanInterface{
     /**
      * Goes to store
      */
-	@Override
     public void goToStore(){
         
     }

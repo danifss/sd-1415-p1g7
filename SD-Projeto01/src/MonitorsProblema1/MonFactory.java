@@ -1,7 +1,7 @@
 package MonitorsProblema1;
 
-
 import genclass.*;
+
 /**
  *
  * @author Daniel 51908
@@ -9,26 +9,38 @@ import genclass.*;
  * @version 1.0
  */
 public class MonFactory {
-    /**
-     * Constants that explains the state of the threads craftman and owner
-     */
     
-    private final static int WAITINGTASK = 0,           // Owner is waiting for the next task
-                             COLLECTINGPRODS = 1,       // Owner is collecting a batch of products
-                             BUYINGMATERIALS = 2,       // Owner is buying prime materials
-                             DELIVERINGMATERIALS = 3,   // Owner is delivering prime materials
-                             FETCHINGMATERIALS = 0,     // Craftman is fetching prime materials
-                             CONTACTINGOWNER = 1;       // Craftman is contacting the owner
-    
-    /**
-     * Number of craftmans in the factory 
-     * 
-     * @serialField nCraftman
-     */
-    private int nCraftman = 0;
+	/**
+	 * General repository Object
+	 * 
+	 * @serialField repositorio
+	 */
+	private final MonInfo repositorio;
+	
+	/**
+	 * Shop Object
+	 * 
+	 * @serialField  shop
+	 */
+	private final MonShop shop;
 
-	public MonFactory(MonInfo sharedInfo, MonShop shop) {
-		
+	/**
+	 * Factory where Craftsmans will work
+	 * 
+	 * @param sharedInfo
+	 * @param shop 
+	 */
+	public MonFactory(MonInfo repositorio, MonShop shop) {
+		this.repositorio = repositorio;
+		this.shop = shop;
+	}
+
+	/**
+	 * Collecting prime materials
+	 * @return true or false
+	 */
+	public synchronized boolean collectMaterials() {
+		return false;
 	}
 	
 	

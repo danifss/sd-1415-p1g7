@@ -63,8 +63,7 @@ public class Main {
 		// nPrimeMaterialsForRestock 10
 		// nLimitOfProductsInFactory 50
 		
-		repositorioGeral = new MonInfo(nCraftsman, nCustomers, fName, nIter);						
-// Create general repository
+		repositorioGeral = new MonInfo(nCraftsman, nCustomers, fName, nIter);					// Create general repository
 		shop = new MonShop(repositorioGeral, nCraftsman, nCustomers, nIter, fName, nIter);		// Creating shop
 		factory = new MonFactory(repositorioGeral, shop);										// Creating Factory
 		storage = new MonStorage();																// Creating Storage
