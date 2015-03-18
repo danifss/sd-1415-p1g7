@@ -14,30 +14,37 @@ public class MonInfo {
     /**
      * CRAFTSMAN STATES
      */
-    private final static int
-                    FETCHING_PRIME_MATERIALS = 0,
-                    PRODUCING_A_NEW_PIECE = 1,
-                    STORING_IT_FOR_TRANSFER = 2, 
-                    CONTACTING_THE_ENTREPRENEUR = 3;
+    public final static int
+            FETCHING_PRIME_MATERIALS = 0,           // 
+            PRODUCING_A_NEW_PIECE = 1,              // 
+            STORING_IT_FOR_TRANSFER = 2,            // 
+            CONTACTING_THE_ENTREPRENEUR = 3;        // 
     /**
      * CUSTOMER STATES
      */
-    private final static int
-                    CARRYING_OUT_DAILY_CHORES = 0,
-                    CHECKING_DOOR_OPEN = 1, 
-                    APPRAISING_OFFER_IN_DISPLAY = 2,
-                    BUYING_SOME_GOODS = 3;
+    public final static int
+            CARRYING_OUT_DAILY_CHORES = 0,          // 
+            CHECKING_DOOR_OPEN = 1,                 // 
+            APPRAISING_OFFER_IN_DISPLAY = 2,        // 
+            BUYING_SOME_GOODS = 3;                  // 
     /**
      * OWNER STATES
      */
-    private final static int
-                    OPENING_THE_SHOP = 0,
-                    WAITING_FOR_NEXT_TASK = 1,
-                    ATTENDING_A_CUSTOMER = 2,
-                    CLOSING_THE_SHOP = 3,
-                    DELIVERING_PRIME_MATERIALS = 4,
-                    COLLECTING_A_BATCH_OF_PRODUCTS = 5,
-                    BUYING_PRIME_MATERIALS = 6;
+    public final static int
+            OPENING_THE_SHOP = 0,                   // 
+            WAITING_FOR_NEXT_TASK = 1,              // 
+            ATTENDING_A_CUSTOMER = 2,               // 
+            CLOSING_THE_SHOP = 3,                   //
+            DELIVERING_PRIME_MATERIALS = 4,         // 
+            COLLECTING_A_BATCH_OF_PRODUCTS = 5,     // 
+            BUYING_PRIME_MATERIALS = 6;             // 
+    /**
+     * SHOP STATES
+     */
+    public final static int
+            OPEN = 0,                               // 
+            STILL_OPEN = 1,                         // 
+            CLOSED = 2;                             // 
 
     /**
      * Number of Craftsman
@@ -87,8 +94,18 @@ public class MonInfo {
      * @serialField nIter
      */
     private int nIter = 0;
+
+    private int[] nGoods; // Num. bens comprados por cada cliente.
+    private int[] nGoodsCrafted; // Num. bens produzidos por cada artesao.
+    private int nCustomersInsideShop; // Num. de clientes na loja
+    private int nGoodsInDisplay; // Num. de bens a venda.
+    private boolean tranfsProductsToShop; // Artesao avisa para tranferirem produtos acabados para a loja.
+    private boolean supplyMaterialsToFactory; // Artesao avisa que precisa de materiais no oficina.
+    private int nPrimeMaterialsInFactory; // Num. de materias primas na oficina
+    private int nFinishedProductsInFactory; // Num. de bens produzidos que estao na oficina
+    private int nSupplyedTimes;////////
+    
     private final int nInitialPrimeMaterialsInStorage;
-    private final int nPrimeMaterialsInFactory;
     private final int nProductsInShop;
     private final int nPrimeMaterialsByProduct;
     private final int nPrimeMaterialsForRestock;
