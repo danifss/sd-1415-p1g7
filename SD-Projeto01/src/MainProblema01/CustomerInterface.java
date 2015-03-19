@@ -1,9 +1,11 @@
 package MainProblema01;
 
 /**
- *
- * @author Daniel
+ * @author Daniel 51908
+ * @author Raphael 64044
+ * @version 1.0
  */
+
 public interface CustomerInterface {
-	public void livingNormalLife();
+    public void livingNormalLife();
 }
