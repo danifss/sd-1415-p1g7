@@ -28,4 +28,14 @@ public abstract class MemObject {
 	 * leitura de um valor -- método virtual
 	 */
 	protected abstract Object read();
+	
+	/**
+	 * leitura do valor no topo da fila -- metodo virtual
+	 */
+	protected abstract Object peek();
+	
+	/**
+	 * verifica se a fila esta vazia ou nao -- metodo virtual
+	 */
+	protected abstract boolean isEmpty();
 }
