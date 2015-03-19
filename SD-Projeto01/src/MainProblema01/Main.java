@@ -80,7 +80,7 @@ public class Main {
 		for(int i=0;i<nCraftsman;i++)
 			craftman[i] = new Craftman(i,factory, shop);							// Create Craftsmans
 		for(int i=0;i<nCustomers;i++)
-			customer[i] = new Customer(i, shop, nIter);								// Create Customers
+			customer[i] = new Customer(repositorioGeral, i, shop, nIter);								// Create Customers
 		
 		/* Arranque da simulacao */
 		owner.start();

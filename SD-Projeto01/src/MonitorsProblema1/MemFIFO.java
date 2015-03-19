@@ -47,4 +47,25 @@ public class MemFIFO extends MemObject {
 		}
 		return val;
 	}
+
+	/**
+	 * @return Objeto no topo da fila. (sem o tirar)
+	 */
+	@Override
+	public Object peek() {
+		if(isEmpty())
+			return null;
+		return mem[outPnt];
+	}
+
+	/**
+	 * @return Estado da fila. (Vazia ou nao)
+	 */
+	@Override
+	public boolean isEmpty() {
+		return empty;
+	}
+	
+	
+	
 }

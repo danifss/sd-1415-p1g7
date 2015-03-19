@@ -42,9 +42,9 @@ public class MonInfo {
      * SHOP STATES
      */
     public final static int
-            OPEN = 0,                               // 
-            STILL_OPEN = 1,                         // 
-            CLOSED = 2;                             // 
+            CLOSED = 0,                           // 
+            STILL_OPEN = 1,                       // 
+            OPEN = 2;                             // 
 
     /**
      * Number of Craftsman
@@ -80,6 +80,13 @@ public class MonInfo {
      * @serialField stateOwner
      */
     private int stateOwner;
+	
+	/**
+	 * Present STATE of Shop
+	 * 
+	 * @serialField stateShop
+	 */
+	private int stateShop;
 
     /**
      * Name of the file logging
@@ -95,8 +102,8 @@ public class MonInfo {
      */
     private int nIter = 0;
 
-    private int[] nGoods; // Num. bens comprados por cada cliente.
-    private int[] nGoodsCrafted; // Num. bens produzidos por cada artesao.
+    private int[] nGoodsByCustomer; // Num. bens comprados por cada cliente.
+    private int[] nGoodsCraftedByCraftman; // Num. bens produzidos por cada artesao.
     private int nCustomersInsideShop; // Num. de clientes na loja
     private int nGoodsInDisplay; // Num. de bens a venda.
     private boolean tranfsProductsToShop; // Artesao avisa para tranferirem produtos acabados para a loja.
@@ -151,8 +158,10 @@ public class MonInfo {
         this.nPrimeMaterialsForRestock = nPrimeMaterialsForRestock;
         this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
 		
-		this.nGoods = new int[this.nCustomer];
-		this.nGoodsCrafted = new int[this.nCraftsman];
+		this.nGoodsByCustomer = new int[this.nCustomer];
+		for(int elem: this.nGoodsByCustomer) elem = 0;
+		this.nGoodsCraftedByCraftman = new int[this.nCraftsman];
+		for(int elem: this.nGoodsCraftedByCraftman) elem = 0;
 		this.nCustomersInsideShop = 0;
 		this.nGoodsInDisplay = 0;
 		this.tranfsProductsToShop = false;
@@ -164,14 +173,15 @@ public class MonInfo {
 		
 
         /* Inicializar os estados internos */
-        stateCraftsman = new int[this.nCraftsman];			// create array craftsman state
-        for (int i = 0; i < this.nCraftsman; i++) {
-                stateCraftsman[i] = FETCHING_PRIME_MATERIALS;	// Set initial state of Craftsman
-        }
-        stateCustomer = new int[this.nCustomer];			// create array customers state
-        for (int i = 0; i < this.nCustomer; i++) {
-                stateCustomer[i] = CARRYING_OUT_DAILY_CHORES;	// Set initial state of Customer
-        }
+        this.stateCraftsman = new int[this.nCraftsman];			// create array craftsman state
+		for(int craftman: this.stateCraftsman)
+                craftman = FETCHING_PRIME_MATERIALS;		// Set initial state of Craftsman
+        
+        this.stateCustomer = new int[this.nCustomer];			// create array customers state
+        for(int customer: this.stateCustomer)
+                customer = CARRYING_OUT_DAILY_CHORES;		// Set initial state of Customer
+        
+		this.stateShop = CLOSED;							// Set initial state of Shop
         this.stateOwner = OPENING_THE_SHOP;					// Set initial state of Owner
 
         /* inicializar o ficheiro de logging */
@@ -263,7 +273,7 @@ public class MonInfo {
      * @param craftsmanId
      * @param state 
      */
-    public void setStateCraftsman(int craftsmanId, int state) {
+    public synchronized void setStateCraftsman(int craftsmanId, int state) {
         this.stateCraftsman[craftsmanId] = state;
     }
     /**
@@ -272,16 +282,23 @@ public class MonInfo {
      * @param customerId
      * @param state 
      */
-    public void setStateCustomer(int customerId, int state) {
+    public synchronized void setStateCustomer(int customerId, int state) {
         this.stateCustomer[customerId] = state;
     }
     /**
      * Set Owner State
      * @param state 
      */
-    public void setStateOwner(int state) {
+    public synchronized void setStateOwner(int state) {
         this.stateOwner = state;
     }
+	/**
+	 * Set Shop State
+	 * @param state 
+	 */
+	public synchronized void setStateShop(int state){
+		this.stateShop = state;
+	}
     /**
      * @return Number of Craftmans
      */
@@ -302,11 +319,10 @@ public class MonInfo {
     public int getnCustomer() {
         return nCustomer;
     }
-    /**
-     * @return State of Customer[i]
-     * 
-     * @param i Number of the Customer
-     */
+	/**
+	 * @param i Number of the Customer
+	 * @return State of Customer[i]
+	 */
     public int getStateCustomer(int i) {
         return stateCustomer[i];
     }
@@ -316,4 +332,59 @@ public class MonInfo {
     public int getStateOwner() {
         return stateOwner;
     }
+	/**
+	 * @return State of Shop
+	 */
+	public int getStateShop(){
+		return stateShop;
+	}
+
+	public int getnGoodsInDisplay() {
+		return nGoodsInDisplay;
+	}
+
+	public void incrementnGoodsByCustomer(int customerId, int nGoods) {
+		this.nGoodsByCustomer[customerId] += nGoods;
+	}
+
+	public void incrementnGoodsCraftedByCraftman(int craftsmanId) {
+		this.nGoodsCraftedByCraftman[craftsmanId]++;
+	}
+
+	public void setnCustomersInsideShop(int nCustomersInsideShop) {
+		this.nCustomersInsideShop += nCustomersInsideShop;
+	}
+
+	public void setnGoodsInDisplay(int nGoodsInDisplay) {
+		this.nGoodsInDisplay += nGoodsInDisplay;
+	}
+
+	public void setTranfsProductsToShop(boolean tranfsProductsToShop) {
+		this.tranfsProductsToShop = tranfsProductsToShop;
+	}
+
+	public void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
+		this.supplyMaterialsToFactory = supplyMaterialsToFactory;
+	}
+
+	public void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
+		this.nPrimeMaterialsInFactory += nPrimeMaterialsInFactory;
+	}
+
+	public void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
+		this.nFinishedProductsInFactory += nFinishedProductsInFactory;
+	}
+
+	public void setnSuppliedTimes(int nSuppliedTimes) {
+		this.nSuppliedTimes += nSuppliedTimes;
+	}
+
+	public void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied) {
+		this.nPrimeMaterialsSupplied += nPrimeMaterialsSupplied;
+	}
+
+	public void setnProductsManufactured(int nProductsManufactured) {
+		this.nProductsManufactured += nProductsManufactured;
+	}
+	
 }
