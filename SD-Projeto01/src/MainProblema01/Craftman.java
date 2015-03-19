@@ -58,7 +58,7 @@ public class Craftman extends Thread {
 //			}
 //			prepareToProduce(); // preparing to produce
 //			backToWork(); // return to work
-//			
+//			// nao esta completo
 //		}
     }
     
