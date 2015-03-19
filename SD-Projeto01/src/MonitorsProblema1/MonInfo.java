@@ -342,47 +342,47 @@ public class MonInfo {
 	public int getnGoodsInDisplay() {
 		return nGoodsInDisplay;
 	}
-
+	// Num. bens comprados por cada cliente.
 	public void incrementnGoodsByCustomer(int customerId, int nGoods) {
 		this.nGoodsByCustomer[customerId] += nGoods;
 	}
-
+	// Num. bens produzidos por cada artesao.
 	public void incrementnGoodsCraftedByCraftman(int craftsmanId) {
 		this.nGoodsCraftedByCraftman[craftsmanId]++;
 	}
-
+	// Num. de clientes na loja
 	public void setnCustomersInsideShop(int nCustomersInsideShop) {
 		this.nCustomersInsideShop += nCustomersInsideShop;
 	}
-
+	// Num. de bens a venda.
 	public void setnGoodsInDisplay(int nGoodsInDisplay) {
 		this.nGoodsInDisplay += nGoodsInDisplay;
 	}
-
+	// Artesao avisa para tranferirem produtos acabados para a loja.
 	public void setTranfsProductsToShop(boolean tranfsProductsToShop) {
 		this.tranfsProductsToShop = tranfsProductsToShop;
 	}
-
+	// Artesao avisa que precisa de materiais no oficina.
 	public void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
 		this.supplyMaterialsToFactory = supplyMaterialsToFactory;
 	}
-
+	// Num. de materias primas na oficina
 	public void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
 		this.nPrimeMaterialsInFactory += nPrimeMaterialsInFactory;
 	}
-
+	// Num. de bens produzidos que estao na oficina
 	public void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
 		this.nFinishedProductsInFactory += nFinishedProductsInFactory;
 	}
-
+	// Num. vezes que foram fornecidas materias primas para a oficina
 	public void setnSuppliedTimes(int nSuppliedTimes) {
 		this.nSuppliedTimes += nSuppliedTimes;
 	}
-
+	// Num. total de materias primas ja fornecidas
 	public void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied) {
 		this.nPrimeMaterialsSupplied += nPrimeMaterialsSupplied;
 	}
-
+	// Num. total de bens produzidos pela oficina.
 	public void setnProductsManufactured(int nProductsManufactured) {
 		this.nProductsManufactured += nProductsManufactured;
 	}

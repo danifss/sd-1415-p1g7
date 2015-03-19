@@ -61,7 +61,7 @@ public class MonShop {
 	public synchronized void iWantThis(int customerId, int nGoods) {
 		this.sharedInfo.setStateCustomer(customerId, MonInfo.BUYING_SOME_GOODS);
 		this.sitCustomer.write(customerId); // ir para a fila de atendimento
-		notifyAll();
+		notifyAll(); // acordar dona
 		while(this.sitCustomer.peek() != null){
 			try{
 				wait(); // espera que a dona chame o proximo cliente
