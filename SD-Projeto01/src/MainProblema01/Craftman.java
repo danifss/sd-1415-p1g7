@@ -8,7 +8,6 @@ package MainProblema01;
 import MonitorsProblema1.*;
 
 /**
- *
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
@@ -28,27 +27,27 @@ public class Craftman extends Thread {
      */
     private MonFactory factory;
 	
-	/**
-	 * Shop
-	 * 
-	 * @serialField shop
-	 */
-	private final MonShop shop;
+    /**
+     * Shop
+     * 
+     * @serialField shop
+     */
+    private final MonInfo info;
     
     /**
-     * Create craftman thread
+     * Create Craftman thread
      * 
      * @param craftmanId Craftman identity
      * @param factory Factory
      */
-    public Craftman(int craftmanId, MonFactory factory, MonShop shop){
+    public Craftman(int craftmanId, MonFactory factory, MonInfo info){
         this.craftmanId = craftmanId;
         this.factory = factory;
-		this.shop = shop;
+        this.info = info;
     }
     
     /**
-     * Life cycle of the craftman
+     * Life cycle of the Craftman
      */
     @Override
     public void run(){
@@ -67,14 +66,20 @@ public class Craftman extends Thread {
      * Producing new piece
      */
     public void shapingItUp(){
-        
+        try{
+            sleep((long) (1+40*Math.random()));
+        }catch(InterruptedException e){}
     }
     
     /**
      * Goes to store
      */
     public void goToStore(){
+        info.setStateCraftsman(craftmanId, MonInfo.STORING_IT_FOR_TRANSFER);
         
+        try{
+            sleep((long) (1+40*Math.random()));
+        }catch(InterruptedException e){}
     }
     
 }
