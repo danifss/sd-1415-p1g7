@@ -57,10 +57,10 @@ public class Owner extends Thread {
      * Return to shop
      */
     public void returnToShop(){
-		try {
-			sleep ((long) (1 + 10 * Math.random ()));
-		}
-		catch (InterruptedException e) {}
+        try {
+            sleep ((long) (1 + 10 * Math.random ()));
+        }
+        catch (InterruptedException e) {}
     }
 }
 

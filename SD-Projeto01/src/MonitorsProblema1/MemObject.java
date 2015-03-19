@@ -5,37 +5,37 @@ package MonitorsProblema1;
  */
 public abstract class MemObject {
 
-	/**
-	 * Definição da memória genérica
-	 */
-	protected Object[] mem;     // área de armazenamento
+    /**
+     * Definição da memória genérica
+     */
+    protected Object[] mem;     // área de armazenamento
 
-	/**
-	 * Construtor de variáveis
-	 */
-	protected MemObject(int nElem) {
-		if (nElem > 0) {
-			mem = new Object[nElem];
-		}
-	}
+    /**
+     * Construtor de variáveis
+     */
+    protected MemObject(int nElem) {
+        if (nElem > 0) {
+            mem = new Object[nElem];
+        }
+    }
 
-	/**
-	 * escrita de um valor -- método virtual
-	 */
-	protected abstract void write(Object val);
+    /**
+     * escrita de um valor -- método virtual
+     */
+    protected abstract void write(Object val);
 
-	/**
-	 * leitura de um valor -- método virtual
-	 */
-	protected abstract Object read();
-	
-	/**
-	 * leitura do valor no topo da fila -- metodo virtual
-	 */
-	protected abstract Object peek();
-	
-	/**
-	 * verifica se a fila esta vazia ou nao -- metodo virtual
-	 */
-	protected abstract boolean isEmpty();
+    /**
+     * leitura de um valor -- método virtual
+     */
+    protected abstract Object read();
+
+    /**
+     * leitura do valor no topo da fila -- metodo virtual
+     */
+    protected abstract Object peek();
+
+    /**
+     * verifica se a fila esta vazia ou nao -- metodo virtual
+     */
+    protected abstract boolean isEmpty();
 }

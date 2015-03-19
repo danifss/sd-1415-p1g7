@@ -1,7 +1,5 @@
 package MonitorsProblema1;
 
-import genclass.*;
-
 /**
  *
  * @author Daniel 51908
@@ -10,38 +8,59 @@ import genclass.*;
  */
 public class MonFactory {
     
-	/**
-	 * General repository Object
-	 * 
-	 * @serialField repositorio
-	 */
-	private final MonInfo repositorio;
-	
-	/**
-	 * Shop Object
-	 * 
-	 * @serialField  shop
-	 */
-	private final MonShop shop;
+    /**
+     * General repository Object
+     * 
+     * @serialField repositorio
+     */
+    private final MonInfo repositorio;
 
-	/**
-	 * Factory where Craftsmans will work
-	 * 
-	 * @param sharedInfo
-	 * @param shop 
-	 */
-	public MonFactory(MonInfo repositorio, MonShop shop) {
-		this.repositorio = repositorio;
-		this.shop = shop;
-	}
+    /**
+     * Shop Object
+     * 
+     * @serialField  shop
+     */
+    private final MonShop shop;
 
-	/**
-	 * Collecting prime materials
-	 * @return true or false
-	 */
-	public synchronized boolean collectMaterials() {
-		return false;
-	}
-	
-	
+    /**
+     * Factory where Craftmans will work
+     * 
+     * @param repositorio
+     * @param shop 
+     */
+    public MonFactory(MonInfo repositorio, MonShop shop) {
+        this.repositorio = repositorio;
+        this.shop = shop;
+    }
+
+    /**
+     * Check For Materials
+     * @return true or false
+     */
+    
+    public synchronized boolean checkForMaterials(){
+        return false;
+    }
+    
+    /**
+     * Collecting prime materials
+     * @return true or false
+     */
+    public synchronized boolean collectMaterials() {
+        return false;
+    }
+    
+    /**
+     * Prime Materials Needed
+     */
+    public synchronized void primeMaterialsNeeded(){
+        
+    }
+
+    /**
+     * Back To Work
+     */
+    public synchronized void backToWork(){
+        
+    }
 }
