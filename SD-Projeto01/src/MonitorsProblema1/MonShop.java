@@ -75,10 +75,17 @@ public class MonShop {
         }
     }
 
-    public void exitShop(int customerId) {
+    public synchronized void exitShop(int customerId) {
         // mudar estado do cliente
         this.sharedInfo.setStateCustomer(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
         // decrementar clientes dentro da loja
         this.sharedInfo.setnCustomersInsideShop(-1);
     }
+	
+	public synchronized int addressACustomer(){
+		notifyAll(); // chamar cliente
+		
+		return (int) this.sitCustomer.read();
+		
+	}
 }

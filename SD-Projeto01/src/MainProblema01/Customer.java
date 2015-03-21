@@ -30,6 +30,11 @@ public class Customer extends Thread {
      */
     private MonShop shop;
 	
+	/**
+	 * General Repository
+	 * 
+	 * @serialField sharedInfo
+	 */
 	private final MonInfo sharedInfo;
             
     /**

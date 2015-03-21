@@ -28,7 +28,7 @@ public class Craftman extends Thread {
     private MonFactory factory;
 	
     /**
-     * Shop
+     * General Repository
      * 
      * @serialField shop
      */
