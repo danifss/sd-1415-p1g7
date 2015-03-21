@@ -39,6 +39,7 @@ public class Craftman extends Thread {
      * 
      * @param craftmanId Craftman identity
      * @param factory Factory
+     * @param info Repository
      */
     public Craftman(int craftmanId, MonFactory factory, MonInfo info){
         this.craftmanId = craftmanId;
@@ -51,15 +52,38 @@ public class Craftman extends Thread {
      */
     @Override
     public void run(){
-//        while(true){
-//			if(!factory.collectMaterials()){ // if can not collect materials
-//				shop.primeMaterialsNeeded(); // request prime materials
-//				backToWork(); // return to work
-//			}
-//			prepareToProduce(); // preparing to produce
-//			backToWork(); // return to work
-//			// nao esta completo
-//		}
+        while(true){
+            switch(info.getStateCraftsman(craftmanId)){
+                case MonInfo.FETCHING_PRIME_MATERIALS:
+                    if(factory.checkForMaterials()){
+                        factory.collectMaterials(craftmanId);
+                         
+                    //Prepare to produce
+                    }
+                    else{
+                        // primeMaterialsNeeded
+                    }
+                   
+                    
+                    //primeMaterialsNeeded
+                    
+                    break;
+                case MonInfo.PRODUCING_A_NEW_PIECE:
+                    shapingItUp();
+                    goToStore();
+                    break;
+                case MonInfo.STORING_IT_FOR_TRANSFER:
+                    //batchReadyForTransfer
+                    
+                    //backToWork
+                    
+                    break;
+                case MonInfo.CONTACTING_THE_ENTREPRENEUR:
+                    //contact entrepreneur
+                    
+                    //backToWork
+            }
+        }
     }
     
     /**

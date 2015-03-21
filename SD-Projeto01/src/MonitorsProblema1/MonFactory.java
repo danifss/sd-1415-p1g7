@@ -11,9 +11,9 @@ public class MonFactory {
     /**
      * General repository Object
      * 
-     * @serialField repositorio
+     * @serialField info
      */
-    private final MonInfo repositorio;
+    private final MonInfo info;
 
     /**
      * Shop Object
@@ -25,11 +25,11 @@ public class MonFactory {
     /**
      * Factory where Craftmans will work
      * 
-     * @param repositorio
+     * @param info
      * @param shop 
      */
-    public MonFactory(MonInfo repositorio, MonShop shop) {
-        this.repositorio = repositorio;
+    public MonFactory(MonInfo info, MonShop shop) {
+        this.info = info;
         this.shop = shop;
     }
 
@@ -39,14 +39,18 @@ public class MonFactory {
      */
     
     public synchronized boolean checkForMaterials(){
-        return false;
+        return info.getnPrimeMaterialsInFactory() > 0;
     }
     
     /**
      * Collecting prime materials
+     * @param craftmanId
      * @return true or false
      */
-    public synchronized boolean collectMaterials() {
+    public synchronized boolean collectMaterials(int craftmanId) {
+        int numPrime = 1;
+        info.setnPrimeMaterialsByCraftman(craftmanId, numPrime);
+        info.removePrimeMaterials(numPrime);
         return false;
     }
     
