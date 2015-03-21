@@ -73,7 +73,7 @@ public class Main {
             shop = new MonShop(repositorioGeral);													// Creating shop
             factory = new MonFactory(repositorioGeral, shop);										// Creating Factory
             storage = new MonStorage();																// Creating Storage
-            owner = new Owner(0, factory, shop);													// Create Owner
+            owner = new Owner(0, repositorioGeral, factory, shop);													// Create Owner
 
             for(int i=0;i<nCraftsman;i++)
                 craftman[i] = new Craftman(i,factory, repositorioGeral);							// Create Craftsmans

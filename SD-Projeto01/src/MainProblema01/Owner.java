@@ -16,6 +16,13 @@ public class Owner extends Thread {
 	 * @serialField ownerId
 	 */
 	private int ownerId;
+	
+	/**
+	 * General Repository
+	 * 
+	 * @serialField sharedInfo
+	 */
+	private final MonInfo sharedInfo;
 
 	/**
 	 * Factory
@@ -38,8 +45,9 @@ public class Owner extends Thread {
 	 * @param factory Factory
 	 * @param shop Shop
 	 */
-	public Owner(int ownerId, MonFactory factory, MonShop shop) {
+	public Owner(int ownerId, MonInfo sharedInfo, MonFactory factory, MonShop shop) {
 		this.ownerId = ownerId;
+		this.sharedInfo = sharedInfo;
 		this.factory = factory;
 		this.shop = shop;
 	}
@@ -58,7 +66,7 @@ public class Owner extends Thread {
 				sit = appraiseSit();
 				switch (sit) {
 					case 1:
-						cid = addressACustomer();
+						cid = this.shop.addressACustomer();
 						serviceCustomer();
 						sayGoodbyeToCustomer(cid);
 						break;
@@ -85,7 +93,7 @@ public class Owner extends Thread {
 
 	/*
 	
-			ALGUMAS DESTAS TERAO DE IR PARA OS MONITORES
+			ALGUMAS DESTAS PODEM IR PARA OS MONITORES
 	
 	*/
 	private void prepareToWork() {
@@ -96,12 +104,12 @@ public class Owner extends Thread {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	private int addressACustomer() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
 	private void serviceCustomer() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.sharedInfo.setStateOwner(MonInfo.ATTENDING_A_CUSTOMER);
+		
+		try {
+			sleep((long) (1 + 10 * Math.random()));
+		} catch (InterruptedException e) {}
 	}
 
 	private void sayGoodbyeToCustomer(int cid) {
@@ -138,7 +146,9 @@ public class Owner extends Thread {
 	public void returnToShop() {
 		try {
 			sleep((long) (1 + 10 * Math.random()));
-		} catch (InterruptedException e) {
-		}
+		} catch (InterruptedException e) {}
+		
+		this.sharedInfo.setStateOwner(MonInfo.OPENING_THE_SHOP);
+		this.sharedInfo.setStateShop(MonInfo.OPEN);
 	}
 }
