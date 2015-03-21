@@ -102,10 +102,15 @@ public class MonInfo {
      */
     private int nIter = 0;
 
+    // Tratamento de bens e materias primas
     private int[] nGoodsByCustomer; // Num. bens comprados por cada cliente.
     private int[] nGoodsCraftedByCraftman; // Num. bens produzidos por cada artesao.
+    private int[] nPrimeMaterialsByCraftman; // Num. de matérias primas por artesão
+    
+    // Variáveis da Loja
     private int nCustomersInsideShop; // Num. de clientes na loja
     private int nGoodsInDisplay; // Num. de bens a venda.
+    
     private boolean tranfsProductsToShop; // Artesao avisa para tranferirem produtos acabados para a loja.
     private boolean supplyMaterialsToFactory; // Artesao avisa que precisa de materiais no oficina.
     private int nPrimeMaterialsInFactory; // Num. de materias primas na oficina
@@ -383,8 +388,18 @@ public class MonInfo {
     }
     
     // Num. de materias primas na oficina
-    public void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
+    public synchronized void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
         this.nPrimeMaterialsInFactory += nPrimeMaterialsInFactory;
+    }
+    
+    // Obter o numero de materias primas na oficina
+    public int getnPrimeMaterialsInFactory(){
+        return nPrimeMaterialsInFactory;
+    }
+    
+    // Tirar matérias primas da oficina
+    public synchronized void removePrimeMaterials(int n){
+        nPrimeMaterialsInFactory -= n;
     }
     
     // Num. de bens produzidos que estao na oficina
@@ -405,5 +420,15 @@ public class MonInfo {
     // Num. total de bens produzidos pela oficina.
     public void setnProductsManufactured(int nProductsManufactured) {
         this.nProductsManufactured += nProductsManufactured;
+    }
+    
+    // Obter o número de matérias primas que um artesão tem
+    public int getnPrimeMaterialsByCraftman(int craftmanId) {
+        return nPrimeMaterialsByCraftman[craftmanId];
+    }
+
+    // Atribuir o numero de materias primas ao craftman
+    public void setnPrimeMaterialsByCraftman(int craftmanId, int nPrimeMaterialsByCraftman) {
+        this.nPrimeMaterialsByCraftman[craftmanId] = nPrimeMaterialsByCraftman;
     }
 }
