@@ -60,22 +60,22 @@ public class Owner extends Thread {
 		boolean out;
 		int cid, sit = 0;
 		do {
-			prepareToWork();
+			prepareToWork(); // fica a dormir
 			out = false;
 			while (!out) {
 				sit = appraiseSit();
 				switch (sit) {
-					case 1:
+					case 1: // atender cliente
 						cid = this.shop.addressACustomer();
 						serviceCustomer();
 						sayGoodbyeToCustomer(cid);
 						break;
-					case 2:
-					case 3:
+					case 2: // buscar produtos terminados a oficina
+					case 3: // buscar materias primas ao armazem
 						closeTheDoor();
-						out = !customersInTheShop();
+						out = !customersInTheShop(); // verifica primeiro se ha  clientes para atender
 						break;
-					case 4:
+					case 4: // nada para fazer
 						out = true;
 						break;
 				}
@@ -91,17 +91,26 @@ public class Owner extends Thread {
 		} while (true); // falta condicao de paragem no while!
 	}
 
-	/*
-	
-			ALGUMAS DESTAS PODEM IR PARA OS MONITORES
-	
-	*/
+
 	private void prepareToWork() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.sharedInfo.setStateOwner(MonInfo.WAITING_FOR_NEXT_TASK);
+		
+		try {
+			sleep((long) (1 + 20 * Math.random()));
+		} catch (InterruptedException e) {}
 	}
 
 	private int appraiseSit() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		// verifica se ha clientes para serem atendidos
+		if(!this.shop.isSitCustomerEmpty())
+			return 1;
+		// verifica se foi notificada por um artesao que ha produtos para ir para a loja
+		if(this.sharedInfo.isToTranfsProductsToShop())
+			return 2;
+		// verifica se foi notificada por um artesao pedir materias primas
+		if(this.sharedInfo.isToSupplyMaterialsToFactory())
+			return 3;
+		return 4; // nada para fazer
 	}
 
 	private void serviceCustomer() {
@@ -113,31 +122,32 @@ public class Owner extends Thread {
 	}
 
 	private void sayGoodbyeToCustomer(int cid) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		prepareToWork();
 	}
 
 	private void closeTheDoor() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.sharedInfo.setStateShop(MonInfo.CLOSED);
 	}
 
 	private boolean customersInTheShop() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return this.shop.isSitCustomerEmpty() == false;
 	}
 
-	private void prepareToLeave() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	private void prepareToLeave() { // nao sei se e assim
+		this.sharedInfo.setStateShop(MonInfo.STILL_OPEN);
+		this.sharedInfo.setStateOwner(MonInfo.CLOSING_THE_SHOP);
 	}
 
 	private void goToWorkshop() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		this.sharedInfo.setStateOwner(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
 	}
 
 	private int visitSuppliers() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	private void replenishStock(int q) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	/**

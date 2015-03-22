@@ -431,4 +431,13 @@ public class MonInfo {
     public synchronized void setnPrimeMaterialsByCraftman(int craftmanId, int nPrimeMaterialsByCraftman) {
         this.nPrimeMaterialsByCraftman[craftmanId] = nPrimeMaterialsByCraftman;
     }
+
+	public boolean isToTranfsProductsToShop() {
+		return tranfsProductsToShop;
+	}
+
+	public boolean isToSupplyMaterialsToFactory() {
+		return supplyMaterialsToFactory;
+	}
+	
 }

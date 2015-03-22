@@ -34,6 +34,10 @@ public class MonShop {
         sitCustomer = new MemFIFO(this.sharedInfo.getnCustomer()); // create FIFO for wainting Customers
     }
 
+	public boolean isSitCustomerEmpty(){
+		return this.sitCustomer.isEmpty();
+	}
+
     /**
      * Customer go shopping, first check if the shop door is open
      * then enter shop and appraising offer on display and if he wants 
@@ -46,7 +50,7 @@ public class MonShop {
 
     /**
      * 
-     * @return if the door is open or not
+     * @return check if the door is open or not
      */
     public synchronized boolean isDoorOpen(int customerId) {
         return sharedInfo.getStateShop() != 0;
