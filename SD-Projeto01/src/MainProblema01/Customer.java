@@ -30,13 +30,13 @@ public class Customer extends Thread {
      */
     private MonShop shop;
 	
-	/**
-	 * General Repository
-	 * 
-	 * @serialField sharedInfo
-	 */
-	private final MonInfo sharedInfo;
-            
+    /**
+     * General Repository
+     * 
+     * @serialField sharedInfo
+     */
+    private final MonInfo sharedInfo;
+
     /**
      * Create customer thread
      * 
@@ -57,17 +57,17 @@ public class Customer extends Thread {
     @Override
     public void run(){
         for(int i=0; i<nIter; i++){
-            while(true){
+            
                 livingNormalLife();
 
                 shop.goShopping(this.customerId);
 
-                if(shop.isDoorOpen(this.customerId))
-                    break;
-                else {
+                if(!shop.isDoorOpen(this.customerId))
+                {
                     tryAgainLater();
+                    continue;
                 }
-            }
+            
 
             shop.enterShop(this.customerId);
             int goods = perusingAround();
