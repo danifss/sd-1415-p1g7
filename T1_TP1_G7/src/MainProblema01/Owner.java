@@ -9,13 +9,6 @@ import MonitorsProblema1.*;
  * @version 1.0
  */
 public class Owner extends Thread {
-
-	/**
-	 * Owner identity
-	 *
-	 * @serialField ownerId
-	 */
-	private int ownerId;
 	
 	/**
 	 * General Repository
@@ -45,8 +38,7 @@ public class Owner extends Thread {
 	 * @param factory Factory
 	 * @param shop Shop
 	 */
-	public Owner(int ownerId, MonInfo sharedInfo, MonFactory factory, MonShop shop) {
-		this.ownerId = ownerId;
+	public Owner(MonInfo sharedInfo, MonFactory factory, MonShop shop) {
 		this.sharedInfo = sharedInfo;
 		this.factory = factory;
 		this.shop = shop;
