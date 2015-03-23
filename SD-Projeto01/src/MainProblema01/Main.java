@@ -15,14 +15,12 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String fName;           // Nome do ficheiro de log
-        int nIter = 0;		// Numero de iteracoes do ciclo de vida dos clientes
+        String fName;       // Nome do ficheiro de log
         boolean success;	// Validacao dos dados de entrada
-        char opt;											// opcao
+        char opt;			// opcao
         /* Inicializacao do Log */
         GenericIO.writelnString("\n" + "      Problema do Artesanato de Aveiro\n");
         GenericIO.writeString("Numero de iterações dos clientes? ");
-        nIter = GenericIO.readlnInt();
             do {
                 GenericIO.writeString("Nome do ficheiro de armazenamento da simulação? ");
                 fName = GenericIO.readlnString();
@@ -63,22 +61,21 @@ public class Main {
                             nCraftsman,
                             nCustomers,
                             fName,
-                            nIter,
-                            nInitialPrimeMaterialsInStorage,
                             nPrimeMaterialsInFactory,
-                            nProductsInShop,
-                            nPrimeMaterialsByProduct,
-                            nPrimeMaterialsForRestock,
-                            nLimitOfProductsInFactory );					
+                            nProductsInShop
+                            );					
             shop = new MonShop(repositorioGeral);													// Creating shop
-            factory = new MonFactory(repositorioGeral, shop);										// Creating Factory
+            factory = new MonFactory(
+                            nPrimeMaterialsInFactory,
+                            nPrimeMaterialsByProduct,
+                            nPrimeMaterialsForRestock);										// Creating Factory
             storage = new MonStorage();																// Creating Storage
             owner = new Owner(0, repositorioGeral, factory, shop);													// Create Owner
 
             for(int i=0;i<nCraftsman;i++)
                 craftman[i] = new Craftman(i,factory, repositorioGeral);							// Create Craftsmans
             for(int i=0;i<nCustomers;i++)
-                customer[i] = new Customer(repositorioGeral, i, shop, nIter);								// Create Customers
+                customer[i] = new Customer(repositorioGeral, i, shop);								// Create Customers
 
             /* Arranque da simulacao */
             owner.start();
