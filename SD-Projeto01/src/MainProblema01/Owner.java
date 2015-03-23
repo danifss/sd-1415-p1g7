@@ -70,8 +70,8 @@ public class Owner extends Thread {
 						serviceCustomer();
 						sayGoodbyeToCustomer(cid);
 						break;
-					case 2: // buscar produtos terminados a oficina
-					case 3: // buscar materias primas ao armazem
+					case 2: // buscar materias primas do armazem para a oficina
+					case 3: // buscar produtos terminados a oficina
 						closeTheDoor();
 						out = !customersInTheShop(); // verifica primeiro se ha  clientes para atender
 						break;
@@ -80,9 +80,9 @@ public class Owner extends Thread {
 						break;
 				}
 			}
-			prepareToLeave();
+			prepareToLeave(); // sair da loja?
 			if (sit == 3) {
-				goToWorkshop();
+				goToWorkshop(); // vai buscar produtos a oficina e levar para a loja
 			} else if (sit == 2) {
 				int q = visitSuppliers();
 				replenishStock(q);
@@ -104,11 +104,11 @@ public class Owner extends Thread {
 		// verifica se ha clientes para serem atendidos
 		if(!this.shop.isSitCustomerEmpty())
 			return 1;
-		// verifica se foi notificada por um artesao que ha produtos para ir para a loja
-		if(this.sharedInfo.isToTranfsProductsToShop())
-			return 2;
 		// verifica se foi notificada por um artesao pedir materias primas
 		if(this.sharedInfo.isToSupplyMaterialsToFactory())
+			return 2;
+		// verifica se foi notificada por um artesao que ha produtos para ir para a loja
+		if(this.sharedInfo.isToTranfsProductsToShop())
 			return 3;
 		return 4; // nada para fazer
 	}
@@ -122,6 +122,7 @@ public class Owner extends Thread {
 	}
 
 	private void sayGoodbyeToCustomer(int cid) {
+		this.shop.removeSitCustomer(cid);
 		prepareToWork();
 	}
 
