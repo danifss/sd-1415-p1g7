@@ -263,7 +263,7 @@ public class MonInfo {
      * @param customerId
      * @param state 
      */
-    public synchronized void setStateCustomer(int customerId, int state) {
+    public synchronized void setCustomerState(int customerId, int state) {
         this.stateCustomer[customerId] = state;
     }
     
