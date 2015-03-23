@@ -89,7 +89,11 @@ public class MonShop {
 	public synchronized int addressACustomer(){
 		notifyAll(); // chamar cliente
 		
-		return (int) this.sitCustomer.read();
+		return (int) this.sitCustomer.peek();
 		
+	}
+
+	public void removeSitCustomer(int cid) {
+		this.sitCustomer.remove(cid);
 	}
 }

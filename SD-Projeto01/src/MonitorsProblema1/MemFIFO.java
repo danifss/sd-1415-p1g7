@@ -57,7 +57,28 @@ public class MemFIFO extends MemObject {
             return null;
         return mem[outPnt];
     }
-
+	
+	/**
+	 * remove da fila um dado objeto
+	 */
+	@Override
+	public boolean remove(Object object){
+		int i = 0;
+		boolean flag = false;
+		for(i=0;i<mem.length;i++)
+			if(mem[i] == object){
+				flag = true;
+				break;
+			}
+		if(flag){
+			for(int j=i;j<mem.length-1;j++)
+				mem[j] = mem[j+1];
+			inPnt = (inPnt - 1) % mem.length;
+			empty = (inPnt == outPnt);
+		}
+		return flag;
+	}
+	
     /**
      * @return Estado da fila. (Vazia ou nao)
      */
