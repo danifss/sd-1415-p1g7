@@ -51,7 +51,7 @@ public class MonInfo {
      *
      * @serialField nCraftsman
      */
-    private int nCraftsman = 0;
+    private static int nCraftsman = 0;
 
     /**
      * Present STATE of Craftsman
@@ -65,7 +65,7 @@ public class MonInfo {
      *
      * @serialField nCustomer
      */
-    private int nCustomer = 0;
+    private static int nCustomer = 0;
 
     /**
      * Present STATE of Customer
@@ -95,12 +95,6 @@ public class MonInfo {
      */
     private String fName = "log.txt";
 
-    /**
-     * Number of iteration of life cycle of the customers
-     *
-     * @serialField nIter
-     */
-    private int nIter = 0;
 
     // Tratamento de bens e materias primas
     private int[] nGoodsByCustomer; // Num. bens comprados por cada cliente.
@@ -118,12 +112,8 @@ public class MonInfo {
     private int nSuppliedTimes; // Num. vezes que foram fornecidas materias primas para a oficina
     private int nPrimeMaterialsSupplied; // Num. total de materias primas ja fornecidas
     private int nProductsManufactured; // Num. total de bens produzidos pela oficina.
-    
-    private final int nInitialPrimeMaterialsInStorage;
+
     private final int nProductsInShop;
-    private final int nPrimeMaterialsByProduct;
-    private final int nPrimeMaterialsForRestock;
-    private final int nLimitOfProductsInFactory;
 
     /**
      * General Repository for manage all relevant information
@@ -131,37 +121,23 @@ public class MonInfo {
      * @param nCraftsman Number of Craftmans
      * @param nCustomer	Number of Customers
      * @param fName Log file name
-     * @param nIter Number of Customers iterations
-     * @param nInitialPrimeMaterialsInStorage	
      * @param nPrimeMaterialsInFactory
      * @param nProductsInShop
-     * @param nPrimeMaterialsByProduct
-     * @param nPrimeMaterialsForRestock
-     * @param nLimitOfProductsInFactory 
      */
     public MonInfo(
                 int nCraftsman,
                 int nCustomer,
                 String fName,
-                int nIter,
-                int nInitialPrimeMaterialsInStorage,
                 int nPrimeMaterialsInFactory,
-                int nProductsInShop,
-                int nPrimeMaterialsByProduct,
-                int nPrimeMaterialsForRestock,
-                int nLimitOfProductsInFactory   ) {
+                int nProductsInShop
+            ) {
         if (nCraftsman > 0) 
-            this.nCraftsman = nCraftsman;
+            MonInfo.nCraftsman = nCraftsman;
         if (nCustomer > 0)
-            this.nCustomer = nCustomer;
-        if (nIter > 0)
-            this.nIter = nIter;
-        this.nInitialPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
+            MonInfo.nCustomer = nCustomer;
+
         this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
         this.nProductsInShop = nProductsInShop;
-        this.nPrimeMaterialsByProduct = nPrimeMaterialsByProduct;
-        this.nPrimeMaterialsForRestock = nPrimeMaterialsForRestock;
-        this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
 		
         this.nGoodsByCustomer = new int[this.nCustomer];
         for(int elem: this.nGoodsByCustomer) elem = 0;
@@ -208,7 +184,6 @@ public class MonInfo {
             System.exit(1);
         }
         log.writelnString("\t\tAveiro Handicraft SARL - Description of the internal state");
-        log.writelnString("\nNúmero de iterações = " + this.nIter + "\n");
         if (!log.close()) {
             GenericIO.writelnString("A operação de fecho do ficheiro " + this.fName + " falhou!");
             System.exit(1);
@@ -311,7 +286,7 @@ public class MonInfo {
     /**
      * @return Number of Craftmans
      */
-    public int getnCraftsman() {
+    public static int getnCraftsman() {
         return nCraftsman;
     }
     
@@ -327,7 +302,7 @@ public class MonInfo {
     /**
      * @return Number of Customers
      */
-    public int getnCustomer() {
+    public static int getnCustomer() {
         return nCustomer;
     }
     

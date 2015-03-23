@@ -16,6 +16,13 @@ public class MonShop {
      * @serialField sharedInfo
      */
     private MonInfo sharedInfo;
+    
+    /**
+     * Presente State of Shop
+     * 
+     * @serialField shopState
+     */
+    private int shopState;
 
     /**
      * FIFO with Customers on the Shop
@@ -23,6 +30,10 @@ public class MonShop {
      * @serialField sitCustomer
      */
     private MemFIFO sitCustomer;
+    
+    private int customerInsideShop;
+    
+    private int nGoodsInDisplay;
 
     /**
      * Create Monitor of the Shop
@@ -31,7 +42,11 @@ public class MonShop {
      */
     public MonShop(MonInfo sharedInfo) {
         this.sharedInfo = sharedInfo;
-        sitCustomer = new MemFIFO(this.sharedInfo.getnCustomer()); // create FIFO for wainting Customers
+        this.shopState = MonInfo.CLOSED;
+        this.customerInsideShop = 0;
+        sitCustomer = new MemFIFO(MonInfo.getnCustomer()); // create FIFO for wainting Customers
+        
+        this.nGoodsInDisplay = 0;
     }
 
 	public boolean isSitCustomerEmpty(){
@@ -39,28 +54,25 @@ public class MonShop {
 	}
 
     /**
-     * Customer go shopping, first check if the shop door is open
-     * then enter shop and appraising offer on display and if he wants 
-     * that he buy goods, and finally exit shop
-     * 
-     */
-    public synchronized void goShopping(int customerId){
-        this.sharedInfo.setStateCustomer(customerId, MonInfo.CHECKING_DOOR_OPEN);
-    }
-
-    /**
      * 
      * @return check if the door is open or not
      */
-    public synchronized boolean isDoorOpen(int customerId) {
-        return sharedInfo.getStateShop() != 0;
+    public synchronized boolean isDoorOpen() {
+        return shopState != 0; // 0 => closed
     }
 
-    public synchronized void enterShop(int customerId) {
-        // mudar estado do cliente
-        this.sharedInfo.setStateCustomer(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
-        // incrementar clientes dentro da loja
-        this.sharedInfo.setnCustomersInsideShop(1);
+    public synchronized void enterShop() {
+        this.customerInsideShop++;
+    }
+    
+    public synchronized int perusingAround(){
+        // choose what to buy
+        double r = Math.random();
+        if(r < 0.5 && nGoodsInDisplay > 0){ // 50% probability to buy
+            r = r * 100;
+            return (int) r % this.sharedInfo.getnGoodsInDisplay();
+        }
+        return 0;
     }
 
     public synchronized void iWantThis(int customerId, int nGoods) {

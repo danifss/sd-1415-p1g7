@@ -17,11 +17,11 @@ public class Customer extends Thread {
     private int customerId;
     
     /**
-     * Number of cycle iterations of the client life
+     * Present Customer State
      * 
-     * @serialField nIter
+     * @serialField customerState
      */
-    private int nIter = 0;
+    private int customerState;
     
     /**
      * Shop
@@ -44,11 +44,11 @@ public class Customer extends Thread {
      * @param shop Shop
      * @param nIter number of cycle iterations of the client life
      */
-    public Customer(MonInfo sharedInfo, int customerId, MonShop shop, int nIter){
+    public Customer(MonInfo sharedInfo, int customerId, MonShop shop){
         this.sharedInfo = sharedInfo;
         this.customerId = customerId;
         this.shop = shop;
-        if(nIter>0) this.nIter = nIter;
+        this.customerState = MonInfo.CARRYING_OUT_DAILY_CHORES;
     }
     
     /**
@@ -56,28 +56,25 @@ public class Customer extends Thread {
      */
     @Override
     public void run(){
-        for(int i=0; i<nIter; i++){
-            
-                livingNormalLife();
+        while(!endOper()){
+            livingNormalLife();
 
-                shop.goShopping(this.customerId);
+			goShopping();
 
-                if(!shop.isDoorOpen(this.customerId))
-                {
-                    tryAgainLater();
-                    continue;
-                }
-            
+			if(!shop.isDoorOpen()) {
+				tryAgainLater();
+				continue; // passa para a proxima iteracao
+			}
 
-            shop.enterShop(this.customerId);
-            int goods = perusingAround();
+            enterShop();
+            int goods = shop.perusingAround();
             if(goods != 0){
-                    this.shop.iWantThis(this.customerId, goods);
+                    shop.iWantThis(customerId, goods);
             }
-            this.shop.exitShop(this.customerId);
+            shop.exitShop(customerId);
         }
     }
-	
+
     /**
      * Living normal life
      */
@@ -88,26 +85,47 @@ public class Customer extends Thread {
     }
 
     /**
+     * Customer go shopping, first check if the shop door is open
+     * then enter shop and appraising offer on display and if he wants 
+     * that he buy goods, and finally exit shop
+     * 
+     */
+    private void goShopping(){
+        this.customerState = MonInfo.CHECKING_DOOR_OPEN;
+        this.sharedInfo.setStateCustomer(customerId, MonInfo.CHECKING_DOOR_OPEN);
+    }
+
+    /**
      * Try Again Later
      */
     private void tryAgainLater(){
         this.sharedInfo.setStateCustomer(customerId, MonInfo.CARRYING_OUT_DAILY_CHORES);
+        this.customerState = MonInfo.CARRYING_OUT_DAILY_CHORES;
 
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
     }
-	
-    private int perusingAround(){
+    
+    private void enterShop() {
+        this.sharedInfo.setStateCustomer(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
+        this.sharedInfo.setnCustomersInsideShop(1);
+        
+        shop.enterShop();
+    }
+    
+    public synchronized int perusingAround(){
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
-        // choose what to buy
-        double r = Math.random();
-        if(r < 0.5 && this.sharedInfo.getnGoodsInDisplay() > 0){ // 50% probability to buy
-            r = r * 100;
-            return (int) r % this.sharedInfo.getnGoodsInDisplay();
-        }
-        return 0;
+        
+        return 
     }
+
+	private boolean endOper() {
+		// valida se o cliente deve termina ou nao
+		
+		return true;
+	}
+    
 }
