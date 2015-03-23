@@ -13,6 +13,23 @@ import MonitorsProblema1.*;
  * @version 1.0
  */
 public class Craftman extends Thread {
+    
+    /**
+     * CRAFTSMAN STATES
+     */
+    public final static int
+            FETCHING_PRIME_MATERIALS = 0,
+            PRODUCING_A_NEW_PIECE = 1,
+            STORING_IT_FOR_TRANSFER = 2,
+            CONTACTING_THE_ENTREPRENEUR = 3;
+    
+    /**
+     * Craftman internal state
+     * 
+     * @serialField craftmanState
+     */
+    private int craftmanState;
+    
     /**
      * Craftman thread id
      * 
@@ -21,12 +38,18 @@ public class Craftman extends Thread {
     private int craftmanId;
     
     /**
+     * Number of prime materials collected
+     * @serialField nPrimeMaterials
+     */
+    private int nPrimeMaterials;
+    
+    /**
      * Factory/Workshop
      * 
      * @serialField factory
      */
     private MonFactory factory;
-	
+
     /**
      * General Repository
      * 
@@ -45,6 +68,8 @@ public class Craftman extends Thread {
         this.craftmanId = craftmanId;
         this.factory = factory;
         this.info = info;
+        craftmanState = MonInfo.FETCHING_PRIME_MATERIALS;
+        nPrimeMaterials = 0;
     }
     
     /**
@@ -55,8 +80,8 @@ public class Craftman extends Thread {
         while(true){
             switch(info.getStateCraftsman(craftmanId)){
                 case MonInfo.FETCHING_PRIME_MATERIALS:
-                    if(factory.checkForMaterials()){
-                        factory.collectMaterials(craftmanId);
+                    if(checkForMaterials()){
+                        collectMaterials();
                          
                     //Prepare to produce
                     }
@@ -87,9 +112,31 @@ public class Craftman extends Thread {
     }
     
     /**
+     * Check for materials
+     * @return true if has materials
+     */
+    private boolean checkForMaterials(){
+        return factory.checkForMaterials();
+    }
+    
+    /**
+     * Collect materials
+     */
+    private void collectMaterials(){
+        nPrimeMaterials += factory.collectMaterials();
+    }
+    
+    /**
+     * Prepare to produce
+     */
+    private void prepareToProduce(){
+        
+    }
+    
+    /**
      * Producing new piece
      */
-    public void shapingItUp(){
+    private void shapingItUp(){
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
@@ -98,12 +145,21 @@ public class Craftman extends Thread {
     /**
      * Goes to store
      */
-    public void goToStore(){
-        info.setStateCraftsman(craftmanId, MonInfo.STORING_IT_FOR_TRANSFER);
-        
+    private void goToStore(){
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
     }
     
+    private void batchReadyForTransfer(){
+        
+    }
+    
+    private void backToWork(){
+        
+    }
+    
+    private void primeMaterialsNeeded(){
+        
+    }
 }

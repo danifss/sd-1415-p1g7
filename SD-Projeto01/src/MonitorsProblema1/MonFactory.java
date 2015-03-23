@@ -9,49 +9,53 @@ package MonitorsProblema1;
 public class MonFactory {
     
     /**
-     * General repository Object
-     * 
-     * @serialField info
+     * @serialField nPrimeMaterials
      */
-    private final MonInfo info;
-
+    private int nPrimeMaterials;
+    
     /**
-     * Shop Object
-     * 
-     * @serialField  shop
+     * Number of prime materials needed to produce a new product
+     * @serialField nPrimePerProduct
      */
-    private final MonShop shop;
-
+    private int nPrimePerProduct;
+    
+    /**
+     * Maximum number of prime materials in stock to call owner to restock
+     * @serialField nPrimeRestock
+     */
+    private int nPrimeRestock;
+    
     /**
      * Factory where Craftmans will work
      * 
-     * @param info
-     * @param shop 
+     * @param nPrimeMaterials
+     * @param nPrimePerProduct
      */
-    public MonFactory(MonInfo info, MonShop shop) {
-        this.info = info;
-        this.shop = shop;
+    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock) {
+        this.nPrimeMaterials = nPrimeMaterials;
+        this.nPrimePerProduct = nPrimePerProduct;
+        this.nPrimeRestock = nPrimeRestock;
     }
 
     /**
      * Check For Materials
      * @return true or false
      */
-    
     public synchronized boolean checkForMaterials(){
-        return info.getnPrimeMaterialsInFactory() > 0;
+        return nPrimeMaterials >= nPrimePerProduct;
     }
     
     /**
      * Collecting prime materials
-     * @param craftmanId
-     * @return true or false
+     * @return number of collected prime materials
      */
-    public synchronized boolean collectMaterials(int craftmanId) {
-        int numPrime = 1;
-        info.setnPrimeMaterialsByCraftman(craftmanId, numPrime);
-        info.removePrimeMaterials(numPrime);
-        return false;
+    public synchronized int collectMaterials() {
+        // Falta acabar
+        if(nPrimeMaterials>=nPrimePerProduct){
+            nPrimeMaterials -= nPrimePerProduct;
+            return nPrimeMaterials;
+        }
+        return 0;
     }
     
     /**
