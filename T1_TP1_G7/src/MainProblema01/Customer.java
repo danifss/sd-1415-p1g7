@@ -67,9 +67,9 @@ public class Customer extends Thread {
 			}
 
             enterShop();
-            int goods = shop.perusingAround();
+            int goods = perusingAround();
             if(goods != 0){
-                    shop.iWantThis(customerId, goods);
+                    iWantThis(goods);
             }
             shop.exitShop(customerId);
         }
@@ -91,16 +91,16 @@ public class Customer extends Thread {
      * 
      */
     private void goShopping(){
-        this.customerState = MonInfo.CHECKING_DOOR_OPEN;
-        this.sharedInfo.setStateCustomer(customerId, MonInfo.CHECKING_DOOR_OPEN);
+        setCustomerState(MonInfo.CHECKING_DOOR_OPEN);
+        this.sharedInfo.setCustomerState(customerId, MonInfo.CHECKING_DOOR_OPEN);
     }
 
     /**
      * Try Again Later
      */
     private void tryAgainLater(){
-        this.sharedInfo.setStateCustomer(customerId, MonInfo.CARRYING_OUT_DAILY_CHORES);
-        this.customerState = MonInfo.CARRYING_OUT_DAILY_CHORES;
+        this.sharedInfo.setCustomerState(customerId, MonInfo.CARRYING_OUT_DAILY_CHORES);
+        setCustomerState(MonInfo.CARRYING_OUT_DAILY_CHORES);
 
         try{
             sleep((long) (1+40*Math.random()));
@@ -108,18 +108,33 @@ public class Customer extends Thread {
     }
     
     private void enterShop() {
-        this.sharedInfo.setStateCustomer(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
+        this.sharedInfo.setCustomerState(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
         this.sharedInfo.setnCustomersInsideShop(1);
+        
+        setCustomerState(MonInfo.APPRAISING_OFFER_IN_DISPLAY);
         
         shop.enterShop();
     }
     
-    public synchronized int perusingAround(){
+    private int perusingAround(){
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
         
-        return 
+        return shop.perusingAround(); // retorna num. de bens a comprar
+    }
+    
+    private void iWantThis(int goods){
+        this.sharedInfo.setCustomerState(customerId, MonInfo.BUYING_SOME_GOODS);
+        
+        setCustomerState(MonInfo.BUYING_SOME_GOODS);
+        
+        shop.iWantThis(customerId, goods); // acao bloqueante
+        this.sharedInfo.setnGoodsInDisplay(-goods); // reduz produtos disponiveis na loja
+        this.sharedInfo.incrementnGoodsByCustomer(customerId, goods); // adiciona num. total de produtos comprados pelo cliente
+        /**
+         * TERMINAR
+         */
     }
 
 	private boolean endOper() {
@@ -127,5 +142,9 @@ public class Customer extends Thread {
 		
 		return true;
 	}
+
+    public void setCustomerState(int customerState) {
+        this.customerState = customerState;
+    }
     
 }

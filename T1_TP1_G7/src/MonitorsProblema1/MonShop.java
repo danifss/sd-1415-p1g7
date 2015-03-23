@@ -46,7 +46,15 @@ public class MonShop {
         this.customerInsideShop = 0;
         sitCustomer = new MemFIFO(MonInfo.getnCustomer()); // create FIFO for wainting Customers
         
-        this.nGoodsInDisplay = 0;
+        this.nGoodsInDisplay = 0; // Bens a venda
+    }
+
+    public int getnGoodsInDisplay() {
+        return nGoodsInDisplay;
+    }
+
+    public synchronized void setnGoodsInDisplay(int goods) {
+        this.nGoodsInDisplay = goods;
     }
 
 	public boolean isSitCustomerEmpty(){
@@ -76,24 +84,26 @@ public class MonShop {
     }
 
     public synchronized void iWantThis(int customerId, int nGoods) {
-        this.sharedInfo.setStateCustomer(customerId, MonInfo.BUYING_SOME_GOODS);
+        
         this.sitCustomer.write(customerId); // ir para a fila de atendimento
         notifyAll(); // acordar dona
-        while(this.sitCustomer.peek() != null){
+        while((int)this.sitCustomer.peek() != customerId){
             try{
                 wait(); // espera que a dona chame o proximo cliente
             }catch(InterruptedException ex){}
-
-            if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
-                this.sharedInfo.setnGoodsInDisplay(-nGoods); // reduz produtos disponiveis na loja
-                this.sharedInfo.incrementnGoodsByCustomer(customerId, nGoods); // adiciona num. total de produtos comprados pelo cliente
-            }
+        }
+        //
+        if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
+            nGoodsInDisplay -= nGoods; // diminuir bens da loja
+            /**
+             * TERMINAR
+             */
         }
     }
 
     public synchronized void exitShop(int customerId) {
         // mudar estado do cliente
-        this.sharedInfo.setStateCustomer(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
+        this.sharedInfo.setCustomerState(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
         // decrementar clientes dentro da loja
         this.sharedInfo.setnCustomersInsideShop(-1);
     }
@@ -105,8 +115,8 @@ public class MonShop {
 		
 	}
 
-	public void removeSitCustomer(int cid) {
+	public synchronized void removeSitCustomer(int cid) {
 		this.sitCustomer.read();
-		//this.sitCustomer.remove(cid); // nao sei se funciona
+		//this.sitCustomer.remove(cid); // implementei mas nao sei se funciona
 	}
 }
