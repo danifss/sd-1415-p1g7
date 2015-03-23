@@ -62,7 +62,7 @@ public class MemFIFO extends MemObject {
 	 * remove da fila um dado objeto
 	 */
 	@Override
-	public boolean remove(Object object){
+	public boolean remove(Object object){ // nao sei se funciona
 		int i = 0;
 		boolean flag = false;
 		for(i=0;i<mem.length;i++)

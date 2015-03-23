@@ -94,6 +94,7 @@ public class MonShop {
 	}
 
 	public void removeSitCustomer(int cid) {
-		this.sitCustomer.remove(cid);
+		this.sitCustomer.read();
+		//this.sitCustomer.remove(cid); // nao sei se funciona
 	}
 }
