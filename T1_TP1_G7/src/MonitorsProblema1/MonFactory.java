@@ -1,7 +1,8 @@
 package MonitorsProblema1;
 
 /**
- *
+ * This class is responsable to host the Factory/Workshop
+ * 
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
