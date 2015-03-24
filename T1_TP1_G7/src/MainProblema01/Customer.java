@@ -136,11 +136,12 @@ public class Customer extends Thread {
 
     private void exitShop() {
         // mudar estado do cliente
-        this.sharedInfo.setCustomerState(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
+        this.sharedInfo.setCustomerState(customerId, MonInfo.CARRYING_OUT_DAILY_CHORES);
         // decrementar clientes dentro da loja
         this.sharedInfo.setnCustomersInsideShop(-1);
         
         shop.exitShop(customerId);
+        setCustomerState(MonInfo.CARRYING_OUT_DAILY_CHORES);
     }
 
 	private boolean endOper() {

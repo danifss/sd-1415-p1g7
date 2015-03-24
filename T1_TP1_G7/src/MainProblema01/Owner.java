@@ -15,7 +15,7 @@ public class Owner extends Thread {
 	 * 
 	 * @serialField sharedInfo
 	 */
-	private final MonInfo sharedInfo;
+	private MonInfo sharedInfo;
 
 	/**
 	 * Factory
@@ -30,6 +30,20 @@ public class Owner extends Thread {
 	 * @serialField shop
 	 */
 	private MonShop shop;
+    
+    /**
+     * Storage
+     * 
+     * @serialField storage
+     */
+    private MonStorage storage;
+    
+    /**
+     * Preent State of the Owner
+     * 
+     * @serialField ownerState
+     */
+    private int ownerState;
 
 	/**
 	 * Create owner thread
@@ -38,10 +52,13 @@ public class Owner extends Thread {
 	 * @param factory Factory
 	 * @param shop Shop
 	 */
-	public Owner(MonInfo sharedInfo, MonFactory factory, MonShop shop) {
+	public Owner(MonInfo sharedInfo, MonFactory factory, MonShop shop, MonStorage storage) {
 		this.sharedInfo = sharedInfo;
 		this.factory = factory;
 		this.shop = shop;
+        this.storage = storage;
+        
+        this.ownerState = MonInfo.OPENING_THE_SHOP;
 	}
 
 	/**

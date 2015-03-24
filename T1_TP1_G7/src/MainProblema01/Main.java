@@ -50,13 +50,14 @@ public class Main {
             Owner owner;										// Dona da loja
             Craftman[] craftman = new Craftman[nCraftsman];		// Array de threads de Artesaos
             Customer[] customer = new Customer[nCustomers];		// Array de threads de Clientes
-            int nInitialPrimeMaterialsInStorage = 20;			// 
-            int nPrimeMaterialsInFactory = 10;					// 
-            int nInitialProductsInShop = 0;						// 
-            int nPrimeMaterialsByProduct = 1;					// 
-            int nPrimeMaterialsForRestock = 10;					//
-            int nLimitOfProductsInFactory = 50;					// 
-
+            int nInitialPrimeMaterialsInStorage = 20;			// Materias Primas no armazem inicialmente
+            int nPrimeMaterialsInFactory = 10;					// Materias Primas na oficina inicialmente
+            int nInitialProductsInShop = 0;						// Produtos na Loja inicialmente
+            int nPrimeMaterialsByProduct = 1;					// Materia Prima por produto
+            int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
+            int nLimitOfProductsInFactory = 50;					// Limite de produtos na oficina
+            int nMaxPrimeMaterialsToDeliver = 40;                 // Maximo de Materias Primas que pode ser entregue a oficina
+            
             repositorioGeral = new MonInfo(															// Create general repository
                             nCraftsman,
                             nCustomers,
@@ -67,19 +68,19 @@ public class Main {
             factory = new MonFactory(
                             nPrimeMaterialsInFactory,
                             nPrimeMaterialsByProduct,
-                            nPrimeMaterialsForRestock,
+                            nMinPrimeMaterialsForRestock,
                             nLimitOfProductsInFactory);										// Creating Factory
-            storage = new MonStorage(nInitialPrimeMaterialsInStorage);																// Creating Storage
-            owner = new Owner(repositorioGeral, factory, shop);													// Create Owner
-
+            storage = new MonStorage(nInitialPrimeMaterialsInStorage, nMaxPrimeMaterialsToDeliver);																// Creating Storage
+            owner = new Owner(repositorioGeral, factory, shop, storage);													// Create Owner
+            
             for(int i=0;i<nCraftsman;i++)
                 craftman[i] = new Craftman(i,factory, repositorioGeral);							// Create Craftsmans
             for(int i=0;i<nCustomers;i++)
                 customer[i] = new Customer(repositorioGeral, i, shop);								// Create Customers
-
+            
             /* Arranque da simulacao */
             owner.start();
-
+            
             for(int i=0;i<nCraftsman;i++)
                 craftman[i].start();
             for(int i=0;i<nCustomers;i++)
