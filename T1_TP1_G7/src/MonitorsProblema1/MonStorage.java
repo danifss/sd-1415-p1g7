@@ -15,7 +15,7 @@ public class MonStorage {
     private int nInitialPrimeMaterialsInStorage = 0;
     
     /**
-     * Maximum number of products available to be delivered to the factory
+     * Maximum number of Prime Materials available to be delivered to the factory
      * 
      * @serialField nMaxPrimeMaterialsToDeliver
      */
