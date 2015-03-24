@@ -38,6 +38,8 @@ public class MonFactory {
      * 
      * @param nPrimeMaterials
      * @param nPrimePerProduct
+     * @param nPrimeRestock
+     * @param nLimitOfProductsInFactory
      */
     public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory) {
         this.nPrimeMaterials = nPrimeMaterials;
@@ -89,6 +91,15 @@ public class MonFactory {
 
     public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
         this.nFinishedProductsInFactory = nFinishedProductsInFactory;
+    }
+    
+    
+    /**
+     * Returns number of prime materials needed per product
+     * @return number 
+     */
+    public int getnPrimePerProduct() {
+        return nPrimePerProduct;
     }
     
 }
