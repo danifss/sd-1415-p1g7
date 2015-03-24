@@ -82,7 +82,7 @@ public class Owner extends Thread {
 					case 2: // buscar materias primas do armazem para a oficina
 					case 3: // buscar produtos terminados a oficina
 						closeTheDoor();
-						out = !customersInTheShop(); // verifica primeiro se ha  clientes para atender
+						out = !shop.customersInTheShop(); // verifica primeiro se ha  clientes para atender
 						break;
 					case 4: // nada para fazer
 						out = true;
@@ -102,7 +102,8 @@ public class Owner extends Thread {
 
 
 	private void prepareToWork() {
-		this.sharedInfo.setStateOwner(MonInfo.WAITING_FOR_NEXT_TASK);
+		this.sharedInfo.setOwnerState(MonInfo.WAITING_FOR_NEXT_TASK);
+        setOwnerState(MonInfo.WAITING_FOR_NEXT_TASK);
 		
 		try {
 			sleep((long) (1 + 20 * Math.random()));
@@ -111,7 +112,7 @@ public class Owner extends Thread {
 
 	private int appraiseSit() {
 		// verifica se ha clientes para serem atendidos
-		if(!this.shop.isSitCustomerEmpty())
+		if(this.shop.customersInTheShop())
 			return 1;
 		// verifica se foi notificada por um artesao pedir materias primas
 		if(this.sharedInfo.isToSupplyMaterialsToFactory())
@@ -123,7 +124,8 @@ public class Owner extends Thread {
 	}
 
 	private void serviceCustomer() {
-		this.sharedInfo.setStateOwner(MonInfo.ATTENDING_A_CUSTOMER);
+		this.sharedInfo.setOwnerState(MonInfo.ATTENDING_A_CUSTOMER);
+        setOwnerState(MonInfo.ATTENDING_A_CUSTOMER);
 		
 		try {
 			sleep((long) (1 + 10 * Math.random()));
@@ -136,20 +138,30 @@ public class Owner extends Thread {
 	}
 
 	private void closeTheDoor() {
-		this.sharedInfo.setStateShop(MonInfo.CLOSED);
-	}
-
-	private boolean customersInTheShop() {
-		return this.shop.isSitCustomerEmpty() == false;
+		this.sharedInfo.setShopState(MonInfo.CLOSED);
+        this.shop.setShopState(MonInfo.CLOSED);
 	}
 
 	private void prepareToLeave() { // nao sei se e assim
-		this.sharedInfo.setStateShop(MonInfo.STILL_OPEN);
-		this.sharedInfo.setStateOwner(MonInfo.CLOSING_THE_SHOP);
+		this.sharedInfo.setShopState(MonInfo.STILL_OPEN);
+		this.sharedInfo.setOwnerState(MonInfo.CLOSING_THE_SHOP);
+        
+        this.shop.setShopState(MonInfo.STILL_OPEN);
+        setOwnerState(MonInfo.CLOSING_THE_SHOP);
 	}
 
 	private void goToWorkshop() {
-		this.sharedInfo.setStateOwner(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+		this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+        setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+        
+        int products = this.factory.getnFinishedProductsInFactory(); // get dos produtos feitos
+        this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
+        this.sharedInfo.setnProductsManufactured(products); // add to total products made by the crafstman
+        
+        this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
+        
+        this.shop.setTranfsProductsToShop(false); // colocar flag a falso
+        this.sharedInfo.setTranfsProductsToShop(false);
 	}
 
 	private int visitSuppliers() {
@@ -168,7 +180,11 @@ public class Owner extends Thread {
 			sleep((long) (1 + 10 * Math.random()));
 		} catch (InterruptedException e) {}
 		
-		this.sharedInfo.setStateOwner(MonInfo.OPENING_THE_SHOP);
-		this.sharedInfo.setStateShop(MonInfo.OPEN);
+		this.sharedInfo.setOwnerState(MonInfo.OPENING_THE_SHOP);
+		this.sharedInfo.setShopState(MonInfo.OPEN);
 	}
+    
+    private void setOwnerState(int ownerState) {
+        this.ownerState = ownerState;
+    }
 }

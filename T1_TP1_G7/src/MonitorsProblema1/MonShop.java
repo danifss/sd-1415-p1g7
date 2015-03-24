@@ -27,6 +27,8 @@ public class MonShop {
     private int customerInsideShop;
     
     private int nGoodsInDisplay;
+    private boolean tranfsProductsToShop;
+    private boolean supplyMaterialsToFactory;
 
     /**
      * Create Monitor of the Shop
@@ -39,6 +41,8 @@ public class MonShop {
         sitCustomer = new MemFIFO(MonInfo.getnCustomer()); // create FIFO for wainting Customers
         
         this.nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
+        this.tranfsProductsToShop = false;
+        this.supplyMaterialsToFactory = false;
     }
 
     public int getnGoodsInDisplay() {
@@ -49,8 +53,8 @@ public class MonShop {
         this.nGoodsInDisplay = goods;
     }
 
-	public boolean isSitCustomerEmpty(){
-		return this.sitCustomer.isEmpty();
+	public boolean customersInTheShop(){
+		return !this.sitCustomer.isEmpty(); // True if not empty queue
 	}
 
     /**
@@ -105,6 +109,26 @@ public class MonShop {
     public synchronized void removeSitCustomer(int customerId){
         if((int)sitCustomer.peek() == customerId) // remove o cliente correto da fila
             sitCustomer.read();
+    }
+
+    public synchronized void setShopState(int state) {
+        this.shopState = state;
+    }
+
+    public boolean isTranfsProductsToShop() {
+        return tranfsProductsToShop;
+    }
+
+    public synchronized void setTranfsProductsToShop(boolean tranfsProductsToShop) {
+        this.tranfsProductsToShop = tranfsProductsToShop;
+    }
+
+    public boolean isSupplyMaterialsToFactory() {
+        return supplyMaterialsToFactory;
+    }
+
+    public synchronized void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
+        this.supplyMaterialsToFactory = supplyMaterialsToFactory;
     }
 
 }
