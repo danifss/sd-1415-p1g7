@@ -92,12 +92,9 @@ public class MonShop {
                 wait(); // espera que a dona chame o proximo cliente
             }catch(InterruptedException ex){}
         }
-        //
+
         if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
             nGoodsInDisplay -= nGoods; // diminuir bens da loja
-            /**
-             * TERMINAR
-             */
         }
     }
 

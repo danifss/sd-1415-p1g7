@@ -143,6 +143,7 @@ public class MonInfo {
         for(int elem: this.nGoodsByCustomer) elem = 0;
         this.nGoodsCraftedByCraftman = new int[this.nCraftsman];
         for(int elem: this.nGoodsCraftedByCraftman) elem = 0;
+        
         this.nCustomersInsideShop = 0;
         this.nGoodsInDisplay = 0;
         this.tranfsProductsToShop = false;
