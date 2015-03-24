@@ -150,7 +150,7 @@ public class Customer extends Thread {
 		return true;
 	}
 
-    public void setCustomerState(int customerState) {
+    private void setCustomerState(int customerState) {
         this.customerState = customerState;
     }
     

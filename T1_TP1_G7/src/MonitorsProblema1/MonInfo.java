@@ -262,7 +262,7 @@ public class MonInfo {
      * Set Owner State
      * @param state 
      */
-    public synchronized void setStateOwner(int state) {
+    public synchronized void setOwnerState(int state) {
         this.stateOwner = state;
     }
     
@@ -270,7 +270,7 @@ public class MonInfo {
      * Set Shop State
      * @param state 
      */
-    public synchronized void setStateShop(int state){
+    public synchronized void setShopState(int state){
         this.stateShop = state;
     }
     

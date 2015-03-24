@@ -31,6 +31,7 @@ public class MonFactory {
      * @serialField nLimitOfProductsInFactory
      */
     private final int nLimitOfProductsInFactory;
+    private int nFinishedProductsInFactory;
     
     /**
      * Factory where Craftmans will work
@@ -43,6 +44,8 @@ public class MonFactory {
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
         this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
+        
+        this.nFinishedProductsInFactory = 0;
     }
 
     /**
@@ -79,4 +82,13 @@ public class MonFactory {
     public synchronized void backToWork(){
         
     }
+
+    public int getnFinishedProductsInFactory() {
+        return nFinishedProductsInFactory;
+    }
+
+    public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
+        this.nFinishedProductsInFactory = nFinishedProductsInFactory;
+    }
+    
 }

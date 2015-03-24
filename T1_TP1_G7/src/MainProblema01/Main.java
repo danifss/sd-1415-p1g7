@@ -56,27 +56,27 @@ public class Main {
             int nPrimeMaterialsByProduct = 1;					// Materia Prima por produto
             int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
             int nLimitOfProductsInFactory = 50;					// Limite de produtos na oficina
-            int nMaxPrimeMaterialsToDeliver = 40;                 // Maximo de Materias Primas que pode ser entregue a oficina
+            int nMaxPrimeMaterialsToDeliver = 40;               // Maximo de Materias Primas que pode ser entregue a oficina
             
-            repositorioGeral = new MonInfo(															// Create general repository
+            repositorioGeral = new MonInfo(										
                             nCraftsman,
                             nCustomers,
                             fName,
                             nPrimeMaterialsInFactory
-                            );					
-            shop = new MonShop(nInitialProductsInShop);													// Creating shop
+                            ); // Create general repository
+            shop = new MonShop(nInitialProductsInShop); // Creating shop
             factory = new MonFactory(
                             nPrimeMaterialsInFactory,
                             nPrimeMaterialsByProduct,
                             nMinPrimeMaterialsForRestock,
-                            nLimitOfProductsInFactory);										// Creating Factory
+                            nLimitOfProductsInFactory); // Creating Factory
             storage = new MonStorage(nInitialPrimeMaterialsInStorage, nMaxPrimeMaterialsToDeliver);																// Creating Storage
-            owner = new Owner(repositorioGeral, factory, shop, storage);													// Create Owner
+            owner = new Owner(repositorioGeral, factory, shop, storage); // Create Owner
             
             for(int i=0;i<nCraftsman;i++)
-                craftman[i] = new Craftman(i,factory, repositorioGeral);							// Create Craftsmans
+                craftman[i] = new Craftman(i,factory, repositorioGeral); // Create Craftsmans
             for(int i=0;i<nCustomers;i++)
-                customer[i] = new Customer(repositorioGeral, i, shop);								// Create Customers
+                customer[i] = new Customer(repositorioGeral, i, shop); // Create Customers
             
             /* Arranque da simulacao */
             owner.start();
