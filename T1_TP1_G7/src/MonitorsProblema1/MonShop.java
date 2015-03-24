@@ -38,7 +38,7 @@ public class MonShop {
         this.customerInsideShop = 0;
         sitCustomer = new MemFIFO(MonInfo.getnCustomer()); // create FIFO for wainting Customers
         
-        this.nGoodsInDisplay = 0; // Bens a venda
+        this.nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
     }
 
     public int getnGoodsInDisplay() {
@@ -92,15 +92,19 @@ public class MonShop {
 
     public synchronized void exitShop(int customerId) {
         //sitCustomer.remove(customerId); // nao se funciona bem
-        if((int)sitCustomer.read() == customerId)
+        if((int)sitCustomer.peek() == customerId)
             customerInsideShop--; // decrementar clientes na loja
     }
 	
 	public synchronized int addressACustomer(){
 		notifyAll(); // chamar cliente
 		
-		return (int) this.sitCustomer.peek();
-		
+		return (int) this.sitCustomer.peek(); // retorna id do cliente
 	}
+    
+    public synchronized void removeSitCustomer(int customerId){
+        if((int)sitCustomer.peek() == customerId) // remove o cliente correto da fila
+            sitCustomer.read();
+    }
 
 }

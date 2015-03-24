@@ -13,10 +13,26 @@ public class MonStorage {
      * @serialField nInitialPrimeMaterialsInStorage
      */
     private int nInitialPrimeMaterialsInStorage = 0;
+    
+    /**
+     * Maximum number of products to be delivered to the factory
+     * 
+     * @serialField nMaxPrimeMaterialsToDeliver
+     */
+    private final int nMaxPrimeMaterialsToDeliver;
+    
+    /**
+     * Number of Prime Materials delivered to the factory
+     * 
+     * @serialField nPrimeMaterialsDelivered
+     */
+    private int nPrimeMaterialsDelivered = 0;
 
-    public MonStorage(int nInitialPrimeMaterialsInStorage) {
+    public MonStorage(int nInitialPrimeMaterialsInStorage, int nMaxPrimeMaterialsToDeliver) {
         if(nInitialPrimeMaterialsInStorage > 0)
             this.nInitialPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
+
+        this.nMaxPrimeMaterialsToDeliver = nMaxPrimeMaterialsToDeliver;
     }
 
     
