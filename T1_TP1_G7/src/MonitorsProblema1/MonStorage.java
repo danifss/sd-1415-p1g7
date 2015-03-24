@@ -15,11 +15,11 @@ public class MonStorage {
     private int nInitialPrimeMaterialsInStorage = 0;
     
     /**
-     * Maximum number of products to be delivered to the factory
+     * Maximum number of products available to be delivered to the factory
      * 
      * @serialField nMaxPrimeMaterialsToDeliver
      */
-    private final int nMaxPrimeMaterialsToDeliver;
+    private int nMaxPrimeMaterialsToDeliver;
     
     /**
      * Number of Prime Materials delivered to the factory
@@ -35,5 +35,20 @@ public class MonStorage {
         this.nMaxPrimeMaterialsToDeliver = nMaxPrimeMaterialsToDeliver;
     }
 
+    public int getnMaxPrimeMaterialsToDeliver() {
+        return nMaxPrimeMaterialsToDeliver;
+    }
+
+    public synchronized void setnMaxPrimeMaterialsToDeliver(int nMaxPrimeMaterialsToDeliver) {
+        this.nMaxPrimeMaterialsToDeliver = nMaxPrimeMaterialsToDeliver;
+    }
+
+    public int getnPrimeMaterialsDelivered() {
+        return nPrimeMaterialsDelivered;
+    }
+
+    public synchronized void setnPrimeMaterialsDelivered(int nPrimeMaterialsDelivered) {
+        this.nPrimeMaterialsDelivered = nPrimeMaterialsDelivered;
+    }
     
 }
