@@ -113,8 +113,6 @@ public class MonInfo {
     private int nPrimeMaterialsSupplied; // Num. total de materias primas ja fornecidas
     private int nProductsManufactured; // Num. total de bens produzidos pela oficina.
 
-    private final int nProductsInShop;
-
     /**
      * General Repository for manage all relevant information
      * 
@@ -122,28 +120,20 @@ public class MonInfo {
      * @param nCustomer	Number of Customers
      * @param fName Log file name
      * @param nPrimeMaterialsInFactory
-     * @param nProductsInShop
      */
-    public MonInfo(
-                int nCraftsman,
-                int nCustomer,
-                String fName,
-                int nPrimeMaterialsInFactory,
-                int nProductsInShop
-            ) {
+    public MonInfo(int nCraftsman, int nCustomer, String fName, int nPrimeMaterialsInFactory) {
         if (nCraftsman > 0) 
             MonInfo.nCraftsman = nCraftsman;
         if (nCustomer > 0)
             MonInfo.nCustomer = nCustomer;
 
-        this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
-        this.nProductsInShop = nProductsInShop;
 		
         this.nGoodsByCustomer = new int[this.nCustomer];
         for(int elem: this.nGoodsByCustomer) elem = 0;
         this.nGoodsCraftedByCraftman = new int[this.nCraftsman];
         for(int elem: this.nGoodsCraftedByCraftman) elem = 0;
-        
+
+        this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
         this.nCustomersInsideShop = 0;
         this.nGoodsInDisplay = 0;
         this.tranfsProductsToShop = false;
@@ -152,7 +142,7 @@ public class MonInfo {
         this.nSuppliedTimes = 0;
         this.nPrimeMaterialsSupplied = 0;
         this.nProductsManufactured = 0;
-		
+
 
         /* Inicializar os estados internos */
         this.stateCraftsman = new int[this.nCraftsman];			// create array craftsman state
