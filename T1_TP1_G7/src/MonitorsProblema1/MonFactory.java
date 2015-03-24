@@ -72,6 +72,16 @@ public class MonFactory {
     }
     
     /**
+     * Craftman store the products produced
+     * @param nProd Number of products the Craftman has
+     * @return number of products the Craftman stored
+     */
+    public synchronized int goToStore(int nProd){
+        nFinishedProductsInFactory += nProd;
+        return nProd;
+    }
+    
+    /**
      * Prime Materials Needed
      */
     public synchronized void primeMaterialsNeeded(){

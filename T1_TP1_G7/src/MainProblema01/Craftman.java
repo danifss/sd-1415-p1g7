@@ -82,6 +82,7 @@ public class Craftman extends Thread {
         craftmanState = MonInfo.FETCHING_PRIME_MATERIALS;
         nPrimeMaterials = 0;
         nProduct = 0;
+        totalProduced = 0;
     }
     
     /**
@@ -157,6 +158,7 @@ public class Craftman extends Thread {
         }catch(InterruptedException e){}
         nPrimeMaterials -= factory.getnPrimePerProduct();
         nProduct += 1;
+        totalProduced += 1;
     }
     
     /**
@@ -167,6 +169,7 @@ public class Craftman extends Thread {
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
         craftmanState = STORING_IT_FOR_TRANSFER;
+        nProduct -= factory.goToStore(nProduct);
     }
     
     private void batchReadyForTransfer(){
