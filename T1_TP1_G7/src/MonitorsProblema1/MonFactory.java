@@ -21,7 +21,7 @@ public class MonFactory {
     private int nPrimePerProduct;
     
     /**
-     * Maximum number of prime materials in stock to call owner to restock
+     * Minimum number of prime materials in stock to call owner to restock
      * @serialField nPrimeRestock
      */
     private int nPrimeRestock;
@@ -32,6 +32,11 @@ public class MonFactory {
      * @serialField nLimitOfProductsInFactory
      */
     private final int nLimitOfProductsInFactory;
+    
+    /**
+     * Number of products in Factory to be delivered to the Shop by Owner
+     * @serialField nFinishedProductsInFactory
+     */
     private int nFinishedProductsInFactory;
     
     /**
