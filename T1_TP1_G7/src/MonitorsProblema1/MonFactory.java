@@ -26,15 +26,23 @@ public class MonFactory {
     private int nPrimeRestock;
     
     /**
+     * Maximum number of Products in Factory
+     * 
+     * @serialField nLimitOfProductsInFactory
+     */
+    private final int nLimitOfProductsInFactory;
+    
+    /**
      * Factory where Craftmans will work
      * 
      * @param nPrimeMaterials
      * @param nPrimePerProduct
      */
-    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock) {
+    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory) {
         this.nPrimeMaterials = nPrimeMaterials;
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
+        this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
     }
 
     /**

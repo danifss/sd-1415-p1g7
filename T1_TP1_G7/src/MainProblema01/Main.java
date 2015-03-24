@@ -52,7 +52,7 @@ public class Main {
             Customer[] customer = new Customer[nCustomers];		// Array de threads de Clientes
             int nInitialPrimeMaterialsInStorage = 20;			// 
             int nPrimeMaterialsInFactory = 10;					// 
-            int nProductsInShop = 0;							// 
+            int nInitialProductsInShop = 0;						// 
             int nPrimeMaterialsByProduct = 1;					// 
             int nPrimeMaterialsForRestock = 10;					//
             int nLimitOfProductsInFactory = 50;					// 
@@ -61,15 +61,15 @@ public class Main {
                             nCraftsman,
                             nCustomers,
                             fName,
-                            nPrimeMaterialsInFactory,
-                            nProductsInShop
+                            nPrimeMaterialsInFactory
                             );					
-            shop = new MonShop(repositorioGeral);													// Creating shop
+            shop = new MonShop(nInitialProductsInShop);													// Creating shop
             factory = new MonFactory(
                             nPrimeMaterialsInFactory,
                             nPrimeMaterialsByProduct,
-                            nPrimeMaterialsForRestock);										// Creating Factory
-            storage = new MonStorage();																// Creating Storage
+                            nPrimeMaterialsForRestock,
+                            nLimitOfProductsInFactory);										// Creating Factory
+            storage = new MonStorage(nInitialPrimeMaterialsInStorage);																// Creating Storage
             owner = new Owner(repositorioGeral, factory, shop);													// Create Owner
 
             for(int i=0;i<nCraftsman;i++)

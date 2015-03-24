@@ -9,13 +9,6 @@ import genclass.*;
  */
 
 public class MonShop {
-
-    /**
-     * General repository
-     * 
-     * @serialField sharedInfo
-     */
-    private MonInfo sharedInfo;
     
     /**
      * Presente State of Shop
@@ -40,8 +33,7 @@ public class MonShop {
      * 
      * @param sharedInfo
      */
-    public MonShop(MonInfo sharedInfo) {
-        this.sharedInfo = sharedInfo;
+    public MonShop(int nInitialProductsInShop) {
         this.shopState = MonInfo.CLOSED;
         this.customerInsideShop = 0;
         sitCustomer = new MemFIFO(MonInfo.getnCustomer()); // create FIFO for wainting Customers
@@ -78,7 +70,7 @@ public class MonShop {
         double r = Math.random();
         if(r < 0.5 && nGoodsInDisplay > 0){ // 50% probability to buy
             r = r * 100;
-            return (int) r % this.sharedInfo.getnGoodsInDisplay();
+            return (int) r % nGoodsInDisplay;
         }
         return 0;
     }
@@ -99,10 +91,9 @@ public class MonShop {
     }
 
     public synchronized void exitShop(int customerId) {
-        // mudar estado do cliente
-        this.sharedInfo.setCustomerState(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
-        // decrementar clientes dentro da loja
-        this.sharedInfo.setnCustomersInsideShop(-1);
+        //sitCustomer.remove(customerId); // nao se funciona bem
+        if((int)sitCustomer.read() == customerId)
+            customerInsideShop--; // decrementar clientes na loja
     }
 	
 	public synchronized int addressACustomer(){
@@ -112,8 +103,4 @@ public class MonShop {
 		
 	}
 
-	public synchronized void removeSitCustomer(int cid) {
-		this.sitCustomer.read();
-		//this.sitCustomer.remove(cid); // implementei mas nao sei se funciona
-	}
 }

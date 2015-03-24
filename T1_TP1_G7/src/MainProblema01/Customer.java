@@ -69,9 +69,9 @@ public class Customer extends Thread {
             enterShop();
             int goods = perusingAround();
             if(goods != 0){
-                    iWantThis(goods);
+                iWantThis(goods);
             }
-            shop.exitShop(customerId);
+            exitShop();
         }
     }
 
@@ -132,14 +132,20 @@ public class Customer extends Thread {
         shop.iWantThis(customerId, goods); // acao bloqueante
         this.sharedInfo.setnGoodsInDisplay(-goods); // reduz produtos disponiveis na loja
         this.sharedInfo.incrementnGoodsByCustomer(customerId, goods); // adiciona num. total de produtos comprados pelo cliente
-        /**
-         * TERMINAR
-         */
+    }
+
+    private void exitShop() {
+        // mudar estado do cliente
+        this.sharedInfo.setCustomerState(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
+        // decrementar clientes dentro da loja
+        this.sharedInfo.setnCustomersInsideShop(-1);
+        
+        shop.exitShop(customerId);
     }
 
 	private boolean endOper() {
 		// valida se o cliente deve termina ou nao
-		
+		//if()
 		return true;
 	}
 
