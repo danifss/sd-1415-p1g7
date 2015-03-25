@@ -55,8 +55,10 @@ public class Main {
             int nInitialProductsInShop = 0;						// Produtos na Loja inicialmente
             int nPrimeMaterialsByProduct = 1;					// Materia Prima por produto
             int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
+            int nProductsCollect = 10;                                      // Minimo de produtos para o Owner ir buscar
             int nLimitOfProductsInFactory = 50;					// Limite de produtos na oficina
             int nMaxPrimeMaterialsToDeliver = 40;               // Maximo de Materias Primas que pode ser entregue a oficina
+
             
             repositorioGeral = new MonInfo(										
                             nCraftsman,
@@ -69,7 +71,8 @@ public class Main {
                             nPrimeMaterialsInFactory,
                             nPrimeMaterialsByProduct,
                             nMinPrimeMaterialsForRestock,
-                            nLimitOfProductsInFactory); // Creating Factory
+                            nLimitOfProductsInFactory,
+                            nProductsCollect); // Creating Factory
             storage = new MonStorage(nInitialPrimeMaterialsInStorage, nMaxPrimeMaterialsToDeliver);																// Creating Storage
             owner = new Owner(repositorioGeral, factory, shop, storage); // Create Owner
             
