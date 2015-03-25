@@ -110,15 +110,15 @@ public class Owner extends Thread {
 		} catch (InterruptedException e) {}
 	}
 
-	private int appraiseSit() { /*  MUDAR ISTO */
+	private int appraiseSit() {
 		// verifica se ha clientes para serem atendidos
 		if(this.shop.customersInTheShop())
 			return 1;
 		// verifica se foi notificada por um artesao pedir materias primas
-		if(this.sharedInfo.isToSupplyMaterialsToFactory())
+        if(this.shop.isSupplyMaterialsToFactory())
 			return 2;
 		// verifica se foi notificada por um artesao que ha produtos para ir para a loja
-		if(this.sharedInfo.isToTranfsProductsToShop())
+		if(this.shop.isTranfsProductsToShop())
 			return 3;
 		return 4; // nada para fazer
 	}
@@ -181,7 +181,7 @@ public class Owner extends Thread {
 	private void replenishStock(int q) {
         // depois de ter comprado materia prima vai coloca-la na oficina/workshop
         
-		throw new UnsupportedOperationException("Not supported yet.");
+		
 	}
 
 	/**
