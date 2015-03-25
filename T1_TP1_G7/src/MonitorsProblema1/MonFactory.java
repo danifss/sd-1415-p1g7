@@ -162,7 +162,7 @@ public class MonFactory {
      * Owner goes to factory to collect finished products
      * @return number of products collected
      */
-    public synchronized int getProducts(){
+    public synchronized int goToWorkshop(){
         int res;
         if(nFinishedProductsInFactory <= nProductsCollect){
             res = nFinishedProductsInFactory;

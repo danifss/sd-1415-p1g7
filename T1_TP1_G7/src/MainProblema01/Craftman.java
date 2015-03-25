@@ -181,7 +181,7 @@ public class Craftman extends Thread {
     private void batchReadyForTransfer(){
         craftmanState = CONTACTING_THE_ENTREPRENEUR;
         factory.batchReadyForTransfer();
-        //shop.batchReadyForTransfer();
+        shop.batchReadyForTransfer();
     }
     
     private void backToWork(){
@@ -191,6 +191,6 @@ public class Craftman extends Thread {
     private void primeMaterialsNeeded(){
         craftmanState = CONTACTING_THE_ENTREPRENEUR;
         factory.primeMaterialsNeeded();
-        //shop.primeMaterialsNeeded();
+        shop.primeMaterialsNeeded();
     }
 }
