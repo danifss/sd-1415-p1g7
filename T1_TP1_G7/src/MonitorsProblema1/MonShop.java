@@ -61,7 +61,7 @@ public class MonShop {
      * 
      * @return check if the door is open or not
      */
-    public synchronized boolean isDoorOpen() {
+    public boolean isDoorOpen() {
         return shopState != 0; // 0 => closed
     }
 
@@ -95,7 +95,6 @@ public class MonShop {
     }
 
     public synchronized void exitShop(int customerId) {
-        //sitCustomer.remove(customerId); // nao se funciona bem
         if((int)sitCustomer.peek() == customerId)
             customerInsideShop--; // decrementar clientes na loja
     }
@@ -107,6 +106,7 @@ public class MonShop {
 	}
     
     public synchronized void removeSitCustomer(int customerId){
+        //sitCustomer.remove(customerId); // nao se funciona bem
         if((int)sitCustomer.peek() == customerId) // remove o cliente correto da fila
             sitCustomer.read();
     }

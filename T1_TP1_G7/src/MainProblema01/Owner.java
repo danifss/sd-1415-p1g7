@@ -100,7 +100,6 @@ public class Owner extends Thread {
 		} while (true); // falta condicao de paragem no while!
 	}
 
-
 	private void prepareToWork() {
 		this.sharedInfo.setOwnerState(MonInfo.WAITING_FOR_NEXT_TASK);
         setOwnerState(MonInfo.WAITING_FOR_NEXT_TASK);
@@ -151,16 +150,16 @@ public class Owner extends Thread {
 	}
 
 	private void goToWorkshop() {
-            this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
-            setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+        this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+        setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
 
-            shop.goToWorkshop();                        // Atualiza a flag
-            int products = this.factory.goToWorkshop(); // get dos produtos feitos
-            //this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
-            
-            this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
+        shop.goToWorkshop();                        // Atualiza a flag
+        int products = this.factory.goToWorkshop(); // get dos produtos feitos
+        //this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
 
-            this.sharedInfo.setTranfsProductsToShop(false);
+        this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
+
+        this.sharedInfo.setTranfsProductsToShop(false);
 	}
 
 	private int visitSuppliers() {
@@ -177,13 +176,13 @@ public class Owner extends Thread {
         return 0; // sem materias primas
 	}
 
-        /**
-         * Owner delivers prime materials to the Factory
-         * @param q number of prime materials delivered 
-         */
+    /**
+     * Owner delivers prime materials to the Factory
+     * @param q number of prime materials delivered 
+     */
 	private void replenishStock(int q) {
-            shop.replenishStock();
-            factory.replenishStock(q);	
+        shop.replenishStock();
+        factory.replenishStock(q);	
 	}
 
 	/**
