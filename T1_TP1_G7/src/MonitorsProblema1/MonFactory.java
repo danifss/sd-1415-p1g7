@@ -182,5 +182,6 @@ public class MonFactory {
     public synchronized void replenishStock(int nPrimeMaterials){
         this.nPrimeMaterials += nPrimeMaterials;
         flagPrimeCall = false;
+        notifyAll();
     }
 }
