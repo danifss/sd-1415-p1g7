@@ -11,7 +11,7 @@ import genclass.*;
 public class MonShop {
     
     /**
-     * Presente State of Shop
+     * Present State of Shop
      * 
      * @serialField shopState
      */
@@ -27,8 +27,8 @@ public class MonShop {
     private int customerInsideShop;
     
     private int nGoodsInDisplay;
-    private boolean tranfsProductsToShop;
-    private boolean supplyMaterialsToFactory;
+    private int flagBringProductsFromFactory;
+    private boolean flagPrimeMaterialsNeeded;
 
     /**
      * Create Monitor of the Shop
@@ -41,8 +41,8 @@ public class MonShop {
         sitCustomer = new MemFIFO(MonInfo.getnCustomer()); // create FIFO for wainting Customers
         
         this.nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
-        this.tranfsProductsToShop = false;
-        this.supplyMaterialsToFactory = false;
+        this.flagBringProductsFromFactory = 0;
+        this.flagPrimeMaterialsNeeded = false;
     }
 
     public int getnGoodsInDisplay() {
@@ -115,20 +115,48 @@ public class MonShop {
         this.shopState = state;
     }
 
-    public boolean isTranfsProductsToShop() {
-        return tranfsProductsToShop;
+    /**
+     * Prime materials is needed in the Factory
+     */
+    public synchronized void primeMaterialsNeeded(){
+        flagPrimeMaterialsNeeded = true;
     }
-
-    public synchronized void setTranfsProductsToShop(boolean tranfsProductsToShop) {
-        this.tranfsProductsToShop = tranfsProductsToShop;
-    }
-
+    
+    /**
+     * Check if the factory needs prime materials
+     * @return true if is needed
+     */
     public boolean isSupplyMaterialsToFactory() {
-        return supplyMaterialsToFactory;
+        return flagPrimeMaterialsNeeded;
     }
-
-    public synchronized void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
-        this.supplyMaterialsToFactory = supplyMaterialsToFactory;
+    
+    /**
+     * Owner goes to factory to restock prime materials
+     */
+    public synchronized void replenishStock(){
+        flagPrimeMaterialsNeeded = false;
+    }
+    
+    /**
+     * Owner can go to factory to collect products
+     */
+    public synchronized void batchReadyForTransfer(){
+        flagBringProductsFromFactory += 1;
+    }
+    
+    /**
+     * Check if the owner can collect products
+     * @return true if he needs to go to the factory
+     */
+    public boolean isTranfsProductsToShop() {
+        return flagBringProductsFromFactory > 0;
+    }
+    
+    /**
+     * The owner goes to the Factory to collect products
+     */
+    public synchronized void goToWorkshop(){
+        flagBringProductsFromFactory -= 1;
     }
 
 }

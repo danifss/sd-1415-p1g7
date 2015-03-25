@@ -151,17 +151,16 @@ public class Owner extends Thread {
 	}
 
 	private void goToWorkshop() {
-		this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
-        setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
-        
-        int products = this.factory.getProducts(); // get dos produtos feitos
-        //this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
-        this.sharedInfo.setnProductsManufactured(products); // add to total products made by the crafstmans
-        
-        this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
-        
-        this.shop.setTranfsProductsToShop(false); // colocar flag a falso
-        this.sharedInfo.setTranfsProductsToShop(false);
+            this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+            setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+
+            shop.goToWorkshop();                        // Atualiza a flag
+            int products = this.factory.goToWorkshop(); // get dos produtos feitos
+            //this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
+            
+            this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
+
+            this.sharedInfo.setTranfsProductsToShop(false);
 	}
 
 	private int visitSuppliers() {
@@ -178,10 +177,13 @@ public class Owner extends Thread {
         return 0; // sem materias primas
 	}
 
+        /**
+         * Owner delivers prime materials to the Factory
+         * @param q number of prime materials delivered 
+         */
 	private void replenishStock(int q) {
-        // depois de ter comprado materia prima vai coloca-la na oficina/workshop
-        
-		
+            shop.replenishStock();
+            factory.replenishStock(q);	
 	}
 
 	/**
