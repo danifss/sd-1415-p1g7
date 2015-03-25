@@ -1,7 +1,7 @@
 package MonitorsProblema1;
 
 /**
- * This class is responsable to host the Factory/Workshop
+ * This class is responsible to host the Factory/Workshop
  * 
  * @author Daniel 51908
  * @author Raphael 64044
@@ -10,6 +10,7 @@ package MonitorsProblema1;
 public class MonFactory {
     
     /**
+     * Number of prime materials available
      * @serialField nPrimeMaterials
      */
     private int nPrimeMaterials;
@@ -27,17 +28,35 @@ public class MonFactory {
     private int nPrimeRestock;
     
     /**
-     * Maximum number of Products in Factory
-     * 
-     * @serialField nLimitOfProductsInFactory
+     * Flag to see if the owner was already contacted to bring prime materials
+     * @serialField primeCall
      */
-    private final int nLimitOfProductsInFactory;
+    private boolean primeCall;
     
     /**
      * Number of products in Factory to be delivered to the Shop by Owner
      * @serialField nFinishedProductsInFactory
      */
     private int nFinishedProductsInFactory;
+    
+    /**
+     * Maximum number of finished products that the owner can collect
+     * @serialField nProductsCollect
+     */
+    private int nProductsCollect;
+    
+    /**
+     * Maximum number of Products in Factory
+     * 
+     * @serialField nLimitOfProductsInFactory
+     */
+    private int nLimitOfProductsInFactory;
+    
+    /**
+     * Flag to see how many times the owner was contacted to collect finished products
+     * @serialField nProductsCall
+     */
+    private int nProductsCall;
     
     /**
      * Factory where Craftmans will work
@@ -47,13 +66,15 @@ public class MonFactory {
      * @param nPrimeRestock
      * @param nLimitOfProductsInFactory
      */
-    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory) {
+    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect) {
         this.nPrimeMaterials = nPrimeMaterials;
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
         this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
-        
-        this.nFinishedProductsInFactory = 0;
+        this.nProductsCollect = nProductsCollect;
+        nFinishedProductsInFactory = 0;
+        primeCall = false;
+        nProductsCall = 0;
     }
 
     /**
@@ -94,21 +115,23 @@ public class MonFactory {
         
     }
 
+      
     /**
-     * Back To Work
+     * Owner goes to factory to collect finished products
+     * @return number of products collected
      */
-    public synchronized void backToWork(){
-        
+    public synchronized int getProducts(){
+        int res;
+        if(nFinishedProductsInFactory <= nProductsCollect){
+            res = nFinishedProductsInFactory;
+            nFinishedProductsInFactory = 0;
+        }else{
+            res = nProductsCollect;
+            nFinishedProductsInFactory -= nProductsCollect;
+        }
+        nProductsCall -= 1;
+        return res;
     }
-
-    public int getnFinishedProductsInFactory() {
-        return nFinishedProductsInFactory;
-    }
-
-    public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
-        this.nFinishedProductsInFactory = nFinishedProductsInFactory;
-    }
-    
     
     /**
      * Returns number of prime materials needed per product
@@ -117,5 +140,4 @@ public class MonFactory {
     public int getnPrimePerProduct() {
         return nPrimePerProduct;
     }
-    
 }
