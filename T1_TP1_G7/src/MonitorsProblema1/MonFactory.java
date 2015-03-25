@@ -101,12 +101,10 @@ public class MonFactory {
      * @return number of collected prime materials
      */
     public synchronized int collectMaterials() {
-        // Falta acabar
-        if(nPrimeMaterials>=nPrimePerProduct){
-            nPrimeMaterials -= nPrimePerProduct;
-            return nPrimeMaterials;
-        }
-        return 0;
+        // Garante que há matérias primas para buscar
+        checkForMaterials();
+        nPrimeMaterials -= nPrimePerProduct;
+        return nPrimeMaterials;
     }
     
     /**
