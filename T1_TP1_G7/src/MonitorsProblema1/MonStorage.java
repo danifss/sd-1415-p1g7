@@ -35,10 +35,6 @@ public class MonStorage {
         this.nMaxPrimeMaterialsToDeliver = nMaxPrimeMaterialsToDeliver;
     }
 
-//    public int getnMaxPrimeMaterialsToDeliver() {
-//        return nMaxPrimeMaterialsToDeliver;
-//    }
-
     public int getnPrimeMaterialsDelivered() {
         return nPrimeMaterialsDelivered;
     }
@@ -62,6 +58,10 @@ public class MonStorage {
             return primeMaterialsToSell; // retorna as ultimas materias primas
         }
         return 0; // sem materias primas para serem vendidas
+    }
+
+    public int getnMaxPrimeMaterialsToDeliver() {
+        return nMaxPrimeMaterialsToDeliver;
     }
     
 }

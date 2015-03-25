@@ -59,6 +59,12 @@ public class MonFactory {
     private int flagNProductsCall;
     
     /**
+     * Total number os products made by the craftsmans
+     * @serialField nMaxProductsMade
+     */
+    private int nTotalProductsMade;
+    
+    /**
      * Factory where Craftmans will work
      * 
      * @param nPrimeMaterials
@@ -75,6 +81,7 @@ public class MonFactory {
         nFinishedProductsInFactory = 0;
         flagPrimeCall = false;
         flagNProductsCall = 0;
+        nTotalProductsMade = 0;
     }
 
     /**
@@ -108,12 +115,13 @@ public class MonFactory {
     }
     
     /**
-     * Craftman store the products produced
+     * Craftman store the products produced and increment total produced products
      * @param nProd Number of products the Craftman has
      * @return number of products the Craftman stored
      */
     public synchronized int goToStore(int nProd){
         nFinishedProductsInFactory += nProd;
+        nTotalProductsMade += nProd;
         return nProd;
     }
     
@@ -184,4 +192,9 @@ public class MonFactory {
         flagPrimeCall = false;
         notifyAll();
     }
+
+    public int getnTotalProductsMade() {
+        return nTotalProductsMade;
+    }
+
 }

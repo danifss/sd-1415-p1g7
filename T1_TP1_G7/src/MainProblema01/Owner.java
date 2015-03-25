@@ -97,7 +97,7 @@ public class Owner extends Thread {
 				replenishStock(q); // colocar as materias primas compradas na oficina
 			}
 			returnToShop();
-		} while (true); // falta condicao de paragem no while!
+		} while(!endOper());
 	}
 
 	private void prepareToWork() {
@@ -200,4 +200,10 @@ public class Owner extends Thread {
     private void setOwnerState(int ownerState) {
         this.ownerState = ownerState;
     }
+    
+    private boolean endOper() {
+		// valida se o Owner deve terminar ou nao
+		//if()
+		return true;
+	}
 }

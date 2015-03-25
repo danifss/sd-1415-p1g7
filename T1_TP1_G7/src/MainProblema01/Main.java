@@ -77,7 +77,7 @@ public class Main {
             owner = new Owner(repositorioGeral, factory, shop, storage); // Create Owner
             
             for(int i=0;i<nCraftsman;i++)
-                craftman[i] = new Craftman(i,factory, shop, repositorioGeral); // Create Craftsmans
+                craftman[i] = new Craftman(i,factory, shop, storage, repositorioGeral); // Create Craftsmans
             for(int i=0;i<nCustomers;i++)
                 customer[i] = new Customer(repositorioGeral, i, shop); // Create Customers
             

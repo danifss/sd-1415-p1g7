@@ -144,14 +144,14 @@ public class Customer extends Thread {
         setCustomerState(MonInfo.CARRYING_OUT_DAILY_CHORES);
     }
 
-	private boolean endOper() {
-		// valida se o cliente deve termina ou nao
-		//if()
-		return true;
-	}
-
     private void setCustomerState(int customerState) {
         this.customerState = customerState;
     }
+    
+    private boolean endOper() {
+		// valida se o cliente deve terminar ou nao
+		//if()
+		return true;
+	}
     
 }
