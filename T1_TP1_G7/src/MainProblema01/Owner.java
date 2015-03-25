@@ -110,7 +110,7 @@ public class Owner extends Thread {
 		} catch (InterruptedException e) {}
 	}
 
-	private int appraiseSit() {
+	private int appraiseSit() { /*  MUDAR ISTO */
 		// verifica se ha clientes para serem atendidos
 		if(this.shop.customersInTheShop())
 			return 1;
@@ -154,9 +154,9 @@ public class Owner extends Thread {
 		this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
         setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
         
-        int products = this.factory.getnFinishedProductsInFactory(); // get dos produtos feitos
-        this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
-        this.sharedInfo.setnProductsManufactured(products); // add to total products made by the crafstman
+        int products = this.factory.getProducts(); // get dos produtos feitos
+        //this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
+        this.sharedInfo.setnProductsManufactured(products); // add to total products made by the crafstmans
         
         this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
         
