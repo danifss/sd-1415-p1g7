@@ -93,8 +93,8 @@ public class Owner extends Thread {
 			if (sit == 3) {
 				goToWorkshop(); // vai buscar produtos a oficina e levar para a loja
 			} else if (sit == 2) {
-				int q = visitSuppliers();
-				replenishStock(q);
+				int q = visitSuppliers(); // comprar materias primas
+				replenishStock(q); // colocar as materias primas compradas na oficina
 			}
 			returnToShop();
 		} while (true); // falta condicao de paragem no while!
@@ -165,10 +165,22 @@ public class Owner extends Thread {
 	}
 
 	private int visitSuppliers() {
-		throw new UnsupportedOperationException("Not supported yet.");
+        // visita o fornecedor/armazem para comprar materia prima
+        this.sharedInfo.setOwnerState(MonInfo.BUYING_PRIME_MATERIALS);
+        setOwnerState(MonInfo.BUYING_PRIME_MATERIALS);
+        
+        try {
+            sleep((long) (1 + 10 * Math.random()));
+        } catch (InterruptedException e) {}
+        
+        if(storage.isPrimeMaterialsAvailabe())
+            return storage.getBunchOfPrimeMaterials();
+        return 0; // sem materias primas
 	}
 
 	private void replenishStock(int q) {
+        // depois de ter comprado materia prima vai coloca-la na oficina/workshop
+        
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

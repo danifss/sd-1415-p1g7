@@ -8,18 +8,18 @@ package MonitorsProblema1;
 public class MonStorage {
     
     /**
-     * Number of initial Prime Materials in Storage
+     * Present number of Prime Materials in Storage
      * 
-     * @serialField nInitialPrimeMaterialsInStorage
+     * @serialField nPrimeMaterialsInStorage
      */
-    private int nInitialPrimeMaterialsInStorage = 0;
+    private int nPrimeMaterialsInStorage = 0;
     
     /**
      * Maximum number of Prime Materials available to be delivered to the factory
      * 
      * @serialField nMaxPrimeMaterialsToDeliver
      */
-    private int nMaxPrimeMaterialsToDeliver;
+    private final int nMaxPrimeMaterialsToDeliver;
     
     /**
      * Number of Prime Materials delivered to the factory
@@ -30,18 +30,14 @@ public class MonStorage {
 
     public MonStorage(int nInitialPrimeMaterialsInStorage, int nMaxPrimeMaterialsToDeliver) {
         if(nInitialPrimeMaterialsInStorage > 0)
-            this.nInitialPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
+            this.nPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
 
         this.nMaxPrimeMaterialsToDeliver = nMaxPrimeMaterialsToDeliver;
     }
 
-    public int getnMaxPrimeMaterialsToDeliver() {
-        return nMaxPrimeMaterialsToDeliver;
-    }
-
-    public synchronized void setnMaxPrimeMaterialsToDeliver(int nMaxPrimeMaterialsToDeliver) {
-        this.nMaxPrimeMaterialsToDeliver = nMaxPrimeMaterialsToDeliver;
-    }
+//    public int getnMaxPrimeMaterialsToDeliver() {
+//        return nMaxPrimeMaterialsToDeliver;
+//    }
 
     public int getnPrimeMaterialsDelivered() {
         return nPrimeMaterialsDelivered;
@@ -49,6 +45,23 @@ public class MonStorage {
 
     public synchronized void setnPrimeMaterialsDelivered(int nPrimeMaterialsDelivered) {
         this.nPrimeMaterialsDelivered = nPrimeMaterialsDelivered;
+    }
+
+    public boolean isPrimeMaterialsAvailabe() {
+        return nPrimeMaterialsDelivered < nMaxPrimeMaterialsToDeliver;
+    }
+
+    public synchronized int getBunchOfPrimeMaterials() {
+        int primeMaterialsToSell = (int) nMaxPrimeMaterialsToDeliver/6;
+        if(nPrimeMaterialsInStorage >= primeMaterialsToSell) { // ter mat. prima suficiente para uma entrega
+            nPrimeMaterialsInStorage -= primeMaterialsToSell; // decrementa materias primas vendidas
+            return primeMaterialsToSell; // returna materias primas vendidas
+        } else if(nPrimeMaterialsInStorage < primeMaterialsToSell){
+            primeMaterialsToSell = nPrimeMaterialsInStorage;
+            nPrimeMaterialsInStorage = 0; // reset materias primas no armazem
+            return primeMaterialsToSell; // retorna as ultimas materias primas
+        }
+        return 0; // sem materias primas para serem vendidas
     }
     
 }
