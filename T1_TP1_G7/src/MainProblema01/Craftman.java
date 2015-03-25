@@ -70,6 +70,13 @@ public class Craftman extends Thread {
     private final MonShop shop;
 
     /**
+     * Storage
+     * 
+     * @serialField storage
+     */
+    private final MonStorage storage;
+    
+    /**
      * General Repository
      * 
      * @serialField shop
@@ -83,10 +90,11 @@ public class Craftman extends Thread {
      * @param factory Factory
      * @param info Repository
      */
-    public Craftman(int craftmanId, MonFactory factory, MonShop shop, MonInfo info){
+    public Craftman(int craftmanId, MonFactory factory, MonShop shop, MonStorage storage, MonInfo info){
         this.craftmanId = craftmanId;
         this.factory = factory;
         this.shop = shop;
+        this.storage = storage;
         this.info = info;
         craftmanState = MonInfo.FETCHING_PRIME_MATERIALS;
         nPrimeMaterials = 0;
@@ -99,13 +107,12 @@ public class Craftman extends Thread {
      */
     @Override
     public void run(){
-        while(true){
+        while(!endOper()){
             switch(craftmanState){
                 case FETCHING_PRIME_MATERIALS:
                     if(factory.checkForRestock() && !factory.flagPrimeActivated()){
                         primeMaterialsNeeded();
                     }else{
-
                         // Craftman verifica se há materias para produzir um novo produto
                         checkForMaterials();
                         // Craftman coleta os materiais
@@ -132,6 +139,7 @@ public class Craftman extends Thread {
                     break;
             }
         }
+        System.out.println("Terminou o Craftman "+craftmanId);
     }
     
     /**
@@ -192,5 +200,20 @@ public class Craftman extends Thread {
         craftmanState = CONTACTING_THE_ENTREPRENEUR;
         factory.primeMaterialsNeeded();
         shop.primeMaterialsNeeded();
+    }
+    
+	private boolean endOper() {
+		// valida se o craftman deve terminar ou nao
+		if(!storage.isPrimeMaterialsAvailabe() && (factory.getnTotalProductsMade() < nMaxProductsToDo()))
+            return true; // continue alive
+        return false; // die!
+	}
+    
+    /**
+     * 
+     * @return Number of products that still will be produced
+     */
+    private int nMaxProductsToDo(){
+        return storage.getnMaxPrimeMaterialsToDeliver()/factory.getnTotalProductsMade();
     }
 }
