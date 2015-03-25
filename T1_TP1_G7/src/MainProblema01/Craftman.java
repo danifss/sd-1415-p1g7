@@ -6,8 +6,6 @@
 package MainProblema01;
 
 import MonitorsProblema1.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Daniel 51908
@@ -37,7 +35,7 @@ public class Craftman extends Thread {
      * 
      * @serialField craftmanId
      */
-    private int craftmanId;
+    private final int craftmanId;
     
     /**
      * Number of prime materials collected
@@ -62,14 +60,14 @@ public class Craftman extends Thread {
      * 
      * @serialField factory
      */
-    private MonFactory factory;
+    private final MonFactory factory;
         
     /**
      * Shop
      * 
      * @serialField shop
      */
-    private MonShop shop;
+    private final MonShop shop;
 
     /**
      * General Repository
@@ -123,10 +121,11 @@ public class Craftman extends Thread {
                     goToStore();
                     break;
                 case STORING_IT_FOR_TRANSFER:
-                    //batchReadyForTransfer
-                    
-                    backToWork();
-                    
+                    if(factory.checkContactProduct()){
+                        batchReadyForTransfer();
+                    }else{
+                        backToWork();
+                    }
                     break;
                 case CONTACTING_THE_ENTREPRENEUR:                
                     backToWork();
@@ -180,7 +179,9 @@ public class Craftman extends Thread {
     }
     
     private void batchReadyForTransfer(){
-        
+        craftmanState = CONTACTING_THE_ENTREPRENEUR;
+        factory.batchReadyForTransfer();
+        //shop.batchReadyForTransfer();
     }
     
     private void backToWork(){
