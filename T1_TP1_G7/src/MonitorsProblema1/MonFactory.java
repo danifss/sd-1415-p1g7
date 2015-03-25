@@ -31,7 +31,7 @@ public class MonFactory {
      * Flag to see if the owner was already contacted to bring prime materials
      * @serialField primeCall
      */
-    private boolean primeCall;
+    private boolean flagPrimeCall;
     
     /**
      * Number of products in Factory to be delivered to the Shop by Owner
@@ -56,7 +56,7 @@ public class MonFactory {
      * Flag to see how many times the owner was contacted to collect finished products
      * @serialField nProductsCall
      */
-    private int nProductsCall;
+    private int flagNProductsCall;
     
     /**
      * Factory where Craftmans will work
@@ -73,16 +73,27 @@ public class MonFactory {
         this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
         this.nProductsCollect = nProductsCollect;
         nFinishedProductsInFactory = 0;
-        primeCall = false;
-        nProductsCall = 0;
+        flagPrimeCall = false;
+        flagNProductsCall = 0;
     }
 
     /**
-     * Check For Materials
-     * @return true or false
+     * Check if the Craftman needs to contact owner to bring prime materials
      */
-    public synchronized boolean checkForMaterials(){
-        return nPrimeMaterials >= nPrimePerProduct;
+    public synchronized boolean checkForRestock(){
+        return nPrimeMaterials < nPrimeRestock;
+    }
+    
+    /**
+     * Check For Materials
+     */
+    public synchronized void checkForMaterials(){
+        try{
+            while(nPrimeMaterials<nPrimePerProduct){
+                wait();
+                Thread.sleep(1000);
+            }
+        }catch(Exception e){}
     }
     
     /**
@@ -112,10 +123,25 @@ public class MonFactory {
      * Prime Materials Needed
      */
     public synchronized void primeMaterialsNeeded(){
-        
+        flagPrimeCall = true;
     }
-
-      
+    
+    /**
+     * Returns number of prime materials needed per product
+     * @return number 
+     */
+    public int getnPrimePerProduct() {
+        return nPrimePerProduct;
+    }
+    
+    /**
+     * The Craftman sees if someone already contacted the owner to restock the prime materials
+     * @return 
+     */
+    public synchronized boolean flagPrimeActivated(){
+        return flagPrimeCall;
+    }
+    
     /**
      * Owner goes to factory to collect finished products
      * @return number of products collected
@@ -129,15 +155,16 @@ public class MonFactory {
             res = nProductsCollect;
             nFinishedProductsInFactory -= nProductsCollect;
         }
-        nProductsCall -= 1;
+        flagNProductsCall -= 1;
         return res;
     }
     
     /**
-     * Returns number of prime materials needed per product
-     * @return number 
+     * Owner brings prime materials
+     * @param nPrimeMaterials 
      */
-    public int getnPrimePerProduct() {
-        return nPrimePerProduct;
+    public synchronized void replenishStock(int nPrimeMaterials){
+        this.nPrimeMaterials += nPrimeMaterials;
+        flagPrimeCall = false;
     }
 }
