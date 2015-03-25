@@ -125,13 +125,12 @@ public class Craftman extends Thread {
                 case STORING_IT_FOR_TRANSFER:
                     //batchReadyForTransfer
                     
-                    //backToWork
+                    backToWork();
                     
                     break;
-                case CONTACTING_THE_ENTREPRENEUR:
-                    //contact entrepreneur
-                    
-                    //backToWork
+                case CONTACTING_THE_ENTREPRENEUR:                
+                    backToWork();
+                    break;
             }
         }
     }
@@ -189,6 +188,7 @@ public class Craftman extends Thread {
     }
     
     private void primeMaterialsNeeded(){
+        craftmanState = CONTACTING_THE_ENTREPRENEUR;
         factory.primeMaterialsNeeded();
         //shop.primeMaterialsNeeded();
     }
