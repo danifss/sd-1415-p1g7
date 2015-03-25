@@ -19,13 +19,13 @@ public class MonFactory {
      * Number of prime materials needed to produce a new product
      * @serialField nPrimePerProduct
      */
-    private int nPrimePerProduct;
+    private final int nPrimePerProduct;
     
     /**
      * Minimum number of prime materials in stock to call owner to restock
      * @serialField nPrimeRestock
      */
-    private int nPrimeRestock;
+    private final int nPrimeRestock;
     
     /**
      * Flag to see if the owner was already contacted to bring prime materials
@@ -43,14 +43,14 @@ public class MonFactory {
      * Maximum number of finished products that the owner can collect
      * @serialField nProductsCollect
      */
-    private int nProductsCollect;
+    private final int nProductsCollect;
     
     /**
      * Maximum number of Products in Factory
      * 
      * @serialField nLimitOfProductsInFactory
      */
-    private int nLimitOfProductsInFactory;
+    private final int nLimitOfProductsInFactory;
     
     /**
      * Flag to see how many times the owner was contacted to collect finished products
@@ -118,18 +118,28 @@ public class MonFactory {
     }
     
     /**
+     * Indicates that the owner has products to collect
+     */
+    public synchronized void batchReadyForTransfer(){
+        flagNProductsCall += 1;
+    }
+    
+    /**
+     * Verifies if the Craftman needs to contact the owner
+     * @return true if he needs to contact
+     */
+    public synchronized boolean checkContactProduct(){
+        // Caso o número de produtos acabados a dividir pelo número de produtos que a owner pode levar
+        // for diferente da quantidade de vezes que a flag foi ativada, significa que o Craftman necessita
+        // que tem mais nProductsCollect para serem levados para a loja (Divisão de inteiros)
+        return nFinishedProductsInFactory / nProductsCollect != flagNProductsCall;
+    }
+    
+    /**
      * Prime Materials Needed
      */
     public synchronized void primeMaterialsNeeded(){
         flagPrimeCall = true;
-    }
-    
-    /**
-     * Returns number of prime materials needed per product
-     * @return number 
-     */
-    public int getnPrimePerProduct() {
-        return nPrimePerProduct;
     }
     
     /**
@@ -138,6 +148,14 @@ public class MonFactory {
      */
     public synchronized boolean flagPrimeActivated(){
         return flagPrimeCall;
+    }
+    
+    /**
+     * Returns number of prime materials needed per product
+     * @return number 
+     */
+    public int getnPrimePerProduct() {
+        return nPrimePerProduct;
     }
     
     /**
