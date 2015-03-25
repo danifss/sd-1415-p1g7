@@ -6,6 +6,8 @@
 package MainProblema01;
 
 import MonitorsProblema1.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Daniel 51908
@@ -54,12 +56,20 @@ public class Craftman extends Thread {
      * @serialField totalProduced
      */
     private int totalProduced;
+    
     /**
      * Factory/Workshop
      * 
      * @serialField factory
      */
     private MonFactory factory;
+        
+    /**
+     * Shop
+     * 
+     * @serialField shop
+     */
+    private MonShop shop;
 
     /**
      * General Repository
@@ -75,9 +85,10 @@ public class Craftman extends Thread {
      * @param factory Factory
      * @param info Repository
      */
-    public Craftman(int craftmanId, MonFactory factory, MonInfo info){
+    public Craftman(int craftmanId, MonFactory factory, MonShop shop, MonInfo info){
         this.craftmanId = craftmanId;
         this.factory = factory;
+        this.shop = shop;
         this.info = info;
         craftmanState = MonInfo.FETCHING_PRIME_MATERIALS;
         nPrimeMaterials = 0;
@@ -92,34 +103,32 @@ public class Craftman extends Thread {
     public void run(){
         while(true){
             switch(craftmanState){
-                case MonInfo.FETCHING_PRIME_MATERIALS:
-                    if(checkForMaterials()){
+                case FETCHING_PRIME_MATERIALS:
+                    if(factory.checkForRestock() && !factory.flagPrimeActivated()){
+                        primeMaterialsNeeded();
+                    }else{
+
+                        // Craftman verifica se há materias para produzir um novo produto
+                        checkForMaterials();
                         // Craftman coleta os materiais
                         collectMaterials();
                         // Craftman prepara para produzir
                         prepareToProduce();
                     }
-                    else{
-                        // primeMaterialsNeeded
-                    }
-                   
-                    
-                    //primeMaterialsNeeded
-                    
                     break;
-                case MonInfo.PRODUCING_A_NEW_PIECE:
+                case PRODUCING_A_NEW_PIECE:
                     // Produz uma nova peça
                     shapingItUp();
                     // Dirige-se a zona de armazenamento
                     goToStore();
                     break;
-                case MonInfo.STORING_IT_FOR_TRANSFER:
+                case STORING_IT_FOR_TRANSFER:
                     //batchReadyForTransfer
                     
                     //backToWork
                     
                     break;
-                case MonInfo.CONTACTING_THE_ENTREPRENEUR:
+                case CONTACTING_THE_ENTREPRENEUR:
                     //contact entrepreneur
                     
                     //backToWork
@@ -129,10 +138,9 @@ public class Craftman extends Thread {
     
     /**
      * Check for materials
-     * @return true if has materials
      */
-    private boolean checkForMaterials(){
-        return factory.checkForMaterials();
+    private void checkForMaterials(){
+        factory.checkForMaterials();
     }
     
     /**
@@ -177,10 +185,11 @@ public class Craftman extends Thread {
     }
     
     private void backToWork(){
-        
+        craftmanState = FETCHING_PRIME_MATERIALS;
     }
     
     private void primeMaterialsNeeded(){
-        
+        factory.primeMaterialsNeeded();
+        //shop.primeMaterialsNeeded();
     }
 }
