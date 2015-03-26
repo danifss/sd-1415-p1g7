@@ -15,7 +15,7 @@ import MonitorsProblema1.*;
 public class Craftman extends Thread {
     
     /**
-     * CRAFTSMAN STATES
+     * Craftman States
      */
     public final static int
             FETCHING_PRIME_MATERIALS = 0,
@@ -23,12 +23,14 @@ public class Craftman extends Thread {
             STORING_IT_FOR_TRANSFER = 2,
             CONTACTING_THE_ENTREPRENEUR = 3;
     
+    // Variáveis que necessitam ser usadas no repositório
+    
     /**
      * Craftman internal state
      * 
-     * @serialField craftmanState
+     * @serialField stateCraftman
      */
-    private int craftmanState;
+    private int stateCraftman;
     
     /**
      * Craftman thread id
@@ -36,6 +38,15 @@ public class Craftman extends Thread {
      * @serialField craftmanId
      */
     private final int craftmanId;
+    
+    /**
+     * Number of total products he produced
+     * @serialField totalProduced
+     */
+    private int totalProduced;
+    
+    
+    // Variáveis que não são necessárias no repositório geral
     
     /**
      * Number of prime materials collected
@@ -48,12 +59,6 @@ public class Craftman extends Thread {
      * @serialField nProduct
      */
     private int nProduct;
-    
-    /**
-     * Number of total products he produced
-     * @serialField totalProduced
-     */
-    private int totalProduced;
     
     /**
      * Factory/Workshop
@@ -89,8 +94,8 @@ public class Craftman extends Thread {
         this.factory = factory;
         this.shop = shop;
         this.info = info;
-        craftmanState = MonInfo.FETCHING_PRIME_MATERIALS;
-        info.setCraftmanState(this.craftmanId, craftmanState);
+        stateCraftman = MonInfo.FETCHING_PRIME_MATERIALS;
+        info.setCraftmanState(this.craftmanId, stateCraftman);
         nPrimeMaterials = 0;
         nProduct = 0;
         totalProduced = 0;
@@ -103,7 +108,7 @@ public class Craftman extends Thread {
     public void run(){
         System.out.println("Iniciado o Craftman: "+craftmanId);
         while(!endOper()){
-            switch(craftmanState){
+            switch(stateCraftman){
                 case FETCHING_PRIME_MATERIALS:
                     if(factory.checkForRestock() && !factory.flagPrimeActivated()){
                         primeMaterialsNeeded();
@@ -158,8 +163,8 @@ public class Craftman extends Thread {
      * Prepare to produce
      */
     private void prepareToProduce(){
-        craftmanState = PRODUCING_A_NEW_PIECE;
-        info.setCraftmanState(craftmanId, craftmanState);
+        stateCraftman = PRODUCING_A_NEW_PIECE;
+        info.setCraftmanState(craftmanId, stateCraftman);
     }
     
     /**
@@ -172,7 +177,7 @@ public class Craftman extends Thread {
         nPrimeMaterials -= factory.getnPrimePerProduct();
         nProduct += 1;
         totalProduced += 1;
-        info.incrementnGoodsCraftedByCraftman(craftmanId);
+        info.setnGoodsCraftedByCraftman(craftmanId, totalProduced);
     }
     
     /**
@@ -182,26 +187,26 @@ public class Craftman extends Thread {
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
-        craftmanState = STORING_IT_FOR_TRANSFER;
-        info.setCraftmanState(craftmanId, craftmanState);        
+        stateCraftman = STORING_IT_FOR_TRANSFER;
+        info.setCraftmanState(craftmanId, stateCraftman);        
         nProduct -= factory.goToStore(nProduct);
     }
     
     private void batchReadyForTransfer(){
-        craftmanState = CONTACTING_THE_ENTREPRENEUR;
-        info.setCraftmanState(craftmanId, craftmanState);
+        stateCraftman = CONTACTING_THE_ENTREPRENEUR;
+        info.setCraftmanState(craftmanId, stateCraftman);
         factory.batchReadyForTransfer();
         shop.batchReadyForTransfer();
     }
     
     private void backToWork(){
-        craftmanState = FETCHING_PRIME_MATERIALS;
-        info.setCraftmanState(craftmanId, craftmanState);
+        stateCraftman = FETCHING_PRIME_MATERIALS;
+        info.setCraftmanState(craftmanId, stateCraftman);
     }
     
     private void primeMaterialsNeeded(){
-        craftmanState = CONTACTING_THE_ENTREPRENEUR;
-        info.setCraftmanState(craftmanId, craftmanState);
+        stateCraftman = CONTACTING_THE_ENTREPRENEUR;
+        info.setCraftmanState(craftmanId, stateCraftman);
         factory.primeMaterialsNeeded();
         shop.primeMaterialsNeeded();
     }
