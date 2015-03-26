@@ -56,12 +56,6 @@ public class Craftman extends Thread {
     private int totalProduced;
     
     /**
-     * Number of products the Craftmans needs to produce
-     * @serialField nMaxProductsToDo
-     */
-    private final int nMaxPrimeMaterials;
-    
-    /**
      * Factory/Workshop
      * 
      * @serialField factory
@@ -86,14 +80,12 @@ public class Craftman extends Thread {
      * Create Craftman thread
      * 
      * @param craftmanId Craftman identity
-     * @param nMaxPrimeMaterials Number of prime materials the Craftmans need to use
      * @param factory Factory
      * @param shop Shop
      * @param info Repository
      */
-    public Craftman(int craftmanId, int nMaxPrimeMaterials, MonFactory factory, MonShop shop, MonInfo info){
+    public Craftman(int craftmanId, MonFactory factory, MonShop shop, MonInfo info){
         this.craftmanId = craftmanId;
-        this.nMaxPrimeMaterials = nMaxPrimeMaterials;
         this.factory = factory;
         this.shop = shop;
         this.info = info;
