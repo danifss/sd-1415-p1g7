@@ -12,16 +12,16 @@ public class MonFactory {
     /**
      * General Repository
      * 
-     * @serialField shop
+     * @serialField info
      */
     private final MonInfo info;
     
     
-    // Variáveis que necessitam ser usadas no repositório
     
+    // Variáveis que necessitam ser usadas no repositório
     /**
-     * Amount of prime materials presently in the workshop
-     * @serialField nPrimeMaterials
+     * Amount of prime materials presently in the Factory
+     * @serialField nPrimeMaterialsInFactory
      */
     private int nPrimeMaterialsInFactory;
     
@@ -50,8 +50,8 @@ public class MonFactory {
     private int nProductsManufactured;
     
     
-    // Variáveis que não são necessárias no repositório geral
     
+    // Variáveis que não são necessárias no repositório geral
     /**
      * Total number of prime materials in the Storage at the beginning
      * @serialField nTotalPrime
@@ -78,7 +78,6 @@ public class MonFactory {
     
     /**
      * Maximum number of Products in Factory
-     * 
      * @serialField nLimitOfProductsInFactory
      */
     private final int nLimitOfProductsInFactory;
@@ -99,26 +98,31 @@ public class MonFactory {
     /**
      * Factory where Craftmans will work
      * 
-     * @param info
-     * @param nPrimeMaterials
-     * @param nPrimePerProduct
-     * @param nPrimeRestock
-     * @param nLimitOfProductsInFactory
-     * @param nProductsCollect
-     * @param nTotalPrime
+     * @param info General Repository
+     * @param nPrimeMaterialsInFactory Amount of prime materials available in the Factory at the beginning
+     * @param nTotalPrime Total number of prime materials available in the storage what will be delivered
+     * @param nPrimePerProduct Number of prime materials needed to produce a new product
+     * @param nPrimeRestock Minimum number of prime materials in stock to call owner to restock
+     * @param nProductsCollect Maximum number of finished products that the owner can collect
+     * @param nLimitOfProductsInFactory Maximum number of Products in Factory
      */
-    public MonFactory(MonInfo info, int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect, int nTotalPrime) {
+    public MonFactory(MonInfo info, int nPrimeMaterialsInFactory, int nTotalPrime, int nPrimePerProduct, int nPrimeRestock, int nProductsCollect, int nLimitOfProductsInFactory) {
+        // Repositório
         this.info = info;
-        this.nPrimeMaterialsInFactory = nPrimeMaterials;
-        this.nPrimePerProduct = nPrimePerProduct;
-        this.nPrimeRestock = nPrimeRestock;
-        this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
-        this.nProductsCollect = nProductsCollect;
-        this.nTotalPrime = nTotalPrime;
-        nPrimeMaterialsSupplied = 0;
+        
+        // Variáveis que necessitam ser usadas no repositório
+        this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
         nFinishedProductsInFactory = 0;
         nSuppliedTimes = 0;
+        nPrimeMaterialsSupplied = 0;
         nProductsManufactured = 0;
+        
+        // Variáveis que não são necessárias no repositório geral
+        this.nTotalPrime = nTotalPrime;
+        this.nPrimePerProduct = nPrimePerProduct;
+        this.nPrimeRestock = nPrimeRestock;
+        this.nProductsCollect = nProductsCollect;
+        this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
         flagPrimeCall = false;
         flagNProductsCall = 0;
     }
@@ -197,7 +201,7 @@ public class MonFactory {
     }
     
     /**
-     * Prime Materials Needed
+     * Turn true the flag that indicates that prime materials is needed
      */
     public synchronized void primeMaterialsNeeded(){
         flagPrimeCall = true;
@@ -205,15 +209,15 @@ public class MonFactory {
     
     /**
      * The Craftman sees if someone already contacted the owner to restock the prime materials
-     * @return 
+     * @return true if someone already contacted the owner
      */
     public synchronized boolean flagPrimeActivated(){
         return flagPrimeCall;
     }
     
     /**
-     * Returns number of prime materials needed per product
-     * @return number 
+     * Craftman sees how many prime materials needs to produce a new product
+     * @return number of prime materials needed per products
      */
     public int getnPrimePerProduct() {
         return nPrimePerProduct;
@@ -239,7 +243,7 @@ public class MonFactory {
     
     /**
      * Owner brings prime materials
-     * @param nPrimeMaterials 
+     * @param nPrimeMaterials Amount of prime materials to restock
      */
     public synchronized void replenishStock(int nPrimeMaterials){
         this.nPrimeMaterialsInFactory += nPrimeMaterials;
