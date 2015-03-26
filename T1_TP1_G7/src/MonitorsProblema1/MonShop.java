@@ -61,12 +61,12 @@ public class MonShop {
 
     public synchronized void setnGoodsInDisplay(int goods) {
         this.nGoodsInDisplay = goods;
-        sharedInfo.setnGoodsInDisplay(goods);
+        sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
     }
 
-	public boolean customersInTheShop(){
-		return !this.sitCustomer.isEmpty(); // True if not empty queue
-	}
+    public boolean customersInTheShop(){
+        return !this.sitCustomer.isEmpty(); // True if not empty queue
+    }
 
     /**
      * 
@@ -78,7 +78,7 @@ public class MonShop {
 
     public synchronized void enterShop() {
         this.customerInsideShop++;
-        sharedInfo.setnCustomersInsideShop(1);
+        sharedInfo.setnCustomersInsideShop(customerInsideShop);
     }
     
     public synchronized int perusingAround(){
@@ -103,15 +103,19 @@ public class MonShop {
 
         if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
             nGoodsInDisplay -= nGoods; // diminuir bens da loja
-            sharedInfo.setnGoodsInDisplay(-nGoods); // reduz produtos disponiveis na loja
-            sharedInfo.incrementnGoodsByCustomer(customerId, nGoods); // adiciona num. total de produtos comprados pelo cliente
+            sharedInfo.setnGoodsInDisplay(nGoodsInDisplay); // reduz produtos disponiveis na loja
+            
+            // FALTA VERIFICAR A FUNÇAO DE BAIXO, POIS NAO HA VARIAVEL INDICANDO O NUMERO
+            // DE PRODUTOS QUE O CUSTOMER COMPROU (Variavel no proprio customer)
+            
+            sharedInfo.setnGoodsByCustomer(customerId, nGoodsInDisplay); // adiciona num. total de produtos comprados pelo cliente
         }
     }
 
     public synchronized void exitShop(int customerId) {
         if((int)sitCustomer.peek() == customerId){
             customerInsideShop--; // decrementar clientes na loja
-            sharedInfo.setnCustomersInsideShop(-1); // decrementar clientes dentro da loja
+            sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
         }
     }
 	
