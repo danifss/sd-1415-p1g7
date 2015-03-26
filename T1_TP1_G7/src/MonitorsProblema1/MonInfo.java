@@ -12,6 +12,27 @@ import genclass.TextFile;
 public class MonInfo {
 
     /**
+     * Owner States
+     */
+    public final static int
+            OPENING_THE_SHOP = 0,
+            WAITING_FOR_NEXT_TASK = 1,
+            ATTENDING_A_CUSTOMER = 2,
+            CLOSING_THE_SHOP = 3,
+            DELIVERING_PRIME_MATERIALS = 4,
+            COLLECTING_A_BATCH_OF_PRODUCTS = 5,
+            BUYING_PRIME_MATERIALS = 6;
+    
+    /**
+     * Customer States
+     */
+    public final static int
+            CARRYING_OUT_DAILY_CHORES = 0,
+            CHECKING_DOOR_OPEN = 1,
+            APPRAISING_OFFER_IN_DISPLAY = 2,
+            BUYING_SOME_GOODS = 3;
+    
+    /**
      * Craftman States
      */
     public final static int
@@ -19,25 +40,7 @@ public class MonInfo {
             PRODUCING_A_NEW_PIECE = 1,              // 
             STORING_IT_FOR_TRANSFER = 2,            // 
             CONTACTING_THE_ENTREPRENEUR = 3;        // 
-    /**
-     * Customer States
-     */
-    public final static int
-            CARRYING_OUT_DAILY_CHORES = 0,          // 
-            CHECKING_DOOR_OPEN = 1,                 // 
-            APPRAISING_OFFER_IN_DISPLAY = 2,        // 
-            BUYING_SOME_GOODS = 3;                  // 
-    /**
-     * Owner States
-     */
-    public final static int
-            OPENING_THE_SHOP = 0,                   // 
-            WAITING_FOR_NEXT_TASK = 1,              // 
-            ATTENDING_A_CUSTOMER = 2,               // 
-            CLOSING_THE_SHOP = 3,                   //
-            DELIVERING_PRIME_MATERIALS = 4,         // 
-            COLLECTING_A_BATCH_OF_PRODUCTS = 5,     // 
-            BUYING_PRIME_MATERIALS = 6;             // 
+    
     /**
      * Shop States
      */
@@ -45,31 +48,12 @@ public class MonInfo {
             CLOSED = 0,                           // 
             STILL_OPEN = 1,                       // 
             OPEN = 2;                             // 
-
-    /**
-     * Craftman needed information
-     * @serialField nCraftsman Number of Craftsman
-     * @serialField stateCraftman State of the Craftman
-     * @serialField nGoodsCraftedByCraftman Number of goods produced by each Craftman
-     */
-    private final int nCraftman;
-    private int[] stateCraftman;
-    private int[] nGoodsCraftedByCraftman;
-
-    /**
-     * Workshop needed information
-     * @serialField nPrimeMaterialsInFactory Amount of prime materials presently in the workshop
-     * @serialField nFinishedProductsInFactory Number of finished products presently in the workshop
-     * @serialField nSuppliedTimes Number of times that a supply of prime materials was delivered to the workshop
-     * @serialField nPrimeMaterialsSupplied total amount of prime materials that have already been supplied (accumulation)
-     * @serialField nProductsManufactured total number of products that have already been manufactured (accumulation)
-     */
-    private int nPrimeMaterialsInFactory;
-    private int nFinishedProductsInFactory;
-    private int nSuppliedTimes;
-    private int nPrimeMaterialsSupplied;
-    private int nProductsManufactured;
     
+    /**
+     * Owner needed information
+     * @serialField stateOwner state of the Owner
+     */
+    private int stateOwner;
     
     /**
      * Customers needed information
@@ -80,13 +64,17 @@ public class MonInfo {
     private final int nCustomer;
     private int[] stateCustomer;
     private int[] nGoodsByCustomer;
-   
+    
     /**
-     * Owner needed information
-     * @serialField stateOwner state of the Owner
+     * Craftman needed information
+     * @serialField nCraftsman Number of Craftsman
+     * @serialField stateCraftman State of the Craftman
+     * @serialField nGoodsCraftedByCraftman Number of goods produced by each Craftman
      */
-    private int stateOwner;
-	
+    private final int nCraftman;
+    private int[] stateCraftman;
+    private int[] nGoodsCraftedByCraftman;
+
     /**
      * Shop needed information
      * @serialField stateShop State of the shop
@@ -100,6 +88,20 @@ public class MonInfo {
     private int nGoodsInDisplay;
     private boolean transfProductsToShop;
     private boolean supplyMaterialsToFactory;
+    
+    /**
+     * Workshop needed information
+     * @serialField nPrimeMaterialsInFactory Amount of prime materials presently in the workshop
+     * @serialField nFinishedProductsInFactory Number of finished products presently in the workshop
+     * @serialField nSuppliedTimes Number of times that a supply of prime materials was delivered to the workshop
+     * @serialField nPrimeMaterialsSupplied total amount of prime materials that have already been supplied (accumulation)
+     * @serialField nProductsManufactured total number of products that have already been manufactured (accumulation)
+     */
+    private int nPrimeMaterialsInFactory;
+    private int nFinishedProductsInFactory;
+    private int nSuppliedTimes;
+    private int nPrimeMaterialsSupplied;
+    private int nProductsManufactured;
     
     /**
      * Name of the logging file
@@ -304,6 +306,21 @@ public class MonInfo {
         }
     }
     
+    
+    
+    // Função destinada a alterar a variável pertencente ao Owner
+    /**
+     * Set Owner State
+     * @param state State of the Owner
+     */
+    public synchronized void setOwnerState(int state) {
+        this.stateOwner = state;
+        reportStatus();
+    }
+    
+    
+    
+    // Funções destinadas a alterar as variáveis pertencentes aos Customer
     /**
      * Set Customer[i] State
      * @param customerId Customer id
@@ -315,57 +332,16 @@ public class MonInfo {
     }
     
     /**
-     * Set Owner State
-     * @param state State of the Owner
+     * Set number of goods (accumulation) bought by the customer
+     * @param customerId Customer id
+     * @param nGoodsByCustomer Number of goods bought by the customer
      */
-    public synchronized void setOwnerState(int state) {
-        this.stateOwner = state;
-        reportStatus();
+    public synchronized void setnGoodsByCustomer(int customerId, int nGoodsByCustomer) {
+        this.nGoodsByCustomer[customerId] = nGoodsByCustomer;
     }
     
-    /**
-     * Set Shop State
-     * @param state State of the shop
-     */
-    public synchronized void setShopState(int state){
-        this.stateShop = state;
-        reportStatus();
-    }
     
-    // Num. bens comprados por cada cliente.
-    public synchronized void incrementnGoodsByCustomer(int customerId, int nGoods) {
-        this.nGoodsByCustomer[customerId] += nGoods;
-    }
     
-    // Num. de clientes na loja
-    public synchronized void setnCustomersInsideShop(int nCustomersInsideShop) {
-        this.nCustomersInsideShop += nCustomersInsideShop;
-    }
-    
-    // Num. de bens a venda.
-    public synchronized void setnGoodsInDisplay(int nGoodsInDisplay) {
-        this.nGoodsInDisplay += nGoodsInDisplay;
-    }
-    
-    // Artesao avisa para tranferirem produtos acabados para a loja.
-    public synchronized void setTranfsProductsToShop(boolean tranfsProductsToShop) {
-        this.transfProductsToShop = tranfsProductsToShop;
-    }
-    
-    // Artesao avisa que precisa de materiais no oficina.
-    public synchronized void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
-        this.supplyMaterialsToFactory = supplyMaterialsToFactory;
-    }
-
-    public boolean isToTranfsProductsToShop() {
-            return transfProductsToShop;
-    }
-
-    public boolean isToSupplyMaterialsToFactory() {
-            return supplyMaterialsToFactory;
-    }
-        
-
     // Funções destinadas a alterar as variáveis pertencentes aos Craftman
     /**
      * Set state of the Craftman[i]
@@ -386,6 +362,52 @@ public class MonInfo {
     public synchronized void setnGoodsCraftedByCraftman(int craftmanId, int nGoodsCraftedByCraftman){
         this.nGoodsCraftedByCraftman[craftmanId] = nGoodsCraftedByCraftman;
     }
+    
+    
+    
+    // Funções destinadas a alterar as variáveis pertencentes ao Shop
+    /**
+     * Set Shop State
+     * @param state State of the shop
+     */
+    public synchronized void setShopState(int state){
+        this.stateShop = state;
+        reportStatus();
+    }
+    
+    /**
+     * Set number of customers inside
+     * @param nCustomersInsideShop Number of customers inside
+     */
+    public synchronized void setnCustomersInsideShop(int nCustomersInsideShop) {
+        this.nCustomersInsideShop = nCustomersInsideShop;
+    }
+    
+    /**
+     * Net number of goods in display
+     * @param nGoodsInDisplay Number of goods in display
+     */
+    public synchronized void setnGoodsInDisplay(int nGoodsInDisplay) {
+        this.nGoodsInDisplay = nGoodsInDisplay;
+    }
+    
+    /**
+     * Set if the craftsman requested the transfer of finished products to the Shop
+     * @param tranfsProductsToShop Boolean indicating if the Craftman requested
+     */
+    public synchronized void setTranfsProductsToShop(boolean tranfsProductsToShop) {
+        this.transfProductsToShop = tranfsProductsToShop;
+    }
+    
+    /**
+     * Set if the craftsman requested the supply of prime materials to the Factory
+     * @param supplyMaterialsToFactory Boolean indicating if the Craftman requested
+     */
+    public synchronized void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
+        this.supplyMaterialsToFactory = supplyMaterialsToFactory;
+    }
+        
+
     
     // Funções destinadas a alterar as variáveis pertencentes à Factory
     /**
