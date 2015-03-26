@@ -16,6 +16,13 @@ public class MonShop {
      * @serialField shopState
      */
     private int shopState;
+    
+    /**
+     * General Repository
+     * 
+     * @serialField sharedInfo
+     */
+    private final MonInfo sharedInfo;
 
     /**
      * FIFO with Customers on the Shop
@@ -29,6 +36,7 @@ public class MonShop {
     private int nGoodsInDisplay;
     private int flagBringProductsFromFactory;
     private boolean flagPrimeMaterialsNeeded;
+    
 
     /**
      * Create Monitor of the Shop
@@ -36,7 +44,8 @@ public class MonShop {
      * @param nInitialProductsInShop
      * @param nCustomer
      */
-    public MonShop(int nInitialProductsInShop, int nCustomer) {
+    public MonShop(int nInitialProductsInShop, int nCustomer, MonInfo sharedInfo) {
+        this.sharedInfo = sharedInfo;
         this.shopState = MonInfo.CLOSED;
         this.customerInsideShop = 0;
         sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
@@ -52,6 +61,7 @@ public class MonShop {
 
     public synchronized void setnGoodsInDisplay(int goods) {
         this.nGoodsInDisplay = goods;
+        sharedInfo.setnGoodsInDisplay(goods);
     }
 
 	public boolean customersInTheShop(){
@@ -68,6 +78,7 @@ public class MonShop {
 
     public synchronized void enterShop() {
         this.customerInsideShop++;
+        sharedInfo.setnCustomersInsideShop(1);
     }
     
     public synchronized int perusingAround(){
@@ -92,12 +103,16 @@ public class MonShop {
 
         if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
             nGoodsInDisplay -= nGoods; // diminuir bens da loja
+            sharedInfo.setnGoodsInDisplay(-nGoods); // reduz produtos disponiveis na loja
+            sharedInfo.incrementnGoodsByCustomer(customerId, nGoods); // adiciona num. total de produtos comprados pelo cliente
         }
     }
 
     public synchronized void exitShop(int customerId) {
-        if((int)sitCustomer.peek() == customerId)
+        if((int)sitCustomer.peek() == customerId){
             customerInsideShop--; // decrementar clientes na loja
+            sharedInfo.setnCustomersInsideShop(-1); // decrementar clientes dentro da loja
+        }
     }
 	
 	public synchronized int addressACustomer(){
@@ -113,7 +128,8 @@ public class MonShop {
     }
 
     public synchronized void setShopState(int state) {
-        this.shopState = state;
+        shopState = state;
+        sharedInfo.setShopState(state);
     }
 
     /**
@@ -143,6 +159,7 @@ public class MonShop {
      */
     public synchronized void batchReadyForTransfer(){
         flagBringProductsFromFactory += 1;
+        sharedInfo.setTranfsProductsToShop(true);
     }
     
     /**
@@ -158,6 +175,10 @@ public class MonShop {
      */
     public synchronized void goToWorkshop(){
         flagBringProductsFromFactory -= 1;
+        if(flagBringProductsFromFactory > 0)
+            sharedInfo.setTranfsProductsToShop(true);
+        else
+            sharedInfo.setTranfsProductsToShop(false);
     }
 
 }

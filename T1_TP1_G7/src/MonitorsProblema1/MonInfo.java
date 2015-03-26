@@ -327,31 +327,26 @@ public class MonInfo {
     // Num. bens comprados por cada cliente.
     public synchronized void incrementnGoodsByCustomer(int customerId, int nGoods) {
         this.nGoodsByCustomer[customerId] += nGoods;
-        reportStatus();
     }
     
     // Num. de clientes na loja
     public synchronized void setnCustomersInsideShop(int nCustomersInsideShop) {
         this.nCustomersInsideShop += nCustomersInsideShop;
-        reportStatus();
     }
     
     // Num. de bens a venda.
     public synchronized void setnGoodsInDisplay(int nGoodsInDisplay) {
         this.nGoodsInDisplay += nGoodsInDisplay;
-        reportStatus();
     }
     
     // Artesao avisa para tranferirem produtos acabados para a loja.
     public synchronized void setTranfsProductsToShop(boolean tranfsProductsToShop) {
         this.tranfsProductsToShop = tranfsProductsToShop;
-        reportStatus();
     }
     
     // Artesao avisa que precisa de materiais no oficina.
     public synchronized void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
         this.supplyMaterialsToFactory = supplyMaterialsToFactory;
-        reportStatus();
     }
 
     public boolean isToTranfsProductsToShop() {
@@ -362,7 +357,7 @@ public class MonInfo {
             return supplyMaterialsToFactory;
     }
         
-        
+
     // Funções destinadas a alterar as variáveis pertencentes aos Craftman
     /**
      * Set state of the Craftman[i]
