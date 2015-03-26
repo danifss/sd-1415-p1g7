@@ -66,25 +66,25 @@ public class Main {
         factory = new MonFactory(
                 sharedInfo,
                 nPrimeMaterialsInFactory,
+                nInitialPrimeMaterialsInStorage,
                 nPrimeMaterialsByProduct,
                 nMinPrimeMaterialsForRestock,
-                nLimitOfProductsInFactory,
                 nProductsCollect,
-                nInitialPrimeMaterialsInStorage
+                nLimitOfProductsInFactory
         ); // Creating Factory
         storage = new MonStorage(nInitialPrimeMaterialsInStorage); // Creating Storage
         owner = new Owner(sharedInfo, factory, shop, storage); // Create Owner
 
         for (int i = 0; i < nCraftsman; i++)
             craftman[i] = new Craftman(i, factory, shop, sharedInfo); // Create Craftsmans
-        for (int i = 0; i < nCustomers; i++)
-            customer[i] = new Customer(sharedInfo, i, shop); // Create Customers
+        /*for (int i = 0; i < nCustomers; i++)
+            customer[i] = new Customer(sharedInfo, i, shop); // Create Customers*/
         
         /* Arranque da simulacao */
         for (int i = 0; i < nCraftsman; i++)
             craftman[i].start();
-        for (int i = 0; i < nCustomers; i++)
-            customer[i].start();
+        /*for (int i = 0; i < nCustomers; i++)
+            customer[i].start();*/
         
         owner.start();
 
