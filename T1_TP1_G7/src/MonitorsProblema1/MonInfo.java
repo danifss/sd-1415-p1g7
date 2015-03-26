@@ -12,7 +12,7 @@ import genclass.TextFile;
 public class MonInfo {
 
     /**
-     * CRAFTSMAN STATES
+     * Craftman States
      */
     public final static int
             FETCHING_PRIME_MATERIALS = 0,           // 
@@ -20,7 +20,7 @@ public class MonInfo {
             STORING_IT_FOR_TRANSFER = 2,            // 
             CONTACTING_THE_ENTREPRENEUR = 3;        // 
     /**
-     * CUSTOMER STATES
+     * Customer States
      */
     public final static int
             CARRYING_OUT_DAILY_CHORES = 0,          // 
@@ -28,7 +28,7 @@ public class MonInfo {
             APPRAISING_OFFER_IN_DISPLAY = 2,        // 
             BUYING_SOME_GOODS = 3;                  // 
     /**
-     * OWNER STATES
+     * Owner States
      */
     public final static int
             OPENING_THE_SHOP = 0,                   // 
@@ -39,7 +39,7 @@ public class MonInfo {
             COLLECTING_A_BATCH_OF_PRODUCTS = 5,     // 
             BUYING_PRIME_MATERIALS = 6;             // 
     /**
-     * SHOP STATES
+     * Shop States
      */
     public final static int
             CLOSED = 0,                           // 
@@ -47,46 +47,12 @@ public class MonInfo {
             OPEN = 2;                             // 
 
     /**
-     * Number of Craftsman
-     * @serialField nCraftsman
-     */
-    private int nCraftman;
-
-    /**
-     * Number of Customers
-     * @serialField nCustomer
-     */
-    private int nCustomer = 0;
-
-    /**
-     * Present STATE of Customer
-     * @serialField stateCustomer
-     */
-    private int[] stateCustomer;
-
-    /**
-     * Present STATE of Owner
-     * @serialField stateOwner
-     */
-    private int stateOwner;
-	
-    /**
-     * Present STATE of Shop
-     * @serialField stateShop
-     */
-    private int stateShop;
-
-    /**
-     * Name of the file logging
-     * @serialField fName
-     */
-    private String fName = "log.txt";
-
-    /**
      * Craftman needed information
+     * @serialField nCraftsman Number of Craftsman
      * @serialField stateCraftman State of the Craftman
      * @serialField nGoodsCraftedByCraftman Number of goods produced by each Craftman
      */
+    private final int nCraftman;
     private int[] stateCraftman;
     private int[] nGoodsCraftedByCraftman;
 
@@ -105,18 +71,42 @@ public class MonInfo {
     private int nProductsManufactured;
     
     
+    /**
+     * Customers needed information
+     * @serialField nCustomer Number of Customers
+     * @serialField stateCustomer State of the customer
+     * @serialField nGoodsByCustomer Number of goods (accumulation) bought by the customer
+     */
+    private final int nCustomer;
+    private int[] stateCustomer;
+    private int[] nGoodsByCustomer;
+   
+    /**
+     * Owner needed information
+     * @serialField stateOwner state of the Owner
+     */
+    private int stateOwner;
+	
+    /**
+     * Shop needed information
+     * @serialField stateShop State of the shop
+     * @serialField nCustomersInsideShop Number of customers inside
+     * @serialField nGoodsInDisplay Number of goods in display
+     * @serialField tranfsProductsToShop A phone call was made by a craftsman requesting the transfer of finished products to the shop
+     * @serialField supplyMaterialsToFactory A phone call was made by a craftsman requesting the supply of prime materials to the workshop
+     */
+    private int stateShop;
+    private int nCustomersInsideShop;
+    private int nGoodsInDisplay;
+    private boolean tranfsProductsToShop;
+    private boolean supplyMaterialsToFactory;
     
-    // Tratamento de bens e materias primas
-    private int[] nGoodsByCustomer; // Num. bens comprados por cada cliente.
+    /**
+     * Name of the logging file
+     * @serialField fName
+     */
+    private String fName = "log.txt";
 
-
-    
-    // Variáveis da Loja
-    private int nCustomersInsideShop; // Num. de clientes na loja
-    private int nGoodsInDisplay; // Num. de bens a venda.
-    
-    private boolean tranfsProductsToShop; // Artesao avisa para tranferirem produtos acabados para a loja.
-    private boolean supplyMaterialsToFactory; // Artesao avisa que precisa de materiais no oficina.
 
     /**
      * General Repository for manage all relevant information
@@ -129,9 +119,9 @@ public class MonInfo {
     public MonInfo(int nCraftsman, int nCustomer, String fName, int nPrimeMaterialsInFactory) {
         // Inicialização das variáveis do Craftman
         this.nCraftman = nCraftsman;
-        stateCraftman = new int[this.nCraftman];			// create array craftman state
+        stateCraftman = new int[this.nCraftman];
         for(int i=0;i<this.nCraftman; i++)
-            stateCraftman[i] = FETCHING_PRIME_MATERIALS;		// Set initial state of Craftsman
+            stateCraftman[i] = FETCHING_PRIME_MATERIALS;	
         nGoodsCraftedByCraftman = new int[this.nCraftman];
         for(int i=0;i<this.nCraftman; i++) 
             nGoodsCraftedByCraftman[i] = 0;
@@ -143,30 +133,30 @@ public class MonInfo {
         nPrimeMaterialsSupplied = 0;
         nProductsManufactured = 0;
         
-        
-        
+        // Inicialização das variáveis do Customer
         this.nCustomer = nCustomer;
-	
+        this.stateCustomer = new int[this.nCustomer];
+        for(int i=0;i<this.nCustomer; i++)
+            stateCustomer[i] = CARRYING_OUT_DAILY_CHORES;
         this.nGoodsByCustomer = new int[this.nCustomer];
         for(int i=0;i<this.nCustomer; i++) 
             nGoodsByCustomer[i] = 0;
         
+        // Inicialização da variável do Owner
+        this.stateOwner = OPENING_THE_SHOP;
+        
+        // Inicialização das variáveis do Shop
+        this.stateShop = CLOSED;
         this.nCustomersInsideShop = 0;
         this.nGoodsInDisplay = 0;
         this.tranfsProductsToShop = false;
         this.supplyMaterialsToFactory = false;
 
-        this.stateCustomer = new int[this.nCustomer];			// create array customers state
-        for(int i=0;i<this.nCustomer; i++)
-            stateCustomer[i] = CARRYING_OUT_DAILY_CHORES;		// Set initial state of Customer
-        
-        this.stateShop = CLOSED;							// Set initial state of Shop
-        this.stateOwner = OPENING_THE_SHOP;					// Set initial state of Owner
-
-        /* inicializar o ficheiro de logging */
+        // Inicialização do ficheiro de logging 
         if ((fName != null) && !("".equals(fName))) {
             this.fName = fName;
         }
+        
         reportInitialStatus();
     }
 
