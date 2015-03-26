@@ -68,12 +68,12 @@ public class Customer extends Thread {
         while(!endOper()){
             livingNormalLife();
 
-			goShopping();
+            goShopping();
 
-			if(!shop.isDoorOpen()) {
-				tryAgainLater();
-				continue; // passa para a proxima iteracao
-			}
+            if(!shop.isDoorOpen()) {
+                    tryAgainLater();
+                    continue; // passa para a proxima iteracao
+            }
 
             enterShop();
             int goods = perusingAround();
@@ -144,8 +144,9 @@ public class Customer extends Thread {
     }
     
     private boolean endOper() {
-		// valida se o cliente deve terminar ou nao
-		return factory.endOper() && !factory.checkForMaterials() && noPrimeMaterialsAvailable() && allProductsSold();
-	}
+        // valida se o cliente deve terminar ou nao
+        //return factory.endOper() && !factory.checkForMaterials() && noPrimeMaterialsAvailable() && allProductsSold();
+	return false;
+    }
     
 }
