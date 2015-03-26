@@ -90,7 +90,7 @@ public class Craftman extends Thread {
         this.shop = shop;
         this.info = info;
         craftmanState = MonInfo.FETCHING_PRIME_MATERIALS;
-        info.setStateCraftsman(this.craftmanId, craftmanState);
+        info.setCraftmanState(this.craftmanId, craftmanState);
         nPrimeMaterials = 0;
         nProduct = 0;
         totalProduced = 0;
@@ -159,7 +159,7 @@ public class Craftman extends Thread {
      */
     private void prepareToProduce(){
         craftmanState = PRODUCING_A_NEW_PIECE;
-        info.setStateCraftsman(craftmanId, craftmanState);
+        info.setCraftmanState(craftmanId, craftmanState);
     }
     
     /**
@@ -183,25 +183,25 @@ public class Craftman extends Thread {
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
         craftmanState = STORING_IT_FOR_TRANSFER;
-        info.setStateCraftsman(craftmanId, craftmanState);        
+        info.setCraftmanState(craftmanId, craftmanState);        
         nProduct -= factory.goToStore(nProduct);
     }
     
     private void batchReadyForTransfer(){
         craftmanState = CONTACTING_THE_ENTREPRENEUR;
-        info.setStateCraftsman(craftmanId, craftmanState);
+        info.setCraftmanState(craftmanId, craftmanState);
         factory.batchReadyForTransfer();
         shop.batchReadyForTransfer();
     }
     
     private void backToWork(){
         craftmanState = FETCHING_PRIME_MATERIALS;
-        info.setStateCraftsman(craftmanId, craftmanState);
+        info.setCraftmanState(craftmanId, craftmanState);
     }
     
     private void primeMaterialsNeeded(){
         craftmanState = CONTACTING_THE_ENTREPRENEUR;
-        info.setStateCraftsman(craftmanId, craftmanState);
+        info.setCraftmanState(craftmanId, craftmanState);
         factory.primeMaterialsNeeded();
         shop.primeMaterialsNeeded();
     }
