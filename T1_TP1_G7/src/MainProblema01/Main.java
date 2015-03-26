@@ -71,12 +71,13 @@ public class Main {
                         nPrimeMaterialsByProduct,
                         nMinPrimeMaterialsForRestock,
                         nLimitOfProductsInFactory,
-                        nProductsCollect); // Creating Factory
-        storage = new MonStorage(nInitialPrimeMaterialsInStorage, nMaxPrimeMaterialsToDeliver);																// Creating Storage
+                        nProductsCollect,
+                        nInitialPrimeMaterialsInStorage); // Creating Factory
+        storage = new MonStorage(nInitialPrimeMaterialsInStorage);																// Creating Storage
         owner = new Owner(repositorioGeral, factory, shop, storage); // Create Owner
 
         for(int i=0;i<nCraftsman;i++)
-            craftman[i] = new Craftman(i, nMaxProductsToDo, factory, shop, repositorioGeral); // Create Craftsmans
+            craftman[i] = new Craftman(i, factory, shop, repositorioGeral); // Create Craftsmans
         for(int i=0;i<nCustomers;i++)
             customer[i] = new Customer(repositorioGeral, i, shop); // Create Customers
 

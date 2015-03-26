@@ -76,6 +76,8 @@ public class MonFactory {
      * @param nPrimePerProduct
      * @param nPrimeRestock
      * @param nLimitOfProductsInFactory
+     * @param nProductsCollect
+     * @param nTotalPrime
      */
     public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect, int nTotalPrime) {
         this.nPrimeMaterials = nPrimeMaterials;

@@ -28,11 +28,9 @@ public class MonStorage {
      */
     private int nPrimeMaterialsDelivered = 0;
 
-    public MonStorage(int nInitialPrimeMaterialsInStorage, int nMaxPrimeMaterialsToDeliver) {
-        if(nInitialPrimeMaterialsInStorage > 0)
-            this.nPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
-
-        this.nMaxPrimeMaterialsToDeliver = nMaxPrimeMaterialsToDeliver;
+    public MonStorage(int nInitialPrimeMaterialsInStorage) {
+        nPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
+        nMaxPrimeMaterialsToDeliver = nInitialPrimeMaterialsInStorage;
     }
 
     public int getnPrimeMaterialsDelivered() {
