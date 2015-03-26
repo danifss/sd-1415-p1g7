@@ -306,9 +306,8 @@ public class MonInfo {
     
     /**
      * Set Customer[i] State
-     * 
-     * @param customerId
-     * @param state 
+     * @param customerId Customer id
+     * @param state State of the customer
      */
     public synchronized void setCustomerState(int customerId, int state) {
         this.stateCustomer[customerId] = state;
@@ -317,7 +316,7 @@ public class MonInfo {
     
     /**
      * Set Owner State
-     * @param state 
+     * @param state State of the Owner
      */
     public synchronized void setOwnerState(int state) {
         this.stateOwner = state;
@@ -326,60 +325,11 @@ public class MonInfo {
     
     /**
      * Set Shop State
-     * @param state 
+     * @param state State of the shop
      */
     public synchronized void setShopState(int state){
         this.stateShop = state;
         reportStatus();
-    }
-    
-    /**
-     * @return Number of Craftmans
-     */
-    public int getnCraftsman() {
-        return nCraftman;
-    }
-    
-    /**
-     * @return State of Craftman[i]
-     * 
-     * @param i Number of the Craftman
-     */
-    public int getStateCraftsman(int i) {
-        return stateCraftman[i];
-    }
-    
-    /**
-     * @return Number of Customers
-     */
-    public int getnCustomer() {
-        return nCustomer;
-    }
-    
-    /**
-     * @param i Number of the Customer
-     * @return State of Customer[i]
-     */
-    public int getStateCustomer(int i) {
-        return stateCustomer[i];
-    }
-    
-    /**
-     * @return State of Owner
-     */
-    public int getStateOwner() {
-        return stateOwner;
-    }
-    
-    /**
-     * @return State of Shop
-     */
-    public int getStateShop(){
-        return stateShop;
-    }
-
-    public int getnGoodsInDisplay() {
-        return nGoodsInDisplay;
     }
     
     // Num. bens comprados por cada cliente.
