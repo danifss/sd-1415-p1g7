@@ -66,6 +66,7 @@ public class Owner extends Thread {
 	 */
 	@Override
 	public void run() {
+        System.out.println("Iniciado o Owner.");
 		boolean out;
 		int cid, sit = 0;
 		do {
@@ -98,6 +99,7 @@ public class Owner extends Thread {
 			}
 			returnToShop();
 		} while(!endOper());
+        System.out.println("Terminado o Owner.");
 	}
 
 	private void prepareToWork() {

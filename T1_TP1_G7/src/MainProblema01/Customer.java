@@ -56,6 +56,7 @@ public class Customer extends Thread {
      */
     @Override
     public void run(){
+        System.out.println("Iniciado o Customer: "+customerId);
         while(!endOper()){
             livingNormalLife();
 
@@ -73,6 +74,7 @@ public class Customer extends Thread {
             }
             exitShop();
         }
+        System.out.println("Terminado o Customer: "+customerId);
     }
 
     /**
