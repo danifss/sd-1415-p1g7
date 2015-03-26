@@ -16,20 +16,45 @@ public class MonFactory {
      */
     private final MonInfo info;
     
+    
+    // Variáveis que necessitam ser usadas no repositório
+    
     /**
-     * Number of prime materials available
+     * Amount of prime materials presently in the workshop
      * @serialField nPrimeMaterials
      */
-    private int nPrimeMaterials;
+    private int nPrimeMaterialsInFactory;
+    
+    /**
+     * Number of products in Factory to be delivered to the Shop by Owner
+     * @serialField nFinishedProductsInFactory
+     */
+    private int nFinishedProductsInFactory;
+    
+    /**
+     * Number of times that a supply of prime materials was delivered to the workshop
+     * @serialField nSuppliedTimes
+     */
+    private int nSuppliedTimes;
     
     /**
      * Total number of prime materials delivered
-     * @serialField nTotalPrimeDelivered
+     * @serialField nPrimeMaterialsSupplied
      */
-    private int nPrimeDelivered;
+    private int nPrimeMaterialsSupplied;
+   
+    /**
+     * Total number of products that have already been manufactured (accumulation)
+     * @serialField nProductsManufactured
+     */
+    private int nProductsManufactured;
+    
+    
+    // Variáveis que não são necessárias no repositório geral
     
     /**
-     * Total number of prime materials
+     * Total number of prime materials in the Storage at the beginning
+     * @serialField nTotalPrime
      */
     private final int nTotalPrime;
     
@@ -46,18 +71,6 @@ public class MonFactory {
     private final int nPrimeRestock;
     
     /**
-     * Flag to see if the owner was already contacted to bring prime materials
-     * @serialField primeCall
-     */
-    private boolean flagPrimeCall;
-    
-    /**
-     * Number of products in Factory to be delivered to the Shop by Owner
-     * @serialField nFinishedProductsInFactory
-     */
-    private int nFinishedProductsInFactory;
-    
-    /**
      * Maximum number of finished products that the owner can collect
      * @serialField nProductsCollect
      */
@@ -71,10 +84,17 @@ public class MonFactory {
     private final int nLimitOfProductsInFactory;
     
     /**
+     * Flag to see if the owner was already contacted to bring prime materials
+     * @serialField primeCall
+     */
+    private boolean flagPrimeCall;
+    
+    /**
      * Flag to see how many times the owner was contacted to collect finished products
      * @serialField nProductsCall
      */
     private int flagNProductsCall;
+    
     
     /**
      * Factory where Craftmans will work
@@ -89,14 +109,16 @@ public class MonFactory {
      */
     public MonFactory(MonInfo info, int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect, int nTotalPrime) {
         this.info = info;
-        this.nPrimeMaterials = nPrimeMaterials;
+        this.nPrimeMaterialsInFactory = nPrimeMaterials;
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
         this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
         this.nProductsCollect = nProductsCollect;
         this.nTotalPrime = nTotalPrime;
-        nPrimeDelivered = 0;
+        nPrimeMaterialsSupplied = 0;
         nFinishedProductsInFactory = 0;
+        nSuppliedTimes = 0;
+        nProductsManufactured = 0;
         flagPrimeCall = false;
         flagNProductsCall = 0;
     }
@@ -106,7 +128,7 @@ public class MonFactory {
      * @return true if needs to restock
      */
     public synchronized boolean checkForRestock(){
-        return nPrimeMaterials < nPrimeRestock;
+        return nPrimeMaterialsInFactory < nPrimeRestock;
     }
     
     /**
@@ -115,14 +137,14 @@ public class MonFactory {
      */
     public synchronized boolean checkForMaterials(){
         try{
-            while(nPrimeMaterials<nPrimePerProduct && !endOper()){
+            while(nPrimeMaterialsInFactory<nPrimePerProduct && !endOper()){
                 wait();
                 Thread.sleep(1000);
             }
         }catch(Exception e){}
         
         // Return always true if endOper is false
-        return nPrimeMaterials >= nPrimePerProduct;
+        return nPrimeMaterialsInFactory >= nPrimePerProduct;
     }
     
     /**
@@ -133,8 +155,8 @@ public class MonFactory {
         // Garante que há matérias primas para buscar
         if(checkForMaterials())
         {
-            nPrimeMaterials -= nPrimePerProduct;
-            info.setnPrimeMaterialsInFactory(nPrimeMaterials);
+            nPrimeMaterialsInFactory -= nPrimePerProduct;
+            info.setnPrimeMaterialsInFactory(nPrimeMaterialsInFactory);
             return nPrimePerProduct;
         }
         return 0;
@@ -147,6 +169,12 @@ public class MonFactory {
      */
     public synchronized int goToStore(int nProd){
         nFinishedProductsInFactory += nProd;
+        nProductsManufactured += nProd;
+        
+        //Guarda os valores no repositório geral
+        info.setnFinishedProductsInFactory(nFinishedProductsInFactory);
+        info.setnProductsManufactured(nProductsManufactured);
+        
         return nProd;
     }
     
@@ -205,6 +233,7 @@ public class MonFactory {
             nFinishedProductsInFactory -= nProductsCollect;
         }
         flagNProductsCall -= 1;
+        info.setnFinishedProductsInFactory(nFinishedProductsInFactory);
         return res;
     }
     
@@ -213,10 +242,16 @@ public class MonFactory {
      * @param nPrimeMaterials 
      */
     public synchronized void replenishStock(int nPrimeMaterials){
-        this.nPrimeMaterials += nPrimeMaterials;
-        nPrimeDelivered += nPrimeMaterials;
-        info.setnPrimeMaterialsInFactory(this.nPrimeMaterials);
+        this.nPrimeMaterialsInFactory += nPrimeMaterials;
+        nPrimeMaterialsSupplied += nPrimeMaterials;
+        nSuppliedTimes += 1;
         flagPrimeCall = false;
+        
+        //Guarda os valores no repositório geral
+        info.setnPrimeMaterialsInFactory(this.nPrimeMaterialsInFactory);
+        info.setnSuppliedTimes(nSuppliedTimes);
+        info.setnPrimeMaterialsSupplied(nPrimeMaterialsSupplied);
+
         notifyAll();
     }
     
@@ -225,6 +260,6 @@ public class MonFactory {
      * @return true if the Craftman can stop
      */
     public boolean endOper(){
-        return nPrimeDelivered == nTotalPrime;
+        return nPrimeMaterialsSupplied == nTotalPrime;
     }
 }
