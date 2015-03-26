@@ -65,8 +65,9 @@ public class Main {
                         fName,
                         nPrimeMaterialsInFactory
                         ); // Create general repository
-        shop = new MonShop(nInitialProductsInShop); // Creating shop
+        shop = new MonShop(nInitialProductsInShop, nCustomers); // Creating shop
         factory = new MonFactory(
+                        repositorioGeral,
                         nPrimeMaterialsInFactory,
                         nPrimeMaterialsByProduct,
                         nMinPrimeMaterialsForRestock,
