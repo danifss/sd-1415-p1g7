@@ -54,10 +54,10 @@ public class Main {
         int nInitialProductsInShop = 0;						// Produtos na Loja inicialmente
         int nPrimeMaterialsByProduct = 1;					// Materia Prima por produto
         int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
-        int nProductsCollect = 10;                                      // Minimo de produtos para o Owner ir buscar
+        int nProductsCollect = 10;                          // Minimo de produtos para o Owner ir buscar
         int nLimitOfProductsInFactory = 50;					// Limite de produtos na oficina
         int nMaxPrimeMaterialsToDeliver = 40;               // Maximo de Materias Primas que pode ser entregue a oficina
-
+        int nMaxProductsToDo = (nPrimeMaterialsInFactory+nMaxPrimeMaterialsToDeliver)/nPrimeMaterialsByProduct;
 
         repositorioGeral = new MonInfo(										
                         nCraftsman,
@@ -76,7 +76,7 @@ public class Main {
         owner = new Owner(repositorioGeral, factory, shop, storage); // Create Owner
 
         for(int i=0;i<nCraftsman;i++)
-            craftman[i] = new Craftman(i,factory, shop, storage, repositorioGeral); // Create Craftsmans
+            craftman[i] = new Craftman(i, nMaxProductsToDo, factory, shop, repositorioGeral); // Create Craftsmans
         for(int i=0;i<nCustomers;i++)
             customer[i] = new Customer(repositorioGeral, i, shop); // Create Customers
 
