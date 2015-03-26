@@ -56,6 +56,12 @@ public class Craftman extends Thread {
     private int totalProduced;
     
     /**
+     * Number of products the Craftmans needs to produce
+     * @serialField nMaxProductsToDo
+     */
+    private final int nMaxProductsToDo;
+    
+    /**
      * Factory/Workshop
      * 
      * @serialField factory
@@ -68,13 +74,6 @@ public class Craftman extends Thread {
      * @serialField shop
      */
     private final MonShop shop;
-
-    /**
-     * Storage
-     * 
-     * @serialField storage
-     */
-    private final MonStorage storage;
     
     /**
      * General Repository
@@ -87,14 +86,16 @@ public class Craftman extends Thread {
      * Create Craftman thread
      * 
      * @param craftmanId Craftman identity
+     * @param nMaxProductsToDo Number of products the Craftmans need to produce
      * @param factory Factory
+     * @param shop Shop
      * @param info Repository
      */
-    public Craftman(int craftmanId, MonFactory factory, MonShop shop, MonStorage storage, MonInfo info){
+    public Craftman(int craftmanId, int nMaxProductsToDo, MonFactory factory, MonShop shop, MonInfo info){
         this.craftmanId = craftmanId;
+        this.nMaxProductsToDo = nMaxProductsToDo;
         this.factory = factory;
         this.shop = shop;
-        this.storage = storage;
         this.info = info;
         craftmanState = MonInfo.FETCHING_PRIME_MATERIALS;
         nPrimeMaterials = 0;
@@ -162,6 +163,7 @@ public class Craftman extends Thread {
      */
     private void prepareToProduce(){
         craftmanState = PRODUCING_A_NEW_PIECE;
+        info.setCustomerState(craftmanId, craftmanState);
     }
     
     /**
@@ -174,6 +176,7 @@ public class Craftman extends Thread {
         nPrimeMaterials -= factory.getnPrimePerProduct();
         nProduct += 1;
         totalProduced += 1;
+        info.incrementnGoodsCraftedByCraftman(craftmanId);
     }
     
     /**
@@ -184,37 +187,37 @@ public class Craftman extends Thread {
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
         craftmanState = STORING_IT_FOR_TRANSFER;
+        info.setCustomerState(craftmanId, craftmanState);        
         nProduct -= factory.goToStore(nProduct);
     }
     
     private void batchReadyForTransfer(){
         craftmanState = CONTACTING_THE_ENTREPRENEUR;
+        info.setCustomerState(craftmanId, craftmanState);
         factory.batchReadyForTransfer();
         shop.batchReadyForTransfer();
     }
     
     private void backToWork(){
         craftmanState = FETCHING_PRIME_MATERIALS;
+        info.setCustomerState(craftmanId, craftmanState);
     }
     
     private void primeMaterialsNeeded(){
         craftmanState = CONTACTING_THE_ENTREPRENEUR;
+        info.setCustomerState(craftmanId, craftmanState);
         factory.primeMaterialsNeeded();
         shop.primeMaterialsNeeded();
     }
     
-	private boolean endOper() {
-		// valida se o craftman deve terminar ou nao
-		if(!storage.isPrimeMaterialsAvailabe() && (factory.getnTotalProductsMade() < nMaxProductsToDo()))
+    /**
+     * Verifies if the Craftman stops
+     * @return true if needs to stop
+     */
+    private boolean endOper() {
+        // valida se o craftman deve terminar ou nao
+        if(factory.getnTotalProductsMade() < nMaxProductsToDo)
             return true; // continue alive
         return false; // die!
-	}
-    
-    /**
-     * 
-     * @return Number of products that still will be produced
-     */
-    private int nMaxProductsToDo(){
-        return storage.getnMaxPrimeMaterialsToDeliver()/factory.getnTotalProductsMade();
     }
 }
