@@ -152,15 +152,15 @@ public class Owner extends Thread {
 	}
 
 	private void goToWorkshop() {
-        this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
         setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
 
         shop.goToWorkshop();                        // Atualiza a flag
         int products = this.factory.goToWorkshop(); // get dos produtos feitos
-        //this.factory.setnFinishedProductsInFactory(0); // por a 0 os produtos feitos na oficina
 
         this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
 
+        this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+        sharedInfo.setnPrimeMaterialsInFactory(-products);
         this.sharedInfo.setTranfsProductsToShop(false);
 	}
 

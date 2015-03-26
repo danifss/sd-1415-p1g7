@@ -174,14 +174,13 @@ public class MonInfo {
             GenericIO.writelnString("A operação de criação do ficheiro " + this.fName + " falhou!");
             System.exit(1);
         }
-        log.writelnString("        Aveiro Handicraft SARL - Description of the internal state");
+        log.writelnString("        Aveiro Handicraft SARL - Description of the internal state\n");
+        log.writelnString("ENTREPRE  CUST_0  CUST_1  CUST_2   CRAFT_0 CRAFT_1 CRAFT_2          SHOP                WORKSHOP");
+        log.writelnString("  Stat   Stat BP Stat BP Stat BP   Stat PP Stat PP Stat PP  Stat NCI NPI PCR PMR APMI NPI NSPM TAPM TNP");
         if (!log.close()) {
             GenericIO.writelnString("A operação de fecho do ficheiro " + this.fName + " falhou!");
             System.exit(1);
         }
-        log.writelnString("ENTREPRE CUST_0 CUST_1 CUST_2 CRAFT_0 CRAFT_1 CRAFT_2 SHOP WORKSHOP");
-        log.writelnString("Stat Stat BP Stat BP Stat BP Stat PP Stat PP Stat PP Stat NCI NPI PCR PMR APMI NPI NSPM TAPM TNP");
-
         reportStatus();
     }
 
@@ -246,6 +245,7 @@ public class MonInfo {
      */
     public synchronized void setStateCraftsman(int craftsmanId, int state) {
         this.stateCraftsman[craftsmanId] = state;
+        reportStatus();
     }
     
     /**
@@ -256,6 +256,7 @@ public class MonInfo {
      */
     public synchronized void setCustomerState(int customerId, int state) {
         this.stateCustomer[customerId] = state;
+        reportStatus();
     }
     
     /**
@@ -264,6 +265,7 @@ public class MonInfo {
      */
     public synchronized void setOwnerState(int state) {
         this.stateOwner = state;
+        reportStatus();
     }
     
     /**
@@ -272,6 +274,7 @@ public class MonInfo {
      */
     public synchronized void setShopState(int state){
         this.stateShop = state;
+        reportStatus();
     }
     
     /**
@@ -326,36 +329,43 @@ public class MonInfo {
     // Num. bens comprados por cada cliente.
     public synchronized void incrementnGoodsByCustomer(int customerId, int nGoods) {
         this.nGoodsByCustomer[customerId] += nGoods;
+        reportStatus();
     }
 
     // Num. bens produzidos por cada artesao.
     public synchronized void incrementnGoodsCraftedByCraftman(int craftsmanId) {
         this.nGoodsCraftedByCraftman[craftsmanId]++;
+        reportStatus();
     }
     
     // Num. de clientes na loja
     public synchronized void setnCustomersInsideShop(int nCustomersInsideShop) {
         this.nCustomersInsideShop += nCustomersInsideShop;
+        reportStatus();
     }
     
     // Num. de bens a venda.
     public synchronized void setnGoodsInDisplay(int nGoodsInDisplay) {
         this.nGoodsInDisplay += nGoodsInDisplay;
+        reportStatus();
     }
     
     // Artesao avisa para tranferirem produtos acabados para a loja.
     public synchronized void setTranfsProductsToShop(boolean tranfsProductsToShop) {
         this.tranfsProductsToShop = tranfsProductsToShop;
+        reportStatus();
     }
     
     // Artesao avisa que precisa de materiais no oficina.
     public synchronized void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
         this.supplyMaterialsToFactory = supplyMaterialsToFactory;
+        reportStatus();
     }
     
     // Num. de materias primas na oficina
     public synchronized void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
         this.nPrimeMaterialsInFactory += nPrimeMaterialsInFactory;
+        reportStatus();
     }
     
     // Obter o numero de materias primas na oficina
@@ -363,29 +373,28 @@ public class MonInfo {
         return nPrimeMaterialsInFactory;
     }
     
-    // Tirar matérias primas da oficina
-    public synchronized void removePrimeMaterials(int n){
-        nPrimeMaterialsInFactory -= n;
-    }
-    
     // Num. de bens produzidos que estao na oficina
     public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
         this.nFinishedProductsInFactory += nFinishedProductsInFactory;
+        reportStatus();
     }
     
     // Num. vezes que foram fornecidas materias primas para a oficina
     public synchronized void setnSuppliedTimes(int nSuppliedTimes) {
         this.nSuppliedTimes += nSuppliedTimes;
+        reportStatus();
     }
     
     // Num. total de materias primas ja fornecidas
     public synchronized void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied) {
         this.nPrimeMaterialsSupplied += nPrimeMaterialsSupplied;
+        reportStatus();
     }
     
     // Num. total de bens produzidos pela oficina.
     public synchronized void setnProductsManufactured(int nProductsManufactured) {
         this.nProductsManufactured += nProductsManufactured;
+        reportStatus();
     }
     
     // Obter o número de matérias primas que um artesão tem
@@ -396,6 +405,7 @@ public class MonInfo {
     // Atribuir o numero de materias primas ao craftman
     public synchronized void setnPrimeMaterialsByCraftman(int craftmanId, int nPrimeMaterialsByCraftman) {
         this.nPrimeMaterialsByCraftman[craftmanId] = nPrimeMaterialsByCraftman;
+        reportStatus();
     }
 
 	public boolean isToTranfsProductsToShop() {
