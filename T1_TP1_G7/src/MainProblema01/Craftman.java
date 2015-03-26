@@ -59,7 +59,7 @@ public class Craftman extends Thread {
      * Number of products the Craftmans needs to produce
      * @serialField nMaxProductsToDo
      */
-    private final int nMaxProductsToDo;
+    private final int nMaxPrimeMaterials;
     
     /**
      * Factory/Workshop
@@ -86,14 +86,14 @@ public class Craftman extends Thread {
      * Create Craftman thread
      * 
      * @param craftmanId Craftman identity
-     * @param nMaxProductsToDo Number of products the Craftmans need to produce
+     * @param nMaxPrimeMaterials Number of prime materials the Craftmans need to use
      * @param factory Factory
      * @param shop Shop
      * @param info Repository
      */
-    public Craftman(int craftmanId, int nMaxProductsToDo, MonFactory factory, MonShop shop, MonInfo info){
+    public Craftman(int craftmanId, int nMaxPrimeMaterials, MonFactory factory, MonShop shop, MonInfo info){
         this.craftmanId = craftmanId;
-        this.nMaxProductsToDo = nMaxProductsToDo;
+        this.nMaxPrimeMaterials = nMaxPrimeMaterials;
         this.factory = factory;
         this.shop = shop;
         this.info = info;
@@ -116,11 +116,14 @@ public class Craftman extends Thread {
                         primeMaterialsNeeded();
                     }else{
                         // Craftman verifica se há materias para produzir um novo produto
-                        checkForMaterials();
-                        // Craftman coleta os materiais
-                        collectMaterials();
-                        // Craftman prepara para produzir
-                        prepareToProduce();
+                        if(checkForMaterials()){
+                            // Craftman coleta os materiais
+                            collectMaterials();
+                            // Craftman prepara para produzir
+                            if(nPrimeMaterials != 0){
+                                prepareToProduce();
+                            }
+                        }
                     }
                     break;
                 case PRODUCING_A_NEW_PIECE:
@@ -147,8 +150,8 @@ public class Craftman extends Thread {
     /**
      * Check for materials
      */
-    private void checkForMaterials(){
-        factory.checkForMaterials();
+    private boolean checkForMaterials(){
+        return factory.checkForMaterials();
     }
     
     /**
@@ -216,8 +219,6 @@ public class Craftman extends Thread {
      */
     private boolean endOper() {
         // valida se o craftman deve terminar ou nao
-        if(factory.getnTotalProductsMade() < nMaxProductsToDo)
-            return true; // continue alive
-        return false; // die!
+        return factory.endOper() && !checkForMaterials();
     }
 }
