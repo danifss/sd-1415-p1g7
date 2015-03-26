@@ -33,12 +33,13 @@ public class MonShop {
     /**
      * Create Monitor of the Shop
      * 
-     * @param sharedInfo
+     * @param nInitialProductsInShop
+     * @param nCustomer
      */
-    public MonShop(int nInitialProductsInShop) {
+    public MonShop(int nInitialProductsInShop, int nCustomer) {
         this.shopState = MonInfo.CLOSED;
         this.customerInsideShop = 0;
-        sitCustomer = new MemFIFO(MonInfo.getnCustomer()); // create FIFO for wainting Customers
+        sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
         
         this.nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
         this.flagBringProductsFromFactory = 0;
