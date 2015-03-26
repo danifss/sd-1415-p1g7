@@ -10,6 +10,13 @@ package MonitorsProblema1;
 public class MonFactory {
     
     /**
+     * General Repository
+     * 
+     * @serialField shop
+     */
+    private final MonInfo info;
+    
+    /**
      * Number of prime materials available
      * @serialField nPrimeMaterials
      */
@@ -72,6 +79,7 @@ public class MonFactory {
     /**
      * Factory where Craftmans will work
      * 
+     * @param info
      * @param nPrimeMaterials
      * @param nPrimePerProduct
      * @param nPrimeRestock
@@ -79,7 +87,8 @@ public class MonFactory {
      * @param nProductsCollect
      * @param nTotalPrime
      */
-    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect, int nTotalPrime) {
+    public MonFactory(MonInfo info, int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect, int nTotalPrime) {
+        this.info = info;
         this.nPrimeMaterials = nPrimeMaterials;
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
@@ -94,6 +103,7 @@ public class MonFactory {
 
     /**
      * Check if the Craftman needs to contact owner to bring prime materials
+     * @return true if needs to restock
      */
     public synchronized boolean checkForRestock(){
         return nPrimeMaterials < nPrimeRestock;
@@ -124,6 +134,7 @@ public class MonFactory {
         if(checkForMaterials())
         {
             nPrimeMaterials -= nPrimePerProduct;
+            info.setnPrimeMaterialsInFactory(nPrimeMaterials);
             return nPrimePerProduct;
         }
         return 0;
@@ -204,6 +215,7 @@ public class MonFactory {
     public synchronized void replenishStock(int nPrimeMaterials){
         this.nPrimeMaterials += nPrimeMaterials;
         nPrimeDelivered += nPrimeMaterials;
+        info.setnPrimeMaterialsInFactory(this.nPrimeMaterials);
         flagPrimeCall = false;
         notifyAll();
     }
