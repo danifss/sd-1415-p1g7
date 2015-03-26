@@ -19,8 +19,7 @@ public class Main {
         boolean success;	// Validacao dos dados de entrada
         char opt;			// opcao
         /* Inicializacao do Log */
-        GenericIO.writelnString("\n" + "      Problema do Artesanato de Aveiro\n");
-        GenericIO.writeString("Numero de iterações dos clientes? ");
+        GenericIO.writelnString("\n" + "      Problema - Artesanato de Aveiro\n");
         do {
             GenericIO.writeString("Nome do ficheiro de armazenamento da simulação? ");
             fName = GenericIO.readlnString();
