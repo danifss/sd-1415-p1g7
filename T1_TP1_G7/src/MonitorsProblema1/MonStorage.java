@@ -46,7 +46,7 @@ public class MonStorage {
     }
 
     public synchronized int getBunchOfPrimeMaterials() {
-        int primeMaterialsToSell = (int) nMaxPrimeMaterialsToDeliver/6;
+        int primeMaterialsToSell = (int) nMaxPrimeMaterialsToDeliver/6; // do total de materia prima, parte em 6 e vende essas (de cada vez) (VALOR FIXO)
         if(nPrimeMaterialsInStorage >= primeMaterialsToSell) { // ter mat. prima suficiente para uma entrega
             nPrimeMaterialsInStorage -= primeMaterialsToSell; // decrementa materias primas vendidas
             return primeMaterialsToSell; // returna materias primas vendidas

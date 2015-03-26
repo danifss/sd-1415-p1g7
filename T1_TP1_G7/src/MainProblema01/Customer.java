@@ -74,7 +74,6 @@ public class Customer extends Thread {
             }
             exitShop();
         }
-        System.out.println("Terminado o Customer: "+customerId);
     }
 
     /**
@@ -90,18 +89,15 @@ public class Customer extends Thread {
      * Customer go shopping, first check if the shop door is open
      * then enter shop and appraising offer on display and if he wants 
      * that he buy goods, and finally exit shop
-     * 
      */
     private void goShopping(){
         setCustomerState(MonInfo.CHECKING_DOOR_OPEN);
-        this.sharedInfo.setCustomerState(customerId, MonInfo.CHECKING_DOOR_OPEN);
     }
 
     /**
      * Try Again Later
      */
     private void tryAgainLater(){
-        this.sharedInfo.setCustomerState(customerId, MonInfo.CARRYING_OUT_DAILY_CHORES);
         setCustomerState(MonInfo.CARRYING_OUT_DAILY_CHORES);
 
         try{
@@ -110,9 +106,6 @@ public class Customer extends Thread {
     }
     
     private void enterShop() {
-        this.sharedInfo.setCustomerState(customerId, MonInfo.APPRAISING_OFFER_IN_DISPLAY);
-        this.sharedInfo.setnCustomersInsideShop(1);
-        
         setCustomerState(MonInfo.APPRAISING_OFFER_IN_DISPLAY);
         
         shop.enterShop();
@@ -127,33 +120,25 @@ public class Customer extends Thread {
     }
     
     private void iWantThis(int goods){
-        this.sharedInfo.setCustomerState(customerId, MonInfo.BUYING_SOME_GOODS);
-        
         setCustomerState(MonInfo.BUYING_SOME_GOODS);
         
         shop.iWantThis(customerId, goods); // acao bloqueante
-        this.sharedInfo.setnGoodsInDisplay(-goods); // reduz produtos disponiveis na loja
-        this.sharedInfo.incrementnGoodsByCustomer(customerId, goods); // adiciona num. total de produtos comprados pelo cliente
     }
 
     private void exitShop() {
-        // mudar estado do cliente
-        this.sharedInfo.setCustomerState(customerId, MonInfo.CARRYING_OUT_DAILY_CHORES);
-        // decrementar clientes dentro da loja
-        this.sharedInfo.setnCustomersInsideShop(-1);
-        
         shop.exitShop(customerId);
         setCustomerState(MonInfo.CARRYING_OUT_DAILY_CHORES);
     }
 
     private void setCustomerState(int customerState) {
         this.customerState = customerState;
+        sharedInfo.setCustomerState(customerId,customerState);
     }
     
     private boolean endOper() {
 		// valida se o cliente deve terminar ou nao
 		//if()
-		return true;
+		return false;
 	}
     
 }
