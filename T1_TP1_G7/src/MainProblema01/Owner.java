@@ -194,7 +194,6 @@ public class Owner extends Thread {
     
     private boolean endOper() {
 		// valida se o Owner deve terminar ou nao
-		//if()
-		return false;
+		return factory.endOper() && !factory.checkForMaterials() && noPrimeMaterialsAvailable() && allProductsSold() && !shop.customersInTheShop();
 	}
 }

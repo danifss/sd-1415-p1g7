@@ -36,6 +36,13 @@ public class Customer extends Thread {
      * @serialField sharedInfo
      */
     private final MonInfo sharedInfo;
+    
+    /**
+     * Factory/Workshop
+     * 
+     * @serialField factory
+     */
+    private final MonFactory factory;
 
     /**
      * Create customer thread
@@ -44,10 +51,11 @@ public class Customer extends Thread {
      * @param shop Shop
      * @param nIter number of cycle iterations of the client life
      */
-    public Customer(MonInfo sharedInfo, int customerId, MonShop shop){
+    public Customer(MonInfo sharedInfo, int customerId, MonShop shop, MonFactory factory){
         this.sharedInfo = sharedInfo;
         this.customerId = customerId;
         this.shop = shop;
+        this.factory = factory;
         this.customerState = MonInfo.CARRYING_OUT_DAILY_CHORES;
     }
     
@@ -137,8 +145,7 @@ public class Customer extends Thread {
     
     private boolean endOper() {
 		// valida se o cliente deve terminar ou nao
-		//if()
-		return false;
+		return factory.endOper() && !factory.checkForMaterials() && noPrimeMaterialsAvailable() && allProductsSold();
 	}
     
 }
