@@ -51,21 +51,14 @@ public class MonInfo {
      *
      * @serialField nCraftsman
      */
-    private static int nCraftsman = 0;
-
-    /**
-     * Present STATE of Craftsman
-     *
-     * @serialField stateCraftsman
-     */
-    private int[] stateCraftsman;
+    private int nCraftsman;
 
     /**
      * Number of Customers
      *
      * @serialField nCustomer
      */
-    private static int nCustomer = 0;
+    private int nCustomer = 0;
 
     /**
      * Present STATE of Customer
@@ -95,11 +88,34 @@ public class MonInfo {
      */
     private String fName = "log.txt";
 
+    /**
+     * Craftman needed information
+     * @serialField stateCraftman State of the Craftman
+     * @serialField nGoodsCraftedByCraftman Number of goods produced by each Craftman
+     */
+    private int[] stateCraftman;
+    private int[] nGoodsCraftedByCraftman;
 
+    /**
+     * Workshop needed information
+     * @serialField nPrimeMaterialsInFactory Amount of prime materials presently in the workshop
+     * @serialField nFinishedProductsInFactory Number of finished products presently in the workshop
+     * @serialField nSuppliedTimes Number of times that a supply of prime materials was delivered to the workshop
+     * @serialField nPrimeMaterialsSupplied total amount of prime materials that have already been supplied (accumulation)
+     * @serialField nProductsManufactured total number of products that have already been manufactured (accumulation)
+     */
+    private int nPrimeMaterialsInFactory;
+    private int nFinishedProductsInFactory;
+    private int nSuppliedTimes;
+    private int nPrimeMaterialsSupplied;
+    private int nProductsManufactured;
+    
+    
+    
     // Tratamento de bens e materias primas
     private int[] nGoodsByCustomer; // Num. bens comprados por cada cliente.
-    private int[] nGoodsCraftedByCraftman; // Num. bens produzidos por cada artesao.
-    private int[] nPrimeMaterialsByCraftman; // Num. de matérias primas por artesão
+
+
     
     // Variáveis da Loja
     private int nCustomersInsideShop; // Num. de clientes na loja
@@ -107,11 +123,6 @@ public class MonInfo {
     
     private boolean tranfsProductsToShop; // Artesao avisa para tranferirem produtos acabados para a loja.
     private boolean supplyMaterialsToFactory; // Artesao avisa que precisa de materiais no oficina.
-    private int nPrimeMaterialsInFactory; // Num. de materias primas na oficina
-    private int nFinishedProductsInFactory; // Num. de bens produzidos que estao na oficina
-    private int nSuppliedTimes; // Num. vezes que foram fornecidas materias primas para a oficina
-    private int nPrimeMaterialsSupplied; // Num. total de materias primas ja fornecidas
-    private int nProductsManufactured; // Num. total de bens produzidos pela oficina.
 
     /**
      * General Repository for manage all relevant information
@@ -122,10 +133,8 @@ public class MonInfo {
      * @param nPrimeMaterialsInFactory
      */
     public MonInfo(int nCraftsman, int nCustomer, String fName, int nPrimeMaterialsInFactory) {
-        if (nCraftsman > 0) 
-            MonInfo.nCraftsman = nCraftsman;
-        if (nCustomer > 0)
-            MonInfo.nCustomer = nCustomer;
+        this.nCraftsman = nCraftsman;
+        this.nCustomer = nCustomer;
 
 		
         this.nGoodsByCustomer = new int[this.nCustomer];
@@ -145,8 +154,8 @@ public class MonInfo {
 
 
         /* Inicializar os estados internos */
-        this.stateCraftsman = new int[this.nCraftsman];			// create array craftsman state
-        for(int craftman: this.stateCraftsman)
+        this.stateCraftman = new int[this.nCraftsman];			// create array craftsman state
+        for(int craftman: this.stateCraftman)
             craftman = FETCHING_PRIME_MATERIALS;		// Set initial state of Craftsman
         
         this.stateCustomer = new int[this.nCustomer];			// create array customers state
@@ -198,37 +207,39 @@ public class MonInfo {
             GenericIO.writelnString("A operação de criação do ficheiro " + fName + " falhou!");
             System.exit(1);
         }
-        for (int i = 0; i < nCraftsman; i++) {
-            switch (stateCraftsman[i]) {
-                case FETCHING_PRIME_MATERIALS:
-                    lineStatus += "  ";
-                    break;
-                case PRODUCING_A_NEW_PIECE:
-                    lineStatus += "  ";
-                    break;
-                case STORING_IT_FOR_TRANSFER:
-                    lineStatus += "  ";
-                    break;
-                case CONTACTING_THE_ENTREPRENEUR:
-                    lineStatus += "  ";
-                    break;
-            }
-        }
         for (int i = 0; i < nCustomer; i++) {
             switch (stateCustomer[i]) {
                 case CARRYING_OUT_DAILY_CHORES:
-                    lineStatus += "  ";
+                    lineStatus += " CODC ";
                     break;
                 case CHECKING_DOOR_OPEN:
-                    lineStatus += "  ";
+                    lineStatus += " CDO  ";
                     break;
                 case APPRAISING_OFFER_IN_DISPLAY:
-                    lineStatus += "  ";
+                    lineStatus += " AOID ";
                     break;
                 case BUYING_SOME_GOODS:
-                    lineStatus += "  ";
+                    lineStatus += " BSG  ";
                     break;
             }
+            lineStatus += " " + nGoodsByCustomer[i] + " ";
+        }
+        for (int i = 0; i < nCraftsman; i++) {
+            switch (stateCraftman[i]) {
+                case FETCHING_PRIME_MATERIALS:
+                    lineStatus += " FPM  ";
+                    break;
+                case PRODUCING_A_NEW_PIECE:
+                    lineStatus += " PANP ";
+                    break;
+                case STORING_IT_FOR_TRANSFER:
+                    lineStatus += " SIFT ";
+                    break;
+                case CONTACTING_THE_ENTREPRENEUR:
+                    lineStatus += " CTE  ";
+                    break;
+            }
+            lineStatus += " " + nGoodsCraftedByCraftman[i] + " ";
         }
         log.writelnString(lineStatus);
         if (!log.close()) {
@@ -244,7 +255,7 @@ public class MonInfo {
      * @param state 
      */
     public synchronized void setStateCraftsman(int craftsmanId, int state) {
-        this.stateCraftsman[craftsmanId] = state;
+        this.stateCraftman[craftsmanId] = state;
         reportStatus();
     }
     
@@ -280,7 +291,7 @@ public class MonInfo {
     /**
      * @return Number of Craftmans
      */
-    public static int getnCraftsman() {
+    public int getnCraftsman() {
         return nCraftsman;
     }
     
@@ -290,13 +301,13 @@ public class MonInfo {
      * @param i Number of the Craftman
      */
     public int getStateCraftsman(int i) {
-        return stateCraftsman[i];
+        return stateCraftman[i];
     }
     
     /**
      * @return Number of Customers
      */
-    public static int getnCustomer() {
+    public int getnCustomer() {
         return nCustomer;
     }
     
@@ -335,7 +346,6 @@ public class MonInfo {
     // Num. bens produzidos por cada artesao.
     public synchronized void incrementnGoodsCraftedByCraftman(int craftsmanId) {
         this.nGoodsCraftedByCraftman[craftsmanId]++;
-        reportStatus();
     }
     
     // Num. de clientes na loja
@@ -362,17 +372,6 @@ public class MonInfo {
         reportStatus();
     }
     
-    // Num. de materias primas na oficina
-    public synchronized void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
-        this.nPrimeMaterialsInFactory += nPrimeMaterialsInFactory;
-        reportStatus();
-    }
-    
-    // Obter o numero de materias primas na oficina
-    public int getnPrimeMaterialsInFactory(){
-        return nPrimeMaterialsInFactory;
-    }
-    
     // Num. de bens produzidos que estao na oficina
     public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
         this.nFinishedProductsInFactory += nFinishedProductsInFactory;
@@ -396,17 +395,6 @@ public class MonInfo {
         this.nProductsManufactured += nProductsManufactured;
         reportStatus();
     }
-    
-    // Obter o número de matérias primas que um artesão tem
-    public int getnPrimeMaterialsByCraftman(int craftmanId) {
-        return nPrimeMaterialsByCraftman[craftmanId];
-    }
-
-    // Atribuir o numero de materias primas ao craftman
-    public synchronized void setnPrimeMaterialsByCraftman(int craftmanId, int nPrimeMaterialsByCraftman) {
-        this.nPrimeMaterialsByCraftman[craftmanId] = nPrimeMaterialsByCraftman;
-        reportStatus();
-    }
 
 	public boolean isToTranfsProductsToShop() {
 		return tranfsProductsToShop;
@@ -414,6 +402,13 @@ public class MonInfo {
 
 	public boolean isToSupplyMaterialsToFactory() {
 		return supplyMaterialsToFactory;
-	}
-	
+        }
+        
+    /**
+     * Change the number of prime materials available in the factory
+     * @param nPrimeMaterialsInFactory 
+     */
+    public synchronized void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
+        this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
+    }
 }
