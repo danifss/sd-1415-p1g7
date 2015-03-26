@@ -48,42 +48,36 @@ public class MonInfo {
 
     /**
      * Number of Craftsman
-     *
      * @serialField nCraftsman
      */
-    private int nCraftsman;
+    private int nCraftman;
 
     /**
      * Number of Customers
-     *
      * @serialField nCustomer
      */
     private int nCustomer = 0;
 
     /**
      * Present STATE of Customer
-     *
      * @serialField stateCustomer
      */
     private int[] stateCustomer;
 
     /**
      * Present STATE of Owner
-     * 
      * @serialField stateOwner
      */
     private int stateOwner;
 	
     /**
      * Present STATE of Shop
-     * 
      * @serialField stateShop
      */
     private int stateShop;
 
     /**
      * Name of the file logging
-     *
      * @serialField fName
      */
     private String fName = "log.txt";
@@ -133,34 +127,38 @@ public class MonInfo {
      * @param nPrimeMaterialsInFactory
      */
     public MonInfo(int nCraftsman, int nCustomer, String fName, int nPrimeMaterialsInFactory) {
-        this.nCraftsman = nCraftsman;
-        this.nCustomer = nCustomer;
-
-		
-        this.nGoodsByCustomer = new int[this.nCustomer];
-        for(int elem: this.nGoodsByCustomer) elem = 0;
-        this.nGoodsCraftedByCraftman = new int[this.nCraftsman];
-        for(int elem: this.nGoodsCraftedByCraftman) elem = 0;
-
+        // Inicialização das variáveis do Craftman
+        this.nCraftman = nCraftsman;
+        stateCraftman = new int[this.nCraftman];			// create array craftman state
+        for(int i=0;i<this.nCraftman; i++)
+            stateCraftman[i] = FETCHING_PRIME_MATERIALS;		// Set initial state of Craftsman
+        nGoodsCraftedByCraftman = new int[this.nCraftman];
+        for(int i=0;i<this.nCraftman; i++) 
+            nGoodsCraftedByCraftman[i] = 0;
+        
+        // Inicialização das variáveis da Factory
         this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
+        nFinishedProductsInFactory = 0;
+        nSuppliedTimes = 0;
+        nPrimeMaterialsSupplied = 0;
+        nProductsManufactured = 0;
+        
+        
+        
+        this.nCustomer = nCustomer;
+	
+        this.nGoodsByCustomer = new int[this.nCustomer];
+        for(int i=0;i<this.nCustomer; i++) 
+            nGoodsByCustomer[i] = 0;
+        
         this.nCustomersInsideShop = 0;
         this.nGoodsInDisplay = 0;
         this.tranfsProductsToShop = false;
         this.supplyMaterialsToFactory = false;
-        this.nFinishedProductsInFactory = 0;
-        this.nSuppliedTimes = 0;
-        this.nPrimeMaterialsSupplied = 0;
-        this.nProductsManufactured = 0;
 
-
-        /* Inicializar os estados internos */
-        this.stateCraftman = new int[this.nCraftsman];			// create array craftsman state
-        for(int craftman: this.stateCraftman)
-            craftman = FETCHING_PRIME_MATERIALS;		// Set initial state of Craftsman
-        
         this.stateCustomer = new int[this.nCustomer];			// create array customers state
-        for(int customer: this.stateCustomer)
-            customer = CARRYING_OUT_DAILY_CHORES;		// Set initial state of Customer
+        for(int i=0;i<this.nCustomer; i++)
+            stateCustomer[i] = CARRYING_OUT_DAILY_CHORES;		// Set initial state of Customer
         
         this.stateShop = CLOSED;							// Set initial state of Shop
         this.stateOwner = OPENING_THE_SHOP;					// Set initial state of Owner
@@ -224,7 +222,7 @@ public class MonInfo {
             }
             lineStatus += " " + nGoodsByCustomer[i] + " ";
         }
-        for (int i = 0; i < nCraftsman; i++) {
+        for (int i = 0; i < nCraftman; i++) {
             switch (stateCraftman[i]) {
                 case FETCHING_PRIME_MATERIALS:
                     lineStatus += " FPM  ";
@@ -246,17 +244,6 @@ public class MonInfo {
             GenericIO.writelnString("A operação de fecho do ficheiro " + fName + " falhou!");
             System.exit(1);
         }
-    }
-
-    /**
-     * Set Craftsman[i] state
-     * 
-     * @param craftsmanId
-     * @param state 
-     */
-    public synchronized void setStateCraftsman(int craftsmanId, int state) {
-        this.stateCraftman[craftsmanId] = state;
-        reportStatus();
     }
     
     /**
@@ -292,7 +279,7 @@ public class MonInfo {
      * @return Number of Craftmans
      */
     public int getnCraftsman() {
-        return nCraftsman;
+        return nCraftman;
     }
     
     /**
@@ -342,11 +329,6 @@ public class MonInfo {
         this.nGoodsByCustomer[customerId] += nGoods;
         reportStatus();
     }
-
-    // Num. bens produzidos por cada artesao.
-    public synchronized void incrementnGoodsCraftedByCraftman(int craftsmanId) {
-        this.nGoodsCraftedByCraftman[craftsmanId]++;
-    }
     
     // Num. de clientes na loja
     public synchronized void setnCustomersInsideShop(int nCustomersInsideShop) {
@@ -372,15 +354,36 @@ public class MonInfo {
         reportStatus();
     }
 
-	public boolean isToTranfsProductsToShop() {
-		return tranfsProductsToShop;
-	}
+    public boolean isToTranfsProductsToShop() {
+            return tranfsProductsToShop;
+    }
 
-	public boolean isToSupplyMaterialsToFactory() {
-		return supplyMaterialsToFactory;
-        }
+    public boolean isToSupplyMaterialsToFactory() {
+            return supplyMaterialsToFactory;
+    }
         
         
+    // Funções destinadas a alterar as variáveis pertencentes aos Craftman
+    /**
+     * Set state of the Craftman[i]
+     * 
+     * @param craftmanId
+     * @param state 
+     */
+    public synchronized void setCraftmanState(int craftmanId, int state) {
+        this.stateCraftman[craftmanId] = state;
+        reportStatus();
+    }
+    
+    /**
+     * Change the number of products (accumulation) manufactured by the craftsman[i]
+     * @param craftmanId
+     * @param nGoodsCraftedByCraftman 
+     */
+    public synchronized void setnGoodsCraftedByCraftman(int craftmanId, int nGoodsCraftedByCraftman){
+        this.nGoodsCraftedByCraftman[craftmanId] = nGoodsCraftedByCraftman;
+    }
+    
     // Funções destinadas a alterar as variáveis pertencentes à Factory
     /**
      * Change the amount of prime materials presently in the Factory
