@@ -168,13 +168,13 @@ public class MonInfo {
      * 
      */
     private void reportInitialStatus() {
-        TextFile log = new TextFile();                  // instanciação de uma variável de tipo ficheiro de texto
+        TextFile log = new TextFile();                  // instanciacao de uma variavel de tipo ficheiro de texto
 
         if (!log.openForWriting(".", this.fName)) {
             GenericIO.writelnString("A operação de criação do ficheiro " + this.fName + " falhou!");
             System.exit(1);
         }
-        log.writelnString("\t\tAveiro Handicraft SARL - Description of the internal state");
+        log.writelnString("        Aveiro Handicraft SARL - Description of the internal state");
         if (!log.close()) {
             GenericIO.writelnString("A operação de fecho do ficheiro " + this.fName + " falhou!");
             System.exit(1);
@@ -191,7 +191,7 @@ public class MonInfo {
      * One line of text about the system is written in the file.
      */
     private void reportStatus() {
-        TextFile log = new TextFile();  // instanciação de uma variável de tipo ficheiro de texto
+        TextFile log = new TextFile();  // instanciação de uma variavel de tipo ficheiro de texto
 
         String lineStatus = "";     // linha a imprimir
 
