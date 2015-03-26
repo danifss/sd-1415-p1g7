@@ -23,6 +23,26 @@ public class Craftman extends Thread {
             STORING_IT_FOR_TRANSFER = 2,
             CONTACTING_THE_ENTREPRENEUR = 3;
     
+    /**
+     * Factory/Workshop
+     * @serialField factory
+     */
+    private final MonFactory factory;
+        
+    /**
+     * Shop
+     * @serialField shop
+     */
+    private final MonShop shop;
+    
+    /**
+     * General Repository
+     * @serialField shop
+     */
+    private final MonInfo info;
+    
+    
+    
     // Variáveis que necessitam ser usadas no repositório
     
     /**
@@ -46,6 +66,7 @@ public class Craftman extends Thread {
     private int totalProduced;
     
     
+    
     // Variáveis que não são necessárias no repositório geral
     
     /**
@@ -60,26 +81,7 @@ public class Craftman extends Thread {
      */
     private int nProduct;
     
-    /**
-     * Factory/Workshop
-     * 
-     * @serialField factory
-     */
-    private final MonFactory factory;
-        
-    /**
-     * Shop
-     * 
-     * @serialField shop
-     */
-    private final MonShop shop;
-    
-    /**
-     * General Repository
-     * 
-     * @serialField shop
-     */
-    private final MonInfo info;
+
     
     /**
      * Create Craftman thread
@@ -192,6 +194,9 @@ public class Craftman extends Thread {
         nProduct -= factory.goToStore(nProduct);
     }
     
+    /**
+     * Batch ready for transfer
+     */
     private void batchReadyForTransfer(){
         stateCraftman = CONTACTING_THE_ENTREPRENEUR;
         info.setCraftmanState(craftmanId, stateCraftman);
@@ -199,11 +204,17 @@ public class Craftman extends Thread {
         shop.batchReadyForTransfer();
     }
     
+    /**
+     * Back to work
+     */
     private void backToWork(){
         stateCraftman = FETCHING_PRIME_MATERIALS;
         info.setCraftmanState(craftmanId, stateCraftman);
     }
     
+    /**
+     * Prime materials needed
+     */
     private void primeMaterialsNeeded(){
         stateCraftman = CONTACTING_THE_ENTREPRENEUR;
         info.setCraftmanState(craftmanId, stateCraftman);
