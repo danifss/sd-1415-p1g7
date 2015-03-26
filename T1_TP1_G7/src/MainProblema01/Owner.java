@@ -160,7 +160,6 @@ public class Owner extends Thread {
         this.shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
 
         this.sharedInfo.setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
-        sharedInfo.setnPrimeMaterialsInFactory(-products);
         this.sharedInfo.setTranfsProductsToShop(false);
 	}
 
