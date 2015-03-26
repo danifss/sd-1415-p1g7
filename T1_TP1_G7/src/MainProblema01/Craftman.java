@@ -107,6 +107,7 @@ public class Craftman extends Thread {
      */
     @Override
     public void run(){
+        System.out.println("Iniciado o Craftman: "+craftmanId);
         while(!endOper()){
             switch(craftmanState){
                 case FETCHING_PRIME_MATERIALS:
@@ -139,7 +140,7 @@ public class Craftman extends Thread {
                     break;
             }
         }
-        System.out.println("Terminou o Craftman "+craftmanId);
+        System.out.println("Terminado o Craftman: "+craftmanId);
     }
     
     /**
