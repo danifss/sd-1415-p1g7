@@ -371,30 +371,6 @@ public class MonInfo {
         this.supplyMaterialsToFactory = supplyMaterialsToFactory;
         reportStatus();
     }
-    
-    // Num. de bens produzidos que estao na oficina
-    public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory) {
-        this.nFinishedProductsInFactory += nFinishedProductsInFactory;
-        reportStatus();
-    }
-    
-    // Num. vezes que foram fornecidas materias primas para a oficina
-    public synchronized void setnSuppliedTimes(int nSuppliedTimes) {
-        this.nSuppliedTimes += nSuppliedTimes;
-        reportStatus();
-    }
-    
-    // Num. total de materias primas ja fornecidas
-    public synchronized void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied) {
-        this.nPrimeMaterialsSupplied += nPrimeMaterialsSupplied;
-        reportStatus();
-    }
-    
-    // Num. total de bens produzidos pela oficina.
-    public synchronized void setnProductsManufactured(int nProductsManufactured) {
-        this.nProductsManufactured += nProductsManufactured;
-        reportStatus();
-    }
 
 	public boolean isToTranfsProductsToShop() {
 		return tranfsProductsToShop;
@@ -404,11 +380,45 @@ public class MonInfo {
 		return supplyMaterialsToFactory;
         }
         
+        
+    // Funções destinadas a alterar as variáveis pertencentes à Factory
     /**
-     * Change the number of prime materials available in the factory
+     * Change the amount of prime materials presently in the Factory
      * @param nPrimeMaterialsInFactory 
      */
     public synchronized void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
         this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
+    }
+    
+    /**
+     * Change the number of finished products presently in the Factory
+     * @param nFinishedProductsInFactory 
+     */
+    public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory){
+        this.nFinishedProductsInFactory = nFinishedProductsInFactory;
+    }
+    
+    /**
+     * Change the number of times that a supply of prime materials was delivered to the workshop
+     * @param nSuppliedTimes 
+     */
+    public synchronized void setnSuppliedTimes(int nSuppliedTimes){
+        this.nSuppliedTimes = nSuppliedTimes;
+    }
+    
+    /**
+     * Change the total amount of prime materials that have already been supplied (accumulation)
+     * @param nPrimeMaterialsSupplied 
+     */
+    public synchronized void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied){
+        this.nPrimeMaterialsSupplied = nPrimeMaterialsSupplied;
+    }
+    
+    /**
+     * Change the total number of products that have already been manufactured (accumulation)
+     * @param nProductsManufactured 
+     */
+    public synchronized void setnProductsManufactured(int nProductsManufactured){
+        this.nProductsManufactured = nProductsManufactured;
     }
 }
