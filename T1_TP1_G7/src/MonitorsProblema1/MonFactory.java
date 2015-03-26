@@ -16,6 +16,17 @@ public class MonFactory {
     private int nPrimeMaterials;
     
     /**
+     * Total number of prime materials delivered
+     * @serialField nTotalPrimeDelivered
+     */
+    private int nPrimeDelivered;
+    
+    /**
+     * Total number of prime materials
+     */
+    private final int nTotalPrime;
+    
+    /**
      * Number of prime materials needed to produce a new product
      * @serialField nPrimePerProduct
      */
@@ -59,12 +70,6 @@ public class MonFactory {
     private int flagNProductsCall;
     
     /**
-     * Total number os products made by the craftsmans
-     * @serialField nMaxProductsMade
-     */
-    private int nTotalProductsMade;
-    
-    /**
      * Factory where Craftmans will work
      * 
      * @param nPrimeMaterials
@@ -72,16 +77,17 @@ public class MonFactory {
      * @param nPrimeRestock
      * @param nLimitOfProductsInFactory
      */
-    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect) {
+    public MonFactory(int nPrimeMaterials, int nPrimePerProduct, int nPrimeRestock, int nLimitOfProductsInFactory, int nProductsCollect, int nTotalPrime) {
         this.nPrimeMaterials = nPrimeMaterials;
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
         this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
         this.nProductsCollect = nProductsCollect;
+        this.nTotalPrime = nTotalPrime;
+        nPrimeDelivered = 0;
         nFinishedProductsInFactory = 0;
         flagPrimeCall = false;
         flagNProductsCall = 0;
-        nTotalProductsMade = 0;
     }
 
     /**
@@ -93,14 +99,18 @@ public class MonFactory {
     
     /**
      * Check For Materials
+     * @return true if has materials
      */
-    public synchronized void checkForMaterials(){
+    public synchronized boolean checkForMaterials(){
         try{
-            while(nPrimeMaterials<nPrimePerProduct){
+            while(nPrimeMaterials<nPrimePerProduct && !endOper()){
                 wait();
                 Thread.sleep(1000);
             }
         }catch(Exception e){}
+        
+        // Return always true if endOper is false
+        return nPrimeMaterials >= nPrimePerProduct;
     }
     
     /**
@@ -109,9 +119,12 @@ public class MonFactory {
      */
     public synchronized int collectMaterials() {
         // Garante que há matérias primas para buscar
-        checkForMaterials();
-        nPrimeMaterials -= nPrimePerProduct;
-        return nPrimeMaterials;
+        if(checkForMaterials())
+        {
+            nPrimeMaterials -= nPrimePerProduct;
+            return nPrimePerProduct;
+        }
+        return 0;
     }
     
     /**
@@ -121,7 +134,6 @@ public class MonFactory {
      */
     public synchronized int goToStore(int nProd){
         nFinishedProductsInFactory += nProd;
-        nTotalProductsMade += nProd;
         return nProd;
     }
     
@@ -189,12 +201,16 @@ public class MonFactory {
      */
     public synchronized void replenishStock(int nPrimeMaterials){
         this.nPrimeMaterials += nPrimeMaterials;
+        nPrimeDelivered += nPrimeMaterials;
         flagPrimeCall = false;
         notifyAll();
     }
-
-    public int getnTotalProductsMade() {
-        return nTotalProductsMade;
+    
+    /**
+     * Sees if the Craftman can stop
+     * @return true if the Craftman can stop
+     */
+    public boolean endOper(){
+        return nPrimeDelivered == nTotalPrime;
     }
-
 }
