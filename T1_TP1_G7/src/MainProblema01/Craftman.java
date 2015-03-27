@@ -97,7 +97,6 @@ public class Craftman extends Thread {
         this.shop = shop;
         this.info = info;
         stateCraftman = MonInfo.FETCHING_PRIME_MATERIALS;
-        info.setCraftmanState(this.craftmanId, stateCraftman);
         nPrimeMaterials = 0;
         nProduct = 0;
         totalProduced = 0;
@@ -216,9 +215,9 @@ public class Craftman extends Thread {
      * Prime materials needed
      */
     private void primeMaterialsNeeded(){
+        factory.primeMaterialsNeeded();
         stateCraftman = CONTACTING_THE_ENTREPRENEUR;
         info.setCraftmanState(craftmanId, stateCraftman);
-        factory.primeMaterialsNeeded();
         shop.primeMaterialsNeeded();
     }
     
