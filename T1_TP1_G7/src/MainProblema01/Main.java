@@ -49,7 +49,7 @@ public class Main {
         int nInitialPrimeMaterialsInStorage = 20;			// Materias Primas no armazem inicialmente
         int nPrimeMaterialsInFactory = 10;					// Materias Primas na oficina inicialmente
         int nInitialProductsInShop = 0;						// Produtos na Loja inicialmente
-        int nPrimeMaterialsByProduct = 1;					// Materia Prima por produto
+        int nPrimeMaterialsByProduct = 2;					// Materia Prima por produto
         int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
         int nProductsCollect = 10;                          // Minimo de produtos para o Owner ir buscar
         int nLimitOfProductsInFactory = 50;					// Limite de produtos na oficina
@@ -86,10 +86,10 @@ public class Main {
         /*for (int i = 0; i < nCustomers; i++)
             customer[i].start();*/
         
-        owner.start();
+        //owner.start();
 
         /* aguardar o fim da simulação */
-        for (int i = 0; i < nCraftsman; i++) {
+        /*for (int i = 0; i < nCraftsman; i++) {
             while (craftman[i].isAlive()) {
                 craftman[i].interrupt();
                 Thread.yield();
@@ -120,8 +120,6 @@ public class Main {
             owner.join();
         } catch (InterruptedException e) {}
         GenericIO.writelnString("O/A Dono/a terminou.");
-        GenericIO.writelnString();
-
-        System.exit(0);
+        GenericIO.writelnString();*/
     }
 }
