@@ -227,6 +227,6 @@ public class Craftman extends Thread {
      */
     private boolean endOper() {
         // valida se o craftman deve terminar ou nao
-        return factory.endOper() && !checkForMaterials();
+        return factory.endOper() && !checkForMaterials() && stateCraftman==FETCHING_PRIME_MATERIALS && nPrimeMaterials==0;
     }
 }
