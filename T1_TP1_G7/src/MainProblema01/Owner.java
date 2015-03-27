@@ -10,26 +10,26 @@ import MonitorsProblema1.*;
  */
 public class Owner extends Thread {
 	
-	/**
-	 * General Repository
-	 * 
-	 * @serialField sharedInfo
-	 */
-	private MonInfo sharedInfo;
+    /**
+     * General Repository
+     * 
+     * @serialField sharedInfo
+     */
+    private MonInfo sharedInfo;
 
-	/**
-	 * Factory
-	 *
-	 * @serialField factory
-	 */
-	private MonFactory factory;
+    /**
+     * Factory
+     *
+     * @serialField factory
+     */
+    private MonFactory factory;
 
-	/**
-	 * Shop
-	 *
-	 * @serialField shop
-	 */
-	private MonShop shop;
+    /**
+     * Shop
+     *
+     * @serialField shop
+     */
+    private MonShop shop;
     
     /**
      * Storage
@@ -39,7 +39,7 @@ public class Owner extends Thread {
     private MonStorage storage;
     
     /**
-     * Preent State of the Owner
+     * Present State of the Owner
      * 
      * @serialField ownerState
      */

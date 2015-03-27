@@ -86,7 +86,7 @@ public class Main {
         /*for (int i = 0; i < nCustomers; i++)
             customer[i].start();*/
         
-        //owner.start();
+        owner.start();
 
         /* aguardar o fim da simulação */
         /*for (int i = 0; i < nCraftsman; i++) {
