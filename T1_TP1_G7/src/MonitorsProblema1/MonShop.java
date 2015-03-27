@@ -141,6 +141,7 @@ public class MonShop {
      */
     public synchronized void primeMaterialsNeeded(){
         flagPrimeMaterialsNeeded = true;
+        sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
     }
     
     /**
@@ -156,6 +157,7 @@ public class MonShop {
      */
     public synchronized void replenishStock(){
         flagPrimeMaterialsNeeded = false;
+        sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
     }
     
     /**
