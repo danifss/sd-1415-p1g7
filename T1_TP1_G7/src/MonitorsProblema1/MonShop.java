@@ -1,7 +1,5 @@
 package MonitorsProblema1;
 
-import genclass.*;
-
 /**
  * @author Daniel 51908
  * @author Raphael 64044
@@ -10,77 +8,115 @@ import genclass.*;
 
 public class MonShop {
     
+     /**
+     * Shop States
+     */
+    private final static int
+            CLOSED = 0,
+            STILL_OPEN = 1,
+            OPEN = 2;
+    
     /**
      * Present State of Shop
-     * 
      * @serialField shopState
      */
     private int shopState;
     
     /**
      * General Repository
-     * 
      * @serialField sharedInfo
      */
     private final MonInfo sharedInfo;
 
     /**
      * FIFO with Customers on the Shop
-     *
      * @serialField sitCustomer
      */
     private MemFIFO sitCustomer;
     
+    /**
+     * Number of customers inside the shop
+     * @serialField customerInsideShop
+     */
     private int customerInsideShop;
     
+    /**
+     * Number of goods that the shop has to sell
+     * @serialField nGoodsInDisplay
+     */
     private int nGoodsInDisplay;
+    
+    /**
+     * Flag to see if the Factory has products to bring
+     * @serialField flagBringProductsFromFactory
+     */
     private int flagBringProductsFromFactory;
+    
+    /**
+     * Flag to see if the Factory needs prime materials
+     * @serialField flagPrimeMaterialsNeeded
+     */
     private boolean flagPrimeMaterialsNeeded;
     
 
     /**
      * Create Monitor of the Shop
      * 
-     * @param nInitialProductsInShop
-     * @param nCustomer
+     * @param nInitialProductsInShop Initial number of products in the shop at the beginning
+     * @param nCustomer Number of customers
+     * @param sharedInfo General repository
      */
     public MonShop(int nInitialProductsInShop, int nCustomer, MonInfo sharedInfo) {
         this.sharedInfo = sharedInfo;
-        this.shopState = MonInfo.CLOSED;
-        this.customerInsideShop = 0;
+        shopState = CLOSED;
+        customerInsideShop = 0;
         sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
-        
-        this.nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
-        this.flagBringProductsFromFactory = 0;
-        this.flagPrimeMaterialsNeeded = false;
+        nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
+        flagBringProductsFromFactory = 0;
+        flagPrimeMaterialsNeeded = false;
     }
 
+    /**
+     * Get number of products that the shop is selling
+     * @return Number of products in display
+     */
     public int getnGoodsInDisplay() {
         return nGoodsInDisplay;
     }
 
-    public synchronized void setnGoodsInDisplay(int goods) {
-        this.nGoodsInDisplay = goods;
+    /**
+     * Update the number of products that the shop is selling
+     * @param goods 
+     */
+    public synchronized void addnGoodsInDisplay(int goods) {
+        nGoodsInDisplay += goods;
         sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
     }
 
+    // DUVIDA
+    // customers in the shop ou customers in the queue?????????????????????????????????????????
     public boolean customersInTheShop(){
         return !this.sitCustomer.isEmpty(); // True if not empty queue
     }
 
     /**
-     * 
-     * @return check if the door is open or not
+     * See if the door is open
+     * @return True if is open
      */
     public boolean isDoorOpen() {
-        return shopState != 0; // 0 => closed
+        return shopState == OPEN;
     }
 
+    /**
+     * A customer enters the shop
+     */
     public synchronized void enterShop() {
         this.customerInsideShop++;
         sharedInfo.setnCustomersInsideShop(customerInsideShop);
     }
     
+    
+    // Não percebi (Raphael)
     public synchronized int perusingAround(){
         // choose what to buy
         double r = Math.random();
@@ -91,6 +127,7 @@ public class MonShop {
         return 0;
     }
 
+    
     public synchronized void iWantThis(int customerId, int nGoods) {
         
         this.sitCustomer.write(customerId); // ir para a fila de atendimento
@@ -119,11 +156,11 @@ public class MonShop {
         }
     }
 	
-	public synchronized int addressACustomer(){
-		notifyAll(); // chamar cliente
-		
-		return (int) this.sitCustomer.peek(); // retorna id do cliente
-	}
+    public synchronized int addressACustomer(){
+            notifyAll(); // chamar cliente
+
+            return (int) this.sitCustomer.peek(); // retorna id do cliente
+    }
     
     public synchronized void removeSitCustomer(int customerId){
         //sitCustomer.remove(customerId); // nao se funciona bem
