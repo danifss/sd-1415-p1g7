@@ -9,7 +9,19 @@ import MonitorsProblema1.*;
  * @version 1.0
  */
 public class Owner extends Thread {
-	
+    
+    /**
+     * Owner States
+     */
+    private final static int
+            OPENING_THE_SHOP = 0,
+            WAITING_FOR_NEXT_TASK = 1,
+            ATTENDING_A_CUSTOMER = 2,
+            CLOSING_THE_SHOP = 3,
+            DELIVERING_PRIME_MATERIALS = 4,
+            COLLECTING_A_BATCH_OF_PRODUCTS = 5,
+            BUYING_PRIME_MATERIALS = 6;
+    
     /**
      * General Repository
      * 
@@ -58,7 +70,7 @@ public class Owner extends Thread {
             this.shop = shop;
     this.storage = storage;
 
-    this.ownerState = MonInfo.OPENING_THE_SHOP;
+    this.ownerState = OPENING_THE_SHOP;
     }
 
     /**
@@ -103,7 +115,7 @@ public class Owner extends Thread {
     }
 
     private void prepareToWork() {
-        setOwnerState(MonInfo.WAITING_FOR_NEXT_TASK);
+        setOwnerState(WAITING_FOR_NEXT_TASK);
 
         try {
             sleep((long) (1 + 20 * Math.random()));
@@ -124,7 +136,7 @@ public class Owner extends Thread {
     }
 
     private void serviceCustomer() {
-        setOwnerState(MonInfo.ATTENDING_A_CUSTOMER);
+        setOwnerState(ATTENDING_A_CUSTOMER);
 
         try {
             sleep((long) (1 + 10 * Math.random()));
@@ -142,28 +154,28 @@ public class Owner extends Thread {
 
     private void prepareToLeave() { // nao sei se e assim
         shop.setShopState(MonInfo.STILL_OPEN);
-        setOwnerState(MonInfo.CLOSING_THE_SHOP);
+        setOwnerState(CLOSING_THE_SHOP);
     }
 
     private void goToWorkshop() {
-        setOwnerState(MonInfo.COLLECTING_A_BATCH_OF_PRODUCTS);
+        setOwnerState(COLLECTING_A_BATCH_OF_PRODUCTS);
 
         shop.goToWorkshop();                        // Atualiza a flag
         int products = factory.goToWorkshop(); // get dos produtos feitos
 
-        shop.setnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
+        shop.addnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
     }
 
     private int visitSuppliers() {
         // visita o fornecedor/armazem para comprar materia prima
-        setOwnerState(MonInfo.BUYING_PRIME_MATERIALS);
+        setOwnerState(BUYING_PRIME_MATERIALS);
 
         try {
             sleep((long) (1 + 10 * Math.random()));
         } catch (InterruptedException e) {}
 
         if(storage.isPrimeMaterialsAvailabe())
-            return storage.getBunchOfPrimeMaterials();
+            return storage.visitSuppliers();
         return 0; // sem materias primas
     }
 
@@ -172,7 +184,7 @@ public class Owner extends Thread {
      * @param q number of prime materials delivered 
      */
     private void replenishStock(int q) {
-        setOwnerState(MonInfo.DELIVERING_PRIME_MATERIALS);
+        setOwnerState(DELIVERING_PRIME_MATERIALS);
         shop.replenishStock();
         factory.replenishStock(q);
     }
@@ -185,7 +197,7 @@ public class Owner extends Thread {
             sleep((long) (1 + 10 * Math.random()));
         } catch (InterruptedException e) {}
 
-        setOwnerState(MonInfo.OPENING_THE_SHOP);
+        setOwnerState(OPENING_THE_SHOP);
         shop.setShopState(MonInfo.OPEN);
     }
     
