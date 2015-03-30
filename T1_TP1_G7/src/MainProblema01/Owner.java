@@ -99,6 +99,7 @@ public class Owner extends Thread {
             }
             returnToShop();
         } while(!endOper());
+        System.out.println("Terminado o Owner.");
     }
 
     private void prepareToWork() {
@@ -171,6 +172,7 @@ public class Owner extends Thread {
      * @param q number of prime materials delivered 
      */
     private void replenishStock(int q) {
+        setOwnerState(MonInfo.DELIVERING_PRIME_MATERIALS);
         shop.replenishStock();
         factory.replenishStock(q);
     }
@@ -194,7 +196,7 @@ public class Owner extends Thread {
     
     private boolean endOper() {
         // valida se o Owner deve terminar ou nao
-        //return factory.endOper() && !factory.checkForMaterials() && noPrimeMaterialsAvailable() && allProductsSold() && !shop.customersInTheShop();
-	return false;
+        return factory.endOfPrimeMaterials() && !factory.checkForMaterials() /*&& noPrimeMaterialsAvailable() && allProductsSold() &&*/ && !shop.customersInTheShop();
+        //return false;
     }
 }

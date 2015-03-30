@@ -82,6 +82,7 @@ public class Customer extends Thread {
             }
             exitShop();
         }
+        System.out.println("Terminado o Customer: "+customerId);
     }
 
     /**
