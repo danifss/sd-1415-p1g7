@@ -96,7 +96,7 @@ public class Craftman extends Thread {
         this.factory = factory;
         this.shop = shop;
         this.info = info;
-        stateCraftman = MonInfo.FETCHING_PRIME_MATERIALS;
+        stateCraftman = FETCHING_PRIME_MATERIALS;
         nPrimeMaterials = 0;
         nProduct = 0;
         totalProduced = 0;
