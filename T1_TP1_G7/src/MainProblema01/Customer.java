@@ -9,6 +9,16 @@ import MonitorsProblema1.*;
  * @version 1.0
  */
 public class Customer extends Thread {
+    
+    /**
+     * Customer States
+     */
+    private final static int
+            CARRYING_OUT_DAILY_CHORES = 0,
+            CHECKING_DOOR_OPEN = 1,
+            APPRAISING_OFFER_IN_DISPLAY = 2,
+            BUYING_SOME_GOODS = 3;
+    
     /**
      * Customer identity
      *
@@ -56,7 +66,7 @@ public class Customer extends Thread {
         this.customerId = customerId;
         this.shop = shop;
         this.factory = factory;
-        this.customerState = MonInfo.CARRYING_OUT_DAILY_CHORES;
+        this.customerState = CARRYING_OUT_DAILY_CHORES;
     }
     
     /**
@@ -100,14 +110,14 @@ public class Customer extends Thread {
      * that he buy goods, and finally exit shop
      */
     private void goShopping(){
-        setCustomerState(MonInfo.CHECKING_DOOR_OPEN);
+        setCustomerState(CHECKING_DOOR_OPEN);
     }
 
     /**
      * Try Again Later
      */
     private void tryAgainLater(){
-        setCustomerState(MonInfo.CARRYING_OUT_DAILY_CHORES);
+        setCustomerState(CARRYING_OUT_DAILY_CHORES);
 
         try{
             sleep((long) (1+40*Math.random()));
@@ -115,7 +125,7 @@ public class Customer extends Thread {
     }
     
     private void enterShop() {
-        setCustomerState(MonInfo.APPRAISING_OFFER_IN_DISPLAY);
+        setCustomerState(APPRAISING_OFFER_IN_DISPLAY);
         
         shop.enterShop();
     }
@@ -129,14 +139,14 @@ public class Customer extends Thread {
     }
     
     private void iWantThis(int goods){
-        setCustomerState(MonInfo.BUYING_SOME_GOODS);
+        setCustomerState(BUYING_SOME_GOODS);
         
         shop.iWantThis(customerId, goods); // acao bloqueante
     }
 
     private void exitShop() {
         shop.exitShop(customerId);
-        setCustomerState(MonInfo.CARRYING_OUT_DAILY_CHORES);
+        setCustomerState(CARRYING_OUT_DAILY_CHORES);
     }
 
     private void setCustomerState(int customerState) {
