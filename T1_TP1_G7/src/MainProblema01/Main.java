@@ -48,6 +48,7 @@ public class Main {
         int nPrimeMaterialsInFactory = 10;					// Materias Primas na oficina inicialmente
         int nInitialProductsInShop = 0;						// Produtos na Loja inicialmente
         int nPrimeMaterialsByProduct = 2;					// Materia Prima por produto
+        int nPrimeOwnerCarry = 10;          // Número de matérias primas que o Owner transporta de cada vez
         int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
         int nMaxProductsCollect = 10;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
         int nLimitOfProductsInFactory = 10;					// Limite de produtos na oficina
