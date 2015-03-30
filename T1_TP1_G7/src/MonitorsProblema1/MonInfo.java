@@ -14,7 +14,7 @@ public class MonInfo {
     /**
      * Owner States
      */
-    public final static int
+    private final static int
             OPENING_THE_SHOP = 0,
             WAITING_FOR_NEXT_TASK = 1,
             ATTENDING_A_CUSTOMER = 2,
@@ -26,7 +26,7 @@ public class MonInfo {
     /**
      * Customer States
      */
-    public final static int
+    private final static int
             CARRYING_OUT_DAILY_CHORES = 0,
             CHECKING_DOOR_OPEN = 1,
             APPRAISING_OFFER_IN_DISPLAY = 2,
@@ -35,7 +35,7 @@ public class MonInfo {
     /**
      * Craftman States
      */
-    public final static int
+    private final static int
             FETCHING_PRIME_MATERIALS = 0,
             PRODUCING_A_NEW_PIECE = 1,
             STORING_IT_FOR_TRANSFER = 2,
@@ -44,7 +44,7 @@ public class MonInfo {
     /**
      * Shop States
      */
-    public final static int
+    private final static int
             CLOSED = 0,
             STILL_OPEN = 1,
             OPEN = 2;
