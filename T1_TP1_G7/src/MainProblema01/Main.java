@@ -1,6 +1,7 @@
 package MainProblema01;
 
 import genclass.GenericIO;
+import static genclass.GenericIO.*;
 import genclass.FileOp;
 import MonitorsProblema1.*;
 
@@ -28,12 +29,9 @@ public class Main {
                     GenericIO.writeString("Já existe um directório/ficheiro com esse nome. Quer apagá-lo (s - sim; n - não)? ");
                     opt = GenericIO.readlnChar();
                 } while ((opt != 's') && (opt != 'n'));
-                if (opt == 's')
-                    success = true;
-                else 
-                    success = false;
-            } else
-                success = true;
+                if (opt == 's') success = true;
+                else success = false;
+            } else success = true;
         } while (!success);
 
         /* Inicializar e criar intervenientes */
@@ -51,10 +49,28 @@ public class Main {
         int nInitialProductsInShop = 0;						// Produtos na Loja inicialmente
         int nPrimeMaterialsByProduct = 2;					// Materia Prima por produto
         int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
-        int nProductsCollect = 10;                          // Minimo de produtos para o Owner ir buscar
-        int nLimitOfProductsInFactory = 50;					// Limite de produtos na oficina
-        //int nMaxPrimeMaterialsToDeliver = 40;               // Maximo de Materias Primas que pode ser entregue a oficina
+        int nMaxProductsCollect = 10;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
+        int nLimitOfProductsInFactory = 10;					// Limite de produtos na oficina
+        //int nMaxPrimeMaterialsToDeliver = 40;             // Maximo de Materias Primas que pode ser entregue a oficina
         //int nMaxProductsToDo = (nPrimeMaterialsInFactory + nMaxPrimeMaterialsToDeliver) / nPrimeMaterialsByProduct;
+        
+        writeString("Usar valores predefinidos?(s/n) ");
+        if(readlnString().equalsIgnoreCase("n")){
+            writeString("Nº inicial de materias primas no Armazem: ");
+            nInitialPrimeMaterialsInStorage = Integer.parseInt(readlnString());
+            writeString("Nº de materias primas na Oficina: ");
+            nPrimeMaterialsInFactory = Integer.parseInt(readlnString());
+            writeString("Nº inicial de produtos na Loja: ");
+            nInitialProductsInShop = Integer.parseInt(readlnString());
+            writeString("Nº de materias primas por Produto: ");
+            nPrimeMaterialsByProduct = Integer.parseInt(readlnString());
+            writeString("Nº minimo de materia prima para Restock: ");
+            nMinPrimeMaterialsForRestock = Integer.parseInt(readlnString());
+            writeString("Nº maximo de bens que a dona levanta de cada vez da oficina: ");
+            nMaxProductsCollect = Integer.parseInt(readlnString());
+            writeString("Nº maximo de bens na Oficina: ");
+            nLimitOfProductsInFactory = Integer.parseInt(readlnString());
+        }
 
         sharedInfo = new MonInfo(
                 nCraftsman,
@@ -69,7 +85,7 @@ public class Main {
                 nInitialPrimeMaterialsInStorage,
                 nPrimeMaterialsByProduct,
                 nMinPrimeMaterialsForRestock,
-                nProductsCollect,
+                nMaxProductsCollect,
                 nLimitOfProductsInFactory
         ); // Creating Factory
         storage = new MonStorage(nInitialPrimeMaterialsInStorage); // Creating Storage

@@ -36,18 +36,18 @@ public class MonInfo {
      * Craftman States
      */
     public final static int
-            FETCHING_PRIME_MATERIALS = 0,           // 
-            PRODUCING_A_NEW_PIECE = 1,              // 
-            STORING_IT_FOR_TRANSFER = 2,            // 
-            CONTACTING_THE_ENTREPRENEUR = 3;        // 
+            FETCHING_PRIME_MATERIALS = 0,
+            PRODUCING_A_NEW_PIECE = 1,
+            STORING_IT_FOR_TRANSFER = 2,
+            CONTACTING_THE_ENTREPRENEUR = 3;
     
     /**
      * Shop States
      */
     public final static int
-            CLOSED = 0,                           // 
-            STILL_OPEN = 1,                       // 
-            OPEN = 2;                             // 
+            CLOSED = 0,
+            STILL_OPEN = 1,
+            OPEN = 2;
     
     /**
      * Owner needed information

@@ -141,13 +141,13 @@ public class MonFactory {
      */
     public synchronized boolean checkForMaterials(){
         try{
-            while(nPrimeMaterialsInFactory<nPrimePerProduct && !endOper()){
+            while(nPrimeMaterialsInFactory<nPrimePerProduct && !endOfPrimeMaterials()){
                 wait();
                 Thread.sleep(1000);
             }
         }catch(Exception e){}
         
-        // Return always true if endOper is false
+        // Return always true if endOfPrimeMaterials is false
         return nPrimeMaterialsInFactory >= nPrimePerProduct;
     }
     
@@ -260,10 +260,10 @@ public class MonFactory {
     }
     
     /**
-     * Sees if the Craftman can stop
-     * @return true if the Craftman can stop
+     * Sees if have more prime materials
+     * @return true if no more prime materials
      */
-    public boolean endOper(){
-        return nPrimeMaterialsSupplied == nTotalPrime;
+    public boolean endOfPrimeMaterials(){
+        return (nPrimeMaterialsSupplied == nTotalPrime);
     }
 }
