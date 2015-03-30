@@ -17,7 +17,7 @@ public class Craftman extends Thread {
     /**
      * Craftman States
      */
-    public final static int
+    private final static int
             FETCHING_PRIME_MATERIALS = 0,
             PRODUCING_A_NEW_PIECE = 1,
             STORING_IT_FOR_TRANSFER = 2,
@@ -171,10 +171,10 @@ public class Craftman extends Thread {
      * Producing new piece
      */
     private void shapingItUp(){
-        nPrimeMaterials -= factory.getnPrimePerProduct();
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
+        nPrimeMaterials -= factory.getnPrimePerProduct();
         nProduct += 1;
         totalProduced += 1;
         info.setnGoodsCraftedByCraftman(craftmanId, totalProduced);
@@ -184,10 +184,10 @@ public class Craftman extends Thread {
      * Goes to store
      */
     private void goToStore(){
-        setCraftmanState(STORING_IT_FOR_TRANSFER);
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
+        setCraftmanState(STORING_IT_FOR_TRANSFER);
         nProduct -= factory.goToStore(nProduct);
     }
     
@@ -225,6 +225,10 @@ public class Craftman extends Thread {
         return factory.endOfPrimeMaterials() && !checkForMaterials() && (stateCraftman==FETCHING_PRIME_MATERIALS) && (nPrimeMaterials==0);
     }
     
+    /**
+     * Function to change the Craftman state (internal and in the repository)
+     * @param state State of the Craftman
+     */
     private void setCraftmanState(int state){
         stateCraftman = state;
         info.setCraftmanState(craftmanId, state);
