@@ -89,7 +89,7 @@ public class Main {
                 nMaxProductsCollect,
                 nLimitOfProductsInFactory
         ); // Creating Factory
-        storage = new MonStorage(nInitialPrimeMaterialsInStorage); // Creating Storage
+        storage = new MonStorage(nInitialPrimeMaterialsInStorage, nPrimeOwnerCarry); // Creating Storage
         owner = new Owner(sharedInfo, factory, shop, storage); // Create Owner
 
         for (int i = 0; i < nCraftsman; i++)

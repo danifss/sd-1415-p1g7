@@ -9,55 +9,77 @@ public class MonStorage {
     
     /**
      * Present number of Prime Materials in Storage
-     * 
      * @serialField nPrimeMaterialsInStorage
      */
-    private int nPrimeMaterialsInStorage = 0;
+    private int nPrimeMaterialsInStorage;
     
     /**
      * Maximum number of Prime Materials available to be delivered to the factory
-     * 
      * @serialField nMaxPrimeMaterialsToDeliver
      */
     private final int nMaxPrimeMaterialsToDeliver;
     
     /**
      * Number of Prime Materials delivered to the factory
-     * 
      * @serialField nPrimeMaterialsDelivered
      */
-    private int nPrimeMaterialsDelivered = 0;
+    private int nPrimeMaterialsDelivered;
+    
+    /**
+     * Number of prime materials that the owner can carry
+     * @serialField nPrimeOwnerCarry
+     */
+    private final int nPrimeOwnerCarry;
 
-    public MonStorage(int nInitialPrimeMaterialsInStorage) {
+    /**
+     * Create monitor of the storage
+     * @param nInitialPrimeMaterialsInStorage Number of prime materials at the beginning
+     * @param nPrimeOwnerCarry Number of prime materials that the owner can carry
+     */
+    public MonStorage(int nInitialPrimeMaterialsInStorage, int nPrimeOwnerCarry) {
         nPrimeMaterialsInStorage = nInitialPrimeMaterialsInStorage;
         nMaxPrimeMaterialsToDeliver = nInitialPrimeMaterialsInStorage;
+        this.nPrimeOwnerCarry = nPrimeOwnerCarry;
+        nPrimeMaterialsDelivered = 0;
     }
 
+    /**
+     * Get the number of prime materials already delivered
+     * @return number of prime materials delivered
+     */
     public int getnPrimeMaterialsDelivered() {
         return nPrimeMaterialsDelivered;
     }
-
-    public synchronized void setnPrimeMaterialsDelivered(int nPrimeMaterialsDelivered) {
-        this.nPrimeMaterialsDelivered = nPrimeMaterialsDelivered;
-    }
-
+    
+    /**
+     * See if the storage has prime materials
+     * @return true if it has
+     */
     public boolean isPrimeMaterialsAvailabe() {
-        return nPrimeMaterialsDelivered < nMaxPrimeMaterialsToDeliver;
+        return nPrimeMaterialsInStorage > 0;
     }
 
-    public synchronized int getBunchOfPrimeMaterials() {
-        int primeMaterialsToSell = (int) nMaxPrimeMaterialsToDeliver/6; // do total de materia prima, parte em 6 e vende essas (de cada vez) (VALOR FIXO)
-        if(nPrimeMaterialsInStorage >= primeMaterialsToSell) { // ter mat. prima suficiente para uma entrega
-            nPrimeMaterialsInStorage -= primeMaterialsToSell; // decrementa materias primas vendidas
-            return primeMaterialsToSell; // returna materias primas vendidas
-        } else if(nPrimeMaterialsInStorage < primeMaterialsToSell){
-            primeMaterialsToSell = nPrimeMaterialsInStorage;
-            nPrimeMaterialsInStorage = 0; // reset materias primas no armazem
-            return primeMaterialsToSell; // retorna as ultimas materias primas
+    /**
+     * Owner visit suppliers and get some prime materials to be delivered in the factory
+     * @return Number of prime materials collected
+     */
+    public synchronized int visitSuppliers() {
+        int primeMaterials;
+        if(nPrimeMaterialsInStorage >= nPrimeOwnerCarry){
+            primeMaterials = nPrimeOwnerCarry;
+        }else{
+            primeMaterials = nPrimeMaterialsInStorage;
         }
-        return 0; // sem materias primas para serem vendidas
+        nPrimeMaterialsInStorage -= primeMaterials;
+        nPrimeMaterialsDelivered += primeMaterials;
+        
+        return primeMaterials;
     }
 
+    /**
+     * Get the amount of prime materials that the owner should collect during the experience
+     * @return number of prime materials to deliver
+     */
     public int getnMaxPrimeMaterialsToDeliver() {
         return nMaxPrimeMaterialsToDeliver;
     }
