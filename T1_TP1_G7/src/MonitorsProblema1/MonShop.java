@@ -173,6 +173,23 @@ public class MonShop {
         sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
     }
     
+    /**
+     * Prime materials is needed in the Factory
+     */
+    public synchronized void primeMaterialsNeeded(){
+        flagPrimeMaterialsNeeded = true;
+        sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
+        notifyAll();
+    }
+    
+    /**
+     * Owner can go to factory to collect products
+     */
+    public synchronized void batchReadyForTransfer(){
+        flagBringProductsFromFactory += 1;
+        sharedInfo.setTranfsProductsToShop(true);
+        notifyAll();
+    }
     
     
     
@@ -196,12 +213,6 @@ public class MonShop {
         nGoodsInDisplay += goods;
         sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
     }
-
-    // DUVIDA
-    // customers in the shop ou customers in the queue?????????????????????????????????????????
-    /*public boolean customersInTheShop(){
-        return !this.sitCustomer.isEmpty(); // True if not empty queue
-    }*/
 
     /**
      * See if the door is open
@@ -278,27 +289,11 @@ public class MonShop {
     }
 
     /**
-     * Prime materials is needed in the Factory
-     */
-    public synchronized void primeMaterialsNeeded(){
-        flagPrimeMaterialsNeeded = true;
-        sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
-    }
-    
-    /**
      * Check if the factory needs prime materials
      * @return true if is needed
      */
     public boolean isSupplyMaterialsToFactory() {
         return flagPrimeMaterialsNeeded;
-    }
-    
-    /**
-     * Owner can go to factory to collect products
-     */
-    public synchronized void batchReadyForTransfer(){
-        flagBringProductsFromFactory += 1;
-        sharedInfo.setTranfsProductsToShop(true);
     }
     
     /**
