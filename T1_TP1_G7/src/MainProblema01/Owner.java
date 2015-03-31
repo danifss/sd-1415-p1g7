@@ -133,41 +133,6 @@ public class Owner extends Thread {
                     break;
             }
         }
-        
-        // Starts to work, opens the shop
-        /*
-        boolean out;
-        int cid, sit = 0;
-        do {
-            prepareToWork(); // fica a dormir
-            out = false;
-            while (!out) {
-                sit = appraiseSit();
-                switch (sit) {
-                    case 1: // atender cliente
-                        cid = shop.addressACustomer();
-                        serviceCustomer();
-                        sayGoodbyeToCustomer(cid);
-                        break;
-                    case 2: // buscar materias primas do armazem para a oficina
-                    case 3: // buscar produtos terminados a oficina
-                        closeTheDoor();
-                        out = !shop.customersInTheShop(); // verifica primeiro se ha  clientes para atender
-                        break;
-                    case 4: // nada para fazer
-                        out = true;
-                        break;
-                }
-            }
-            prepareToLeave(); // sair da loja?
-            if (sit == 3) {
-                goToWorkshop(); // vai buscar produtos a oficina e levar para a loja
-            } else if (sit == 2) {
-                int q = visitSuppliers(); // comprar materias primas
-                replenishStock(q); // colocar as materias primas compradas na oficina
-            }
-            returnToShop();
-        } while(!endOper());*/
         System.out.println("Terminado o Owner.");
     }
 
@@ -285,99 +250,21 @@ public class Owner extends Thread {
         nPrimeMaterials = 0;
     }
     
-    
-    
-    
-    
-    
-    /*private int appraiseSit() {
-        // verifica se ha clientes para serem atendidos
-        if(shop.customersInTheShop())
-            return 1;
-        // verifica se foi notificada por um artesao pedir materias primas
-        if(shop.isSupplyMaterialsToFactory())
-            return 2;
-        // verifica se foi notificada por um artesao que ha produtos para ir para a loja
-        if(shop.isTranfsProductsToShop())
-            return 3;
-        return 4; // nada para fazer
-    }
-    
-
-    private void serviceCustomer() {
-        setOwnerState(ATTENDING_A_CUSTOMER);
-
-        try {
-            sleep((long) (1 + 10 * Math.random()));
-        } catch (InterruptedException e) {}
-    }
-
-    private void sayGoodbyeToCustomer(int cid) {
-        shop.removeSitCustomer(cid);
-        prepareToWork();
-    }
-
-    private void closeTheDoor() {
-        shop.setShopState(MonInfo.CLOSED);
-    }
-
-    private void prepareToLeave() { // nao sei se e assim
-        shop.setShopState(MonInfo.STILL_OPEN);
-        setOwnerState(CLOSING_THE_SHOP);
-    }
-
-    private void goToWorkshop() {
-        setOwnerState(COLLECTING_A_BATCH_OF_PRODUCTS);
-
-        shop.goToWorkshop();                        // Atualiza a flag
-        int products = factory.goToWorkshop(); // get dos produtos feitos
-
-        shop.addnGoodsInDisplay(products); // set dos produtos anteriores para os disponiveis na loja
-    }
-
-    private int visitSuppliers() {
-        // visita o fornecedor/armazem para comprar materia prima
-        setOwnerState(BUYING_PRIME_MATERIALS);
-
-        try {
-            sleep((long) (1 + 10 * Math.random()));
-        } catch (InterruptedException e) {}
-
-        if(storage.isPrimeMaterialsAvailabe())
-            return storage.visitSuppliers();
-        return 0; // sem materias primas
-    }*/
-
     /**
-     * Owner delivers prime materials to the Factory
-     * @param q number of prime materials delivered 
+     * Verifies if the Owner stops
+     * @return true if needs to stop
      */
-    /*private void replenishStock(int q) {
-        setOwnerState(DELIVERING_PRIME_MATERIALS);
-        shop.replenishStock();
-        factory.replenishStock(q);
-    }*/
-
-    /**
-     * Return to shop
-     */
-    /*public void returnToShop() {
-        try {
-            sleep((long) (1 + 10 * Math.random()));
-        } catch (InterruptedException e) {}
-
-        setOwnerState(OPENING_THE_SHOP);
-        shop.setShopState(MonInfo.OPEN);
-    }*/
+    private boolean endOper() {
+        // valida se o Owner deve terminar ou nao
+        return factory.endOfPrimeMaterials() && !factory.checkForMaterials() && factory.endProductsToCollect();
+    }
     
+    /**
+     * Change the owner state
+     * @param ownerState state of the owner
+     */
     private void setOwnerState(int ownerState) {
         this.ownerState = ownerState;
         sharedInfo.setOwnerState(ownerState);
-    }
-    
-    private boolean endOper() {
-        // valida se o Owner deve terminar ou nao
-        return factory.endOfPrimeMaterials() && !factory.checkForMaterials() /*&& noPrimeMaterialsAvailable() && allProductsSold() &&*/ && !shop.customersInTheShop();
-        //return false;
     }
 }

@@ -260,6 +260,14 @@ public class MonFactory {
     }
     
     /**
+     * Sees if have more products to collect
+     * @return true if no more products to collect
+     */
+    public boolean endProductsToCollect(){
+        return nFinishedProductsInFactory == 0;
+    }
+    
+    /**
      * Sees if have more prime materials
      * @return true if no more prime materials
      */

@@ -50,7 +50,7 @@ public class Main {
         int nPrimeMaterialsByProduct = 2;					// Materia Prima por produto
         int nPrimeOwnerCarry = 10;          // Número de matérias primas que o Owner transporta de cada vez
         int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
-        int nMaxProductsCollect = 10;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
+        int nMaxProductsCollect = 5;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
         int nLimitOfProductsInFactory = 10;					// Limite de produtos na oficina
         //int nMaxPrimeMaterialsToDeliver = 40;             // Maximo de Materias Primas que pode ser entregue a oficina
         //int nMaxProductsToDo = (nPrimeMaterialsInFactory + nMaxPrimeMaterialsToDeliver) / nPrimeMaterialsByProduct;
@@ -104,39 +104,5 @@ public class Main {
             customer[i].start();*/
         
         owner.start();
-
-        /* aguardar o fim da simulação */
-        /*for (int i = 0; i < nCraftsman; i++) {
-            while (craftman[i].isAlive()) {
-                craftman[i].interrupt();
-                Thread.yield();
-            }
-            try {
-                craftman[i].join();
-            } catch (InterruptedException e) {}
-            GenericIO.writelnString("O artesão " + i + " terminou.");
-        }
-        GenericIO.writelnString();
-        GenericIO.writelnString();
-        for (int i = 0; i < nCustomers; i++) {
-            while (customer[i].isAlive()) {
-                customer[i].interrupt();
-                Thread.yield();
-            }
-            try {
-                customer[i].join();
-            } catch (InterruptedException e) {}
-            GenericIO.writelnString("O cliente " + i + " terminou.");
-        }
-        GenericIO.writelnString();
-        while (owner.isAlive()) {
-            owner.interrupt();
-            Thread.yield();
-        }
-        try {
-            owner.join();
-        } catch (InterruptedException e) {}
-        GenericIO.writelnString("O/A Dono/a terminou.");
-        GenericIO.writelnString();*/
     }
 }
