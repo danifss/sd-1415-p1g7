@@ -242,7 +242,10 @@ public class MonShop {
         double r = Math.random();
         if((r < 0.5) && (nGoodsInDisplay > 0)){ // 50% probability to buy
             r = r * 100;
-            return (int) r % nGoodsInDisplay;
+            int goods = (int) r % nGoodsInDisplay;
+            nGoodsInDisplay -= goods; // retirar de exposicao os produtos
+            sharedInfo.setnGoodsInDisplay(nGoodsInDisplay); // reduz produtos disponiveis na loja
+            return goods;
         }
         return 0;
     }
@@ -265,8 +268,7 @@ public class MonShop {
         }
 
         if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
-            nGoodsInDisplay -= nGoods; // diminuir bens da loja
-            sharedInfo.setnGoodsInDisplay(nGoodsInDisplay); // reduz produtos disponiveis na loja
+            //nGoodsInDisplay -= nGoods; // diminuir bens da loja
             sharedInfo.setnGoodsByCustomer(customerId, nGoodsInDisplay); // adiciona num. total de produtos comprados pelo cliente
         }
     }
