@@ -9,12 +9,19 @@ package MonitorsProblema1;
 public class MonShop {
     
      /**
-     * Shop States
-     */
+      * Shop States
+      */
     private final static int
             CLOSED = 0,
             STILL_OPEN = 1,
             OPEN = 2;
+    
+    /**
+     * Decision taken in AppraiseSit
+     */
+    private final static int
+            FACTORY_NEEDS_SOMETHING = 0,
+            ADDRESS_CUSTOMER = 1;
     
     /**
      * Present State of Shop
@@ -75,7 +82,104 @@ public class MonShop {
         flagBringProductsFromFactory = 0;
         flagPrimeMaterialsNeeded = false;
     }
+    
+    /**
+     * See if there is customers inside the shop
+     * @return true if it is customers inside
+     */
+    public boolean customersInTheShop(){
+        return customerInsideShop > 0;
+    }
 
+    /**
+     * See if the Queue has customers
+     * @return true if the queue has customers
+     */
+    public boolean customerInTheQueue(){
+        return !this.sitCustomer.isEmpty();
+    }
+    
+    /**
+     * Owner sees the situation of the shop and decide what to do
+     * @return action to do
+     */
+    public synchronized int appraiseSit(){        
+        if(shopState == OPEN){
+            try{
+                while(sitCustomer.isEmpty() && !isSupplyMaterialsToFactory() && !isTranfsProductsToShop()){
+                    wait();
+                    Thread.sleep(1000);
+                }
+            }catch(Exception e){}
+            if((isSupplyMaterialsToFactory() || isTranfsProductsToShop())){
+                return FACTORY_NEEDS_SOMETHING;
+            }
+            return ADDRESS_CUSTOMER;
+        }
+        if(shopState == STILL_OPEN){
+            try{
+                while(sitCustomer.isEmpty()){
+                    wait();
+                    Thread.sleep(1000);
+                }
+            }catch(Exception e){}
+            return ADDRESS_CUSTOMER;
+        }
+        return FACTORY_NEEDS_SOMETHING;
+    }
+    
+    /**
+     * Owner closes the door
+     */
+    public synchronized void closeTheDoor(){
+        if(customersInTheShop()){
+            shopState = STILL_OPEN;
+        }else{
+            shopState = CLOSED;
+        }
+    }
+    
+    /**
+     * Owner opens the door
+     */
+    public synchronized void openTheDoor(){
+        shopState = OPEN;
+    }
+    
+    /**
+     * See if the shop is on state STILL_OPEN
+     * @return true if the shop is STILL_OPEN
+     */
+    public synchronized boolean isShopStillOpen(){
+        return shopState == STILL_OPEN;
+    }
+    
+    /**
+     * The owner goes to the Factory to collect products
+     */
+    public synchronized void goToWorkshop(){
+        flagBringProductsFromFactory -= 1;
+        if(flagBringProductsFromFactory > 0)
+            sharedInfo.setTranfsProductsToShop(true);
+        else
+            sharedInfo.setTranfsProductsToShop(false);
+    }
+    
+    /**
+     * Owner goes to factory to restock prime materials
+     */
+    public synchronized void replenishStock(){
+        flagPrimeMaterialsNeeded = false;
+        sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Get number of products that the shop is selling
      * @return Number of products in display
@@ -95,9 +199,9 @@ public class MonShop {
 
     // DUVIDA
     // customers in the shop ou customers in the queue?????????????????????????????????????????
-    public boolean customersInTheShop(){
+    /*public boolean customersInTheShop(){
         return !this.sitCustomer.isEmpty(); // True if not empty queue
-    }
+    }*/
 
     /**
      * See if the door is open
@@ -190,14 +294,6 @@ public class MonShop {
     }
     
     /**
-     * Owner goes to factory to restock prime materials
-     */
-    public synchronized void replenishStock(){
-        flagPrimeMaterialsNeeded = false;
-        sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
-    }
-    
-    /**
      * Owner can go to factory to collect products
      */
     public synchronized void batchReadyForTransfer(){
@@ -213,15 +309,4 @@ public class MonShop {
         return flagBringProductsFromFactory > 0;
     }
     
-    /**
-     * The owner goes to the Factory to collect products
-     */
-    public synchronized void goToWorkshop(){
-        flagBringProductsFromFactory -= 1;
-        if(flagBringProductsFromFactory > 0)
-            sharedInfo.setTranfsProductsToShop(true);
-        else
-            sharedInfo.setTranfsProductsToShop(false);
-    }
-
 }

@@ -23,54 +23,62 @@ public class Owner extends Thread {
             BUYING_PRIME_MATERIALS = 6;
     
     /**
+     * Decision taken in AppraiseSit
+     */
+    private final static int
+            FACTORY_NEEDS_SOMETHING = 0,
+            ADDRESS_CUSTOMER = 1;
+    
+    /**
      * General Repository
-     * 
      * @serialField sharedInfo
      */
     private MonInfo sharedInfo;
 
     /**
      * Factory
-     *
      * @serialField factory
      */
     private MonFactory factory;
 
     /**
      * Shop
-     *
      * @serialField shop
      */
     private MonShop shop;
     
     /**
      * Storage
-     * 
      * @serialField storage
      */
     private MonStorage storage;
     
     /**
      * Present State of the Owner
-     * 
      * @serialField ownerState
      */
     private int ownerState;
+    
+    /**
+     * Number of prime materials that the owner has
+     * @serialField nPrimeMaterials
+     */
+    private int nPrimeMaterials;
 
     /**
      * Create owner thread
      *
-     * @param ownerId Owner identity
+     * @param sharedInfo General repository
      * @param factory Factory
      * @param shop Shop
+     * @param storage Storage
      */
     public Owner(MonInfo sharedInfo, MonFactory factory, MonShop shop, MonStorage storage) {
-            this.sharedInfo = sharedInfo;
-            this.factory = factory;
-            this.shop = shop;
-    this.storage = storage;
-
-    this.ownerState = OPENING_THE_SHOP;
+        this.sharedInfo = sharedInfo;
+        this.factory = factory;
+        this.shop = shop;
+        this.storage = storage;
+        ownerState = OPENING_THE_SHOP;
     }
 
     /**
@@ -79,6 +87,55 @@ public class Owner extends Thread {
     @Override
     public void run() {
         System.out.println("Iniciado o Owner.");
+        
+        
+        shop.openTheDoor(); // Owner precisa de abrir a loja antes de começar a trabalhar
+        
+        while(!endOper()){
+            switch(ownerState){
+                case OPENING_THE_SHOP:
+                    prepareToWork();
+                    break;
+                case WAITING_FOR_NEXT_TASK:
+                    int decision = appraiseSit();
+                    if(decision == FACTORY_NEEDS_SOMETHING){
+                        closeTheDoor();
+                        if(customersInTheShop()){
+                            break;
+                        }
+                        prepareToLeave();
+                    }
+                    if(decision == ADDRESS_CUSTOMER){
+                        addressACustomer();
+                    }
+                    break;
+                case ATTENDING_A_CUSTOMER:
+                    serviceCustomer();
+                    sayGoodByeToCustomer();
+                    break;
+                case CLOSING_THE_SHOP:
+                    if(shop.isTranfsProductsToShop()){
+                        goToWorkShop();
+                    }else if(shop.isSupplyMaterialsToFactory()){
+                        visitSuppliers();
+                    }else{
+                        returnToShop();
+                    }
+                    break;
+                case COLLECTING_A_BATCH_OF_PRODUCTS:
+                    returnToShop();
+                    break;
+                case BUYING_PRIME_MATERIALS:
+                    replenishStock();
+                    break;
+                case DELIVERING_PRIME_MATERIALS:
+                    returnToShop();
+                    break;
+            }
+        }
+        
+        // Starts to work, opens the shop
+        /*
         boolean out;
         int cid, sit = 0;
         do {
@@ -110,19 +167,130 @@ public class Owner extends Thread {
                 replenishStock(q); // colocar as materias primas compradas na oficina
             }
             returnToShop();
-        } while(!endOper());
+        } while(!endOper());*/
         System.out.println("Terminado o Owner.");
     }
 
+    /**
+     * Owner prepare to work, and is waiting for the next task
+     */
     private void prepareToWork() {
         setOwnerState(WAITING_FOR_NEXT_TASK);
 
+        // Será o sleep necessário aqui???????????????????????????????????
         try {
             sleep((long) (1 + 20 * Math.random()));
         } catch (InterruptedException e) {}
     }
 
-    private int appraiseSit() {
+    /**
+     * Owner appraise the situation of the shop
+     * @return 
+     */
+    private int appraiseSit(){
+        return shop.appraiseSit();
+    }
+    
+    /**
+     * Owner closes the door
+     */
+    private void closeTheDoor() {
+        shop.closeTheDoor();
+    }
+    
+    /**
+     * Owner sees if there is customers in the shop
+     */
+    private boolean customersInTheShop(){
+        return shop.customersInTheShop();
+    }
+    
+    /**
+     * Owner prepares to go to the factory
+     */
+    private void prepareToLeave(){
+        setOwnerState(CLOSING_THE_SHOP);
+    }
+    
+    /**
+     * Owner prepares to address a customer
+     */
+    private void addressACustomer(){
+        setOwnerState(ATTENDING_A_CUSTOMER);
+    }
+    
+    //Incompleta
+    private void serviceCustomer() {
+        try {
+            sleep((long) (1 + 10 * Math.random()));
+        } catch (InterruptedException e) {}
+    }
+    
+    //Incompleta
+    private void sayGoodByeToCustomer() {
+        if(shop.isShopStillOpen()){
+            closeTheDoor();
+        }
+        setOwnerState(WAITING_FOR_NEXT_TASK);
+    }
+    
+    /**
+     * Owner goes to Factory to collect products
+     */
+    private void goToWorkShop(){
+        setOwnerState(COLLECTING_A_BATCH_OF_PRODUCTS);
+
+        shop.goToWorkshop();
+        int products = factory.goToWorkshop();
+
+        shop.addnGoodsInDisplay(products);
+    }
+    
+    /**
+     * Owner goes to the storage to collect some prime materials
+     */
+    private void visitSuppliers(){
+        setOwnerState(BUYING_PRIME_MATERIALS);
+
+        try {
+            sleep((long) (1 + 10 * Math.random()));
+        } catch (InterruptedException e) {}
+
+        if(storage.isPrimeMaterialsAvailabe())
+            nPrimeMaterials = storage.visitSuppliers();
+        else{
+            nPrimeMaterials = 0;
+        }
+    }
+    
+    /**
+     * Owner returns to the shop and opens the door
+     */
+    private void returnToShop(){
+        try {
+            sleep((long) (1 + 10 * Math.random()));
+        } catch (InterruptedException e) {}
+
+        setOwnerState(OPENING_THE_SHOP);
+        shop.openTheDoor();
+    }
+    
+    /**
+     * Owner delivers prime materials to the Factory
+     */
+    private void replenishStock(){
+        setOwnerState(DELIVERING_PRIME_MATERIALS);
+        shop.replenishStock();
+        factory.replenishStock(nPrimeMaterials);
+        nPrimeMaterials = 0;
+    }
+    
+    
+    
+    
+    
+    
+    /*private int appraiseSit() {
         // verifica se ha clientes para serem atendidos
         if(shop.customersInTheShop())
             return 1;
@@ -134,6 +302,7 @@ public class Owner extends Thread {
             return 3;
         return 4; // nada para fazer
     }
+    
 
     private void serviceCustomer() {
         setOwnerState(ATTENDING_A_CUSTOMER);
@@ -177,29 +346,29 @@ public class Owner extends Thread {
         if(storage.isPrimeMaterialsAvailabe())
             return storage.visitSuppliers();
         return 0; // sem materias primas
-    }
+    }*/
 
     /**
      * Owner delivers prime materials to the Factory
      * @param q number of prime materials delivered 
      */
-    private void replenishStock(int q) {
+    /*private void replenishStock(int q) {
         setOwnerState(DELIVERING_PRIME_MATERIALS);
         shop.replenishStock();
         factory.replenishStock(q);
-    }
+    }*/
 
     /**
      * Return to shop
      */
-    public void returnToShop() {
+    /*public void returnToShop() {
         try {
             sleep((long) (1 + 10 * Math.random()));
         } catch (InterruptedException e) {}
 
         setOwnerState(OPENING_THE_SHOP);
         shop.setShopState(MonInfo.OPEN);
-    }
+    }*/
     
     private void setOwnerState(int ownerState) {
         this.ownerState = ownerState;
