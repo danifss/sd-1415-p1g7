@@ -53,13 +53,21 @@ public class Customer extends Thread {
      * @serialField factory
      */
     private final MonFactory factory;
+    
+    /**
+     * Total number of goods bought buy the customer
+     * 
+     * @serialField nGoodsBought
+     */
+    private int nGoodsBought;
 
     /**
      * Create customer thread
      * 
+     * @param sharedInfo General repository
      * @param customerId customer identification
      * @param shop Shop
-     * @param nIter number of cycle iterations of the client life
+     * @param factory Factory
      */
     public Customer(MonInfo sharedInfo, int customerId, MonShop shop, MonFactory factory){
         this.sharedInfo = sharedInfo;
@@ -67,6 +75,7 @@ public class Customer extends Thread {
         this.shop = shop;
         this.factory = factory;
         this.customerState = CARRYING_OUT_DAILY_CHORES;
+        this.nGoodsBought = 0;
     }
     
     /**
@@ -81,8 +90,8 @@ public class Customer extends Thread {
             goShopping();
 
             if(!shop.isDoorOpen()) {
-                    tryAgainLater();
-                    continue; // passa para a proxima iteracao
+                tryAgainLater();
+                continue; // passa para a proxima iteracao
             }
 
             enterShop();
@@ -124,12 +133,18 @@ public class Customer extends Thread {
         }catch(InterruptedException e){}
     }
     
+    /**
+     * Customer enter in the shop
+     */
     private void enterShop() {
-        setCustomerState(APPRAISING_OFFER_IN_DISPLAY);
-        
         shop.enterShop();
+        setCustomerState(APPRAISING_OFFER_IN_DISPLAY);
     }
     
+    /**
+     * Customer chooses what to buy
+     * @return number of goods to buy
+     */
     private int perusingAround(){
         try{
             sleep((long) (1+40*Math.random()));
@@ -138,22 +153,38 @@ public class Customer extends Thread {
         return shop.perusingAround(); // retorna num. de bens a comprar
     }
     
+    /**
+     * Customer goes to the queue to buy the goods
+     * @param goods 
+     */
     private void iWantThis(int goods){
         setCustomerState(BUYING_SOME_GOODS);
         
         shop.iWantThis(customerId, goods); // acao bloqueante
+        nGoodsBought += goods; // adiciona bens comprados ao total
     }
 
+    /**
+     * The Customer leaves the Shop
+     */
     private void exitShop() {
         shop.exitShop(customerId);
         setCustomerState(CARRYING_OUT_DAILY_CHORES);
     }
 
+    /**
+     * Change the Preent Customer State
+     * @param customerState 
+     */
     private void setCustomerState(int customerState) {
         this.customerState = customerState;
         sharedInfo.setCustomerState(customerId,customerState);
     }
     
+    /**
+     * Check if Customer can die or not
+     * @return if customer dies or not
+     */
     private boolean endOper() {
         // valida se o cliente deve terminar ou nao
         //return factory.endOper() && !factory.checkForMaterials() && noPrimeMaterialsAvailable() && allProductsSold();
