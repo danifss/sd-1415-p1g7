@@ -228,9 +228,11 @@ public class MonShop {
     public synchronized int perusingAround(){
         // choose what to buy
         double r = Math.random();
-        if((r < 0.5) && (nGoodsInDisplay > 0)){ // 50% probability to buy
+        if((r <= 0.5) && (nGoodsInDisplay > 0)){ // 50% probability to buy
             r = r * 100;
             int goods = (int) r % nGoodsInDisplay;
+            if(nGoodsInDisplay == 1) // para quando tem apenas 1 produto a venda
+                goods = 1;
             nGoodsInDisplay -= goods; // retirar de exposicao os produtos
             sharedInfo.setnGoodsInDisplay(nGoodsInDisplay); // reduz produtos disponiveis na loja
             return goods;
@@ -256,7 +258,6 @@ public class MonShop {
         }
 
         if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
-            //nGoodsInDisplay -= nGoods; // diminuir bens da loja
             sharedInfo.setnGoodsByCustomer(customerId, nGoodsInDisplay); // adiciona num. total de produtos comprados pelo cliente
         }
     }
