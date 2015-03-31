@@ -24,7 +24,7 @@ public class Customer extends Thread {
      *
      * @serialField customerId
      */
-    private int customerId;
+    private final int customerId;
     
     /**
      * Present Customer State
@@ -62,6 +62,12 @@ public class Customer extends Thread {
     private int nGoodsBought;
 
     /**
+     * Number of products that the customer has with him
+     * @serialField nProductsCustomerHas
+     */
+    private int nProductsCustomer;
+    
+    /**
      * Create customer thread
      * 
      * @param sharedInfo General repository
@@ -85,21 +91,31 @@ public class Customer extends Thread {
     public void run(){
         System.out.println("Iniciado o Customer: "+customerId);
         while(!endOper()){
-            livingNormalLife();
-
-            goShopping();
-
-            if(!shop.isDoorOpen()) {
-                tryAgainLater();
-                continue; // passa para a proxima iteracao
+            switch(customerState){
+                case CARRYING_OUT_DAILY_CHORES:
+                    livingNormalLife();
+                    goShopping();
+                    break;
+                case CHECKING_DOOR_OPEN:
+                    if(isDoorOpen()) {
+                        enterShop();
+                    }else{
+                        tryAgainLater();
+                    }
+                    break;
+                case APPRAISING_OFFER_IN_DISPLAY:
+                    perusingAround();
+                    // ver se tem produtos
+                    if(nProductsCustomer > 0){
+                        iWantThis();
+                    }else{
+                        exitShop();
+                    }
+                    break;
+                case BUYING_SOME_GOODS:
+                        exitShop();
+                    break;
             }
-
-            enterShop();
-            int goods = perusingAround();
-            if(goods != 0){
-                iWantThis(goods);
-            }
-            exitShop();
         }
         System.out.println("Terminado o Customer: "+customerId);
     }
@@ -123,6 +139,13 @@ public class Customer extends Thread {
     }
 
     /**
+     * Customer checks if the shop is open
+     */
+    private boolean isDoorOpen(){
+        return shop.isDoorOpen();
+    }
+    
+    /**
      * Try Again Later
      */
     private void tryAgainLater(){
@@ -132,7 +155,7 @@ public class Customer extends Thread {
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
     }
-    
+
     /**
      * Customer enter in the shop
      */
@@ -145,40 +168,37 @@ public class Customer extends Thread {
      * Customer chooses what to buy
      * @return number of goods to buy
      */
-    private int perusingAround(){
+    private void perusingAround(){
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
         
-        return shop.perusingAround(); // retorna num. de bens a comprar
+        nProductsCustomer = shop.perusingAround(); // retorna num. de bens a comprar
     }
     
     /**
      * Customer goes to the queue to buy the goods
      * @param goods 
      */
-    private void iWantThis(int goods){
+    private void iWantThis(){
         setCustomerState(BUYING_SOME_GOODS);
         
-        shop.iWantThis(customerId, goods); // acao bloqueante
-        nGoodsBought += goods; // adiciona bens comprados ao total
+        shop.iWantThis(customerId, nProductsCustomer); // acao bloqueante
+        nGoodsBought += nProductsCustomer; // adiciona bens comprados ao total
+        nProductsCustomer = 0;
     }
 
+    
+    
+    
+    
+    
     /**
      * The Customer leaves the Shop
      */
     private void exitShop() {
-        shop.exitShop(customerId);
+        shop.exitShop();
         setCustomerState(CARRYING_OUT_DAILY_CHORES);
-    }
-
-    /**
-     * Change the Preent Customer State
-     * @param customerState 
-     */
-    private void setCustomerState(int customerState) {
-        this.customerState = customerState;
-        sharedInfo.setCustomerState(customerId,customerState);
     }
     
     /**
@@ -191,4 +211,12 @@ public class Customer extends Thread {
 	return false;
     }
     
+    /**
+     * Change the Present Customer State
+     * @param customerState 
+     */
+    private void setCustomerState(int customerState) {
+        this.customerState = customerState;
+        sharedInfo.setCustomerState(customerId,customerState);
+    }
 }
