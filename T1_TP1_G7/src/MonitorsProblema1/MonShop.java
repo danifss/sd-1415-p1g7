@@ -166,6 +166,15 @@ public class MonShop {
     }
     
     /**
+     * Update the number of products that the shop is selling
+     * @param goods 
+     */
+    public synchronized void addnGoodsInDisplay(int goods) {
+        nGoodsInDisplay += goods;
+        sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
+    }
+    
+    /**
      * Owner goes to factory to restock prime materials
      */
     public synchronized void replenishStock(){
@@ -193,27 +202,7 @@ public class MonShop {
     
     
     
-    
-    
-    
-    
-    /**
-     * Get number of products that the shop is selling
-     * @return Number of products in display
-     */
-    public int getnGoodsInDisplay() {
-        return nGoodsInDisplay;
-    }
-
-    /**
-     * Update the number of products that the shop is selling
-     * @param goods 
-     */
-    public synchronized void addnGoodsInDisplay(int goods) {
-        nGoodsInDisplay += goods;
-        sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
-    }
-
+    //Funcions of customer
     /**
      * See if the door is open
      * @return True if is open
@@ -221,7 +210,7 @@ public class MonShop {
     public boolean isDoorOpen() {
         return shopState == OPEN;
     }
-
+    
     /**
      * A customer enters the shop
      */
@@ -229,7 +218,6 @@ public class MonShop {
         this.customerInsideShop++;
         sharedInfo.setnCustomersInsideShop(customerInsideShop);
     }
-    
     
     /**
      * A random number is generated, then if it is less than 0.5 and 
@@ -249,7 +237,7 @@ public class MonShop {
         }
         return 0;
     }
-
+    
     /**
      * Customer goes to the queue, and waits till the owner call him.
      * When the owner call and he is in the front of the queue 
@@ -272,15 +260,19 @@ public class MonShop {
             sharedInfo.setnGoodsByCustomer(customerId, nGoodsInDisplay); // adiciona num. total de produtos comprados pelo cliente
         }
     }
-
+    
     /**
      * The Customer leaves the Shop
-     * @param customerId 
      */
-    public synchronized void exitShop(int customerId) {
+    public synchronized void exitShop() {
         customerInsideShop--; // decrementar clientes na loja
         sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
-    }
+    }  
+    
+    
+    
+    
+    
 	
     /**
      * Address a Customer on the queue
