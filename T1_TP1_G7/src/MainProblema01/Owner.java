@@ -88,7 +88,7 @@ public class Owner extends Thread {
     public void run() {
         System.out.println("Iniciado o Owner.");
         
-        
+        int cid = 0;
         shop.openTheDoor(); // Owner precisa de abrir a loja antes de começar a trabalhar
         
         while(!endOper()){
@@ -97,7 +97,7 @@ public class Owner extends Thread {
                     prepareToWork();
                     break;
                 case WAITING_FOR_NEXT_TASK:
-                    int decision = appraiseSit();
+                    int decision = appraiseSit(); // acao bloqueante
                     if(decision == FACTORY_NEEDS_SOMETHING){
                         closeTheDoor();
                         if(customersInTheShop()){
@@ -106,12 +106,12 @@ public class Owner extends Thread {
                         prepareToLeave();
                     }
                     if(decision == ADDRESS_CUSTOMER){
-                        addressACustomer();
+                        cid = addressACustomer();
                     }
                     break;
                 case ATTENDING_A_CUSTOMER:
                     serviceCustomer();
-                    sayGoodByeToCustomer();
+                    sayGoodByeToCustomer(cid);
                     break;
                 case CLOSING_THE_SHOP:
                     if(shop.isTranfsProductsToShop()){
@@ -180,11 +180,14 @@ public class Owner extends Thread {
     /**
      * Owner prepares to address a customer
      */
-    private void addressACustomer(){
+    private int addressACustomer(){
         setOwnerState(ATTENDING_A_CUSTOMER);
+        return shop.addressACustomer(); // atende cliente seguinte
     }
     
-    //Incompleta
+    /**
+     * Service a Customer
+     */
     private void serviceCustomer() {
         try {
             sleep((long) (1 + 10 * Math.random()));
@@ -192,10 +195,11 @@ public class Owner extends Thread {
     }
     
     //Incompleta
-    private void sayGoodByeToCustomer() {
+    private void sayGoodByeToCustomer(int cid) {
         if(shop.isShopStillOpen()){
             closeTheDoor();
         }
+        shop.removeSitCustomer(cid); // remove cliente da fila
         setOwnerState(WAITING_FOR_NEXT_TASK);
     }
     
