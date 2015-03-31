@@ -231,18 +231,29 @@ public class MonShop {
     }
     
     
-    // Não percebi (Raphael)
+    /**
+     * A random number is generated, then if it is less than 0.5 and 
+     * exists goods to buy, that number*100 is divided by the number 
+     * of goods for sell and returns his remainder.
+     * @return number of goods to buy
+     */
     public synchronized int perusingAround(){
         // choose what to buy
         double r = Math.random();
-        if(r < 0.5 && nGoodsInDisplay > 0){ // 50% probability to buy
+        if((r < 0.5) && (nGoodsInDisplay > 0)){ // 50% probability to buy
             r = r * 100;
             return (int) r % nGoodsInDisplay;
         }
         return 0;
     }
 
-    
+    /**
+     * Customer goes to the queue, and waits till the owner call him.
+     * When the owner call and he is in the front of the queue 
+     * he buys the goods 
+     * @param customerId
+     * @param nGoods 
+     */
     public synchronized void iWantThis(int customerId, int nGoods) {
         
         this.sitCustomer.write(customerId); // ir para a fila de atendimento
@@ -256,33 +267,43 @@ public class MonShop {
         if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
             nGoodsInDisplay -= nGoods; // diminuir bens da loja
             sharedInfo.setnGoodsInDisplay(nGoodsInDisplay); // reduz produtos disponiveis na loja
-            
-            // FALTA VERIFICAR A FUNÇAO DE BAIXO, POIS NAO HA VARIAVEL INDICANDO O NUMERO
-            // DE PRODUTOS QUE O CUSTOMER COMPROU (Variavel no proprio customer)
-            
             sharedInfo.setnGoodsByCustomer(customerId, nGoodsInDisplay); // adiciona num. total de produtos comprados pelo cliente
         }
     }
 
+    /**
+     * The Customer leaves the Shop
+     * @param customerId 
+     */
     public synchronized void exitShop(int customerId) {
-        if((int)sitCustomer.peek() == customerId){
-            customerInsideShop--; // decrementar clientes na loja
-            sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
-        }
+        customerInsideShop--; // decrementar clientes na loja
+        sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
     }
 	
+    /**
+     * Address a Customer on the queue
+     * @return customer on top of the queue
+     */
     public synchronized int addressACustomer(){
-            notifyAll(); // chamar cliente
+        notifyAll(); // chamar cliente
 
-            return (int) this.sitCustomer.peek(); // retorna id do cliente
+        return (int) this.sitCustomer.peek(); // retorna id do cliente
     }
     
+    /**
+     * Remove customer from queue
+     * @param customerId 
+     */
     public synchronized void removeSitCustomer(int customerId){
-        //sitCustomer.remove(customerId); // nao se funciona bem
+        //sitCustomer.remove(customerId); // nao sei se funciona bem
         if((int)sitCustomer.peek() == customerId) // remove o cliente correto da fila
             sitCustomer.read();
     }
 
+    /**
+     * Set present Shop state
+     * @param state
+     */
     public synchronized void setShopState(int state) {
         shopState = state;
         sharedInfo.setShopState(state);
