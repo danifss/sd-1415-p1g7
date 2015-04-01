@@ -167,6 +167,7 @@ public class MonShop {
      * Owner opens the door
      */
     public synchronized void openTheDoor(){
+        //if(nGoodsInDisplay > 0) // apenas abre se existirem produtos para vender
         setShopState(OPEN);
     }
     
@@ -360,7 +361,9 @@ public class MonShop {
     }
     
     /**
-     * See if the owner and the customer can stop
+     * See if the owner and the customer can stop.
+     * Checks if all products have been transferred to Shop, and it have
+     * all been sold.
      * @return true if they can
      */
     public boolean endOper(){
