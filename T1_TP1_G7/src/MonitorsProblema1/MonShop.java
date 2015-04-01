@@ -54,6 +54,18 @@ public class MonShop {
     private int nGoodsInDisplay;
     
     /**
+     * Number of goods that the present customer will buy
+     * @serialField nGoodsToBuy
+     */
+    private int nGoodsToBuy;
+    
+    /**
+     * Flag to see if the owner already finished the purchase
+     * @serialField flagPurchaseMade
+     */
+    private boolean flagPurchaseMade;
+    
+    /**
      * Flag to see if the Factory has products to bring
      * @serialField flagBringProductsFromFactory
      */
@@ -81,6 +93,8 @@ public class MonShop {
         nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
         flagBringProductsFromFactory = 0;
         flagPrimeMaterialsNeeded = false;
+        nGoodsToBuy = 0;
+        flagPurchaseMade = false;
     }
     
     /**
@@ -116,16 +130,16 @@ public class MonShop {
             }
             return ADDRESS_CUSTOMER;
         }
-        if(shopState == STILL_OPEN){
-            try{
-                while(sitCustomer.isEmpty()){
-                    wait();
-                    Thread.sleep(1000);
-                }
-            }catch(Exception e){}
-            return ADDRESS_CUSTOMER;
+        try{
+            while(sitCustomer.isEmpty() && customersInTheShop()){
+                wait();
+                Thread.sleep(1000);
+            }
+        }catch(Exception e){}
+        if(!customersInTheShop()){
+            return FACTORY_NEEDS_SOMETHING;
         }
-        return FACTORY_NEEDS_SOMETHING;
+        return ADDRESS_CUSTOMER;
     }
     
     /**
@@ -133,9 +147,9 @@ public class MonShop {
      */
     public synchronized void closeTheDoor(){
         if(customersInTheShop()){
-            shopState = STILL_OPEN;
+            setShopState(STILL_OPEN);
         }else{
-            shopState = CLOSED;
+            setShopState(CLOSED);
         }
     }
     
@@ -143,7 +157,7 @@ public class MonShop {
      * Owner opens the door
      */
     public synchronized void openTheDoor(){
-        shopState = OPEN;
+        setShopState(OPEN);
     }
     
     /**
@@ -200,6 +214,27 @@ public class MonShop {
         notifyAll();
     }
     
+    /**
+     * Address a Customer on the queue
+     * @return customer on top of the queue
+     */
+    public synchronized int addressACustomer(){
+        return (int) this.sitCustomer.peek(); // retorna id do cliente
+    }
+    
+    /**
+     * Service customer
+     * @param customerId
+     */
+    public synchronized void serviceCustomer(int customerId){
+        notifyAll();
+    }
+    
+    public synchronized void sayGoodByeToCustomer(int customerId){
+        flagPurchaseMade = true;
+        notifyAll();
+        removeSitCustomer(customerId); // remove cliente da fila
+    }
     
     
     //Funcions of customer
@@ -254,35 +289,18 @@ public class MonShop {
         while((int)this.sitCustomer.peek() != customerId){
             try{
                 wait(); // espera que a dona chame o proximo cliente
+                Thread.sleep(1000);
             }catch(InterruptedException ex){}
         }
 
-        if((int)this.sitCustomer.peek() == customerId){ // verifica se e ele a ser chamado
-            sharedInfo.setnGoodsByCustomer(customerId, nGoodsInDisplay); // adiciona num. total de produtos comprados pelo cliente
+        nGoodsToBuy = nGoods;
+        flagPurchaseMade = false;
+        while(!flagPurchaseMade){
+            try{
+                wait();
+                Thread.sleep(1000);
+            }catch(Exception e){}
         }
-    }
-    
-    /**
-     * The Customer leaves the Shop
-     */
-    public synchronized void exitShop() {
-        customerInsideShop--; // decrementar clientes na loja
-        sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
-    }  
-    
-    
-    
-    
-    
-	
-    /**
-     * Address a Customer on the queue
-     * @return customer on top of the queue
-     */
-    public synchronized int addressACustomer(){
-        notifyAll(); // chamar cliente
-
-        return (int) this.sitCustomer.peek(); // retorna id do cliente
     }
     
     /**
@@ -294,6 +312,17 @@ public class MonShop {
         if((int)sitCustomer.peek() == customerId) // remove o cliente correto da fila
             sitCustomer.read();
     }
+    
+    /**
+     * The Customer leaves the Shop
+     */
+    public synchronized void exitShop() {
+        customerInsideShop--; // decrementar clientes na loja
+        sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
+        if(shopState==STILL_OPEN && !customersInTheShop()){
+            notifyAll();
+        }
+    }  
 
     /**
      * Set present Shop state

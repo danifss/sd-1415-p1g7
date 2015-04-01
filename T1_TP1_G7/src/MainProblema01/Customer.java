@@ -48,13 +48,6 @@ public class Customer extends Thread {
     private final MonInfo sharedInfo;
     
     /**
-     * Factory/Workshop
-     * 
-     * @serialField factory
-     */
-    private final MonFactory factory;
-    
-    /**
      * Total number of goods bought buy the customer
      * 
      * @serialField nGoodsBought
@@ -73,13 +66,11 @@ public class Customer extends Thread {
      * @param sharedInfo General repository
      * @param customerId customer identification
      * @param shop Shop
-     * @param factory Factory
      */
-    public Customer(MonInfo sharedInfo, int customerId, MonShop shop, MonFactory factory){
+    public Customer(MonInfo sharedInfo, int customerId, MonShop shop){
         this.sharedInfo = sharedInfo;
         this.customerId = customerId;
         this.shop = shop;
-        this.factory = factory;
         this.customerState = CARRYING_OUT_DAILY_CHORES;
         this.nGoodsBought = 0;
     }
@@ -185,6 +176,7 @@ public class Customer extends Thread {
         
         shop.iWantThis(customerId, nProductsCustomer); // acao bloqueante
         nGoodsBought += nProductsCustomer; // adiciona bens comprados ao total
+        sharedInfo.setnGoodsByCustomer(customerId, nGoodsBought);
         nProductsCustomer = 0;
     }
 
