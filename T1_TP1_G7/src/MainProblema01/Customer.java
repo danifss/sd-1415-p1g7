@@ -86,25 +86,32 @@ public class Customer extends Thread {
                 case CARRYING_OUT_DAILY_CHORES:
                     livingNormalLife();
                     goShopping();
+                    //System.out.printf("Cliente %d - Vai tentar ir a loja.\n",customerId);
                     break;
                 case CHECKING_DOOR_OPEN:
                     if(isDoorOpen()) {
                         enterShop();
+                        System.out.printf("Cliente %d\t- Entrou na loja.\n",customerId);
                     }else{
                         tryAgainLater();
+                        //System.out.printf("Cliente %d - A loja nao esta aberta.\n",customerId);
                     }
                     break;
                 case APPRAISING_OFFER_IN_DISPLAY:
                     perusingAround();
+                    System.out.printf("Cliente %d\t- A escolher produtos.\n",customerId);
                     // ver se tem produtos
                     if(nProductsCustomer > 0){
                         iWantThis();
+                        System.out.printf("Cliente %d\t- Comprou %d produtos.\n",customerId,nProductsCustomer);
                     }else{
                         exitShop();
+                        System.out.printf("Cliente %d\t- Saiu sem comprar produtos.\n",customerId);
                     }
                     break;
                 case BUYING_SOME_GOODS:
                         exitShop();
+                        System.out.printf("Cliente %d\t- Saiu da loja.\n",customerId);
                     break;
             }
         }
@@ -177,7 +184,7 @@ public class Customer extends Thread {
         shop.iWantThis(customerId, nProductsCustomer); // acao bloqueante
         nGoodsBought += nProductsCustomer; // adiciona bens comprados ao total
         sharedInfo.setnGoodsByCustomer(customerId, nGoodsBought);
-        nProductsCustomer = 0;
+        //nProductsCustomer = 0; // nao precisa de limpar e assim facilita o debug
     }
 
     /**

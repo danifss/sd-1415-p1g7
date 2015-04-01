@@ -31,6 +31,9 @@ public class Main {
                 } while ((opt != 's') && (opt != 'n'));
                 if (opt == 's') success = true;
                 else success = false;
+            } else if(fName == null) {
+                fName = "log.txt";
+                success = true;
             } else success = true;
         } while (!success);
 
@@ -52,9 +55,7 @@ public class Main {
         int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
         int nMaxProductsCollect = 5;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
         int nLimitOfProductsInFactory = 10;					// Limite de produtos na oficina
-        //int nMaxPrimeMaterialsToDeliver = 40;             // Maximo de Materias Primas que pode ser entregue a oficina
-        //int nMaxProductsToDo = (nPrimeMaterialsInFactory + nMaxPrimeMaterialsToDeliver) / nPrimeMaterialsByProduct;
-        
+
         writeString("Usar valores predefinidos?(s/n) ");
         if(readlnString().equalsIgnoreCase("n")){
             writeString("Nº inicial de materias primas no Armazem: ");

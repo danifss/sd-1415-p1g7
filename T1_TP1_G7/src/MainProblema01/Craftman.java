@@ -113,6 +113,7 @@ public class Craftman extends Thread {
                 case FETCHING_PRIME_MATERIALS:
                     if(factory.checkForRestock() && !factory.flagPrimeActivated()){
                         primeMaterialsNeeded();
+                        System.out.printf("Artesao %d\t- A pedir materia prima.\n",craftmanId);
                     }else{
                         // Craftman verifica se há materias para produzir um novo produto
                         if(checkForMaterials()){
@@ -121,15 +122,17 @@ public class Craftman extends Thread {
                             // Craftman prepara para produzir
                             if(nPrimeMaterials != 0){
                                 prepareToProduce();
+                                System.out.printf("Artesao %d\t- Obteu %d materias primas.\n",craftmanId,nPrimeMaterials);
                             }
                         }
                     }
                     break;
                 case PRODUCING_A_NEW_PIECE:
-                    // Produz uma nova peça
+                    // Produz uma nova peca
                     shapingItUp();
                     // Dirige-se a zona de armazenamento
                     goToStore();
+                    System.out.printf("Artesao %d\t- Produziu um produto.\n",craftmanId);
                     break;
                 case STORING_IT_FOR_TRANSFER:
                     if(factory.checkContactProduct()){

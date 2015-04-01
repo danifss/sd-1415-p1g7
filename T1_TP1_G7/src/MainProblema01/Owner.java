@@ -70,6 +70,12 @@ public class Owner extends Thread {
      * @serialField attendingCustomerId
      */
     private int attendingCustomerId;
+    
+    /**
+     * This is to see if prime material has sold out
+     * @serialField primeMaterialsSoldOut
+     */
+    private boolean primeMaterialsSoldOut;
 
     /**
      * Create owner thread
@@ -86,6 +92,7 @@ public class Owner extends Thread {
         this.storage = storage;
         ownerState = OPENING_THE_SHOP;
         attendingCustomerId = -1;
+        this.primeMaterialsSoldOut = false;
     }
 
     /**
@@ -117,14 +124,17 @@ public class Owner extends Thread {
                     }
                     break;
                 case ATTENDING_A_CUSTOMER:
+                    System.out.printf("Owner\t\t- Atender o cliente %d.\n",attendingCustomerId);
                     serviceCustomer();
                     sayGoodByeToCustomer();
                     break;
                 case CLOSING_THE_SHOP:
                     if(shop.isTranfsProductsToShop()){
                         goToWorkShop();
-                    }else if(shop.isSupplyMaterialsToFactory()){
+                        System.out.printf("Owner\t\t- Vou a oficina.\n");
+                    }else if(shop.isSupplyMaterialsToFactory()){ // && !primeMaterialsSoldOut
                         visitSuppliers();
+                        System.out.printf("Owner\t\t- Vou ao armazem comprar materia prima.\n");
                     }else{
                         returnToShop();
                     }
@@ -133,7 +143,11 @@ public class Owner extends Thread {
                     returnToShop();
                     break;
                 case BUYING_PRIME_MATERIALS:
-                    replenishStock();
+                    if(nPrimeMaterials > 0) {
+                        replenishStock(); // so repoe stock se conseguiu comprar materia prima
+                        System.out.printf("Owner\t\t- Repor stock da oficina.\n");
+                    }else
+                        setOwnerState(DELIVERING_PRIME_MATERIALS);
                     break;
                 case DELIVERING_PRIME_MATERIALS:
                     returnToShop();
@@ -148,11 +162,6 @@ public class Owner extends Thread {
      */
     private void prepareToWork() {
         setOwnerState(WAITING_FOR_NEXT_TASK);
-
-        // Será o sleep necessário aqui???????????????????????????????????
-        try {
-            sleep((long) (1 + 20 * Math.random()));
-        } catch (InterruptedException e) {}
     }
 
     /**
@@ -227,7 +236,9 @@ public class Owner extends Thread {
      */
     private void visitSuppliers(){
         setOwnerState(BUYING_PRIME_MATERIALS);
-
+        
+        //primeMaterialsSoldOut = storage.isPrimeMaterialsAvailabe(); // verifica se materia prima esgotou
+        
         try {
             sleep((long) (1 + 10 * Math.random()));
         } catch (InterruptedException e) {}
@@ -269,7 +280,7 @@ public class Owner extends Thread {
         // valida se o Owner deve terminar ou nao
         // Esta versao comentada é a que contem interaçao com factory
         //return factory.endOfPrimeMaterials() && !factory.checkForMaterials() && factory.endProductsToCollect();
-        return shop.endOper() && ownerState == CLOSING_THE_SHOP;
+        return shop.endOper() && factory.endOfPrimeMaterials() && factory.endProductsToCollect() && (ownerState == CLOSING_THE_SHOP) && !shop.customersInTheShop();
     }
     
     /**
