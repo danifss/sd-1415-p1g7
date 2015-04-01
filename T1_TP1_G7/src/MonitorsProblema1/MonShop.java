@@ -128,12 +128,12 @@ public class MonShop {
         if(!endOper() || customersInTheShop()){
             if(shopState == OPEN){
                 try{
-                    while(sitCustomer.isEmpty() && !isSupplyMaterialsToFactory() && !isTranfsProductsToShop()){
+                    while(sitCustomer.isEmpty() && !isSupplyMaterialsToFactory() && !isTranfsProductsToShop() && !endOper()){
                         wait();
                         Thread.sleep(1000);
                     }
                 }catch(Exception e){}
-                if((isSupplyMaterialsToFactory() || isTranfsProductsToShop())){
+                if(isSupplyMaterialsToFactory() || isTranfsProductsToShop() || endOper()){
                     return FACTORY_NEEDS_SOMETHING;
                 }
                 return ADDRESS_CUSTOMER;
@@ -330,7 +330,7 @@ public class MonShop {
     public synchronized void exitShop() {
         customerInsideShop--; // decrementar clientes na loja
         sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
-        if(shopState==STILL_OPEN && !customersInTheShop()){
+        if(!customersInTheShop()){
             notifyAll();
         }
     }  

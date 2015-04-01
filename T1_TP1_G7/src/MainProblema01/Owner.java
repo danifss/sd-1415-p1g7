@@ -136,6 +136,7 @@ public class Owner extends Thread {
                         visitSuppliers();
                         System.out.printf("Owner\t\t- Vou ao armazem comprar materia prima.\n");
                     }else{
+                        System.out.printf("Owner\t\t- Fim.\n");
                         returnToShop();
                     }
                     break;
@@ -280,7 +281,7 @@ public class Owner extends Thread {
         // valida se o Owner deve terminar ou nao
         // Esta versao comentada é a que contem interaçao com factory
         //return factory.endOfPrimeMaterials() && !factory.checkForMaterials() && factory.endProductsToCollect();
-        return shop.endOper() && factory.endOfPrimeMaterials() && factory.endProductsToCollect() && (ownerState == CLOSING_THE_SHOP) && !shop.customersInTheShop();
+        return shop.endOper() && (ownerState == CLOSING_THE_SHOP) && !shop.customersInTheShop();
     }
     
     /**
