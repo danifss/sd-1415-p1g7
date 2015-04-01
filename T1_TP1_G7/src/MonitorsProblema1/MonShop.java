@@ -54,12 +54,6 @@ public class MonShop {
     private int nGoodsInDisplay;
     
     /**
-     * Number of goods that the present customer will buy
-     * @serialField nGoodsToBuy
-     */
-    private int nGoodsToBuy;
-    
-    /**
      * Flag to see if the owner already finished the purchase
      * @serialField flagPurchaseMade
      */
@@ -93,7 +87,6 @@ public class MonShop {
         nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
         flagBringProductsFromFactory = 0;
         flagPrimeMaterialsNeeded = false;
-        nGoodsToBuy = 0;
         flagPurchaseMade = false;
     }
     
@@ -293,7 +286,6 @@ public class MonShop {
             }catch(InterruptedException ex){}
         }
 
-        nGoodsToBuy = nGoods;
         flagPurchaseMade = false;
         while(!flagPurchaseMade){
             try{
