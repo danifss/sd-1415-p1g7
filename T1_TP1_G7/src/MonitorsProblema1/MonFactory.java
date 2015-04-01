@@ -132,7 +132,7 @@ public class MonFactory {
      * @return true if needs to restock
      */
     public synchronized boolean checkForRestock(){
-        return nPrimeMaterialsInFactory < nPrimeRestock;
+        return (nPrimeMaterialsInFactory < nPrimeRestock) && (nPrimeMaterialsSupplied != nTotalPrime);
     }
     
     /**
