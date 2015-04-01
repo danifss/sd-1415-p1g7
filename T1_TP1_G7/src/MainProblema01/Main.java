@@ -73,13 +73,14 @@ public class Main {
             nLimitOfProductsInFactory = Integer.parseInt(readlnString());
         }
 
+        int totalProducts = ((nPrimeMaterialsInFactory + nInitialPrimeMaterialsInStorage) / nPrimeMaterialsByProduct) + nInitialProductsInShop;
         sharedInfo = new MonInfo(
                 nCraftsman,
                 nCustomers,
                 fName,
                 nPrimeMaterialsInFactory
         ); // Create general repository
-        shop = new MonShop(nInitialProductsInShop, nCustomers, sharedInfo); // Creating shop
+        shop = new MonShop(nInitialProductsInShop, nCustomers, sharedInfo, totalProducts); // Creating shop
         factory = new MonFactory(
                 sharedInfo,
                 nPrimeMaterialsInFactory,

@@ -267,7 +267,9 @@ public class Owner extends Thread {
      */
     private boolean endOper() {
         // valida se o Owner deve terminar ou nao
-        return factory.endOfPrimeMaterials() && !factory.checkForMaterials() && factory.endProductsToCollect();
+        // Esta versao comentada é a que contem interaçao com factory
+        //return factory.endOfPrimeMaterials() && !factory.checkForMaterials() && factory.endProductsToCollect();
+        return shop.endOper() && ownerState == CLOSING_THE_SHOP;
     }
     
     /**

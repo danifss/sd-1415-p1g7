@@ -116,7 +116,7 @@ public class Customer extends Thread {
      */
     private void livingNormalLife(){
         try{
-            sleep((long) (1+40*Math.random()));
+            sleep((long) (1+100*Math.random()));
         }catch(InterruptedException e){}
     }
 
@@ -180,11 +180,6 @@ public class Customer extends Thread {
         nProductsCustomer = 0;
     }
 
-    
-    
-    
-    
-    
     /**
      * The Customer leaves the Shop
      */
@@ -199,8 +194,7 @@ public class Customer extends Thread {
      */
     private boolean endOper() {
         // valida se o cliente deve terminar ou nao
-        //return factory.endOper() && !factory.checkForMaterials() && noPrimeMaterialsAvailable() && allProductsSold();
-	return false;
+        return shop.endOper() && customerState == CARRYING_OUT_DAILY_CHORES;
     }
     
     /**

@@ -71,7 +71,19 @@ public class MonShop {
      */
     private boolean flagPrimeMaterialsNeeded;
     
-
+    
+    /**
+     * Total amount of products delivered
+     * @serialField nProductsDelivered
+     */
+    private int nProductsDelivered;
+    
+    /**
+     * Total number of products that the shop can have in this experience
+     * @serialField totalProducts
+     */
+    private final int totalProducts;
+    
     /**
      * Create Monitor of the Shop
      * 
@@ -79,7 +91,7 @@ public class MonShop {
      * @param nCustomer Number of customers
      * @param sharedInfo General repository
      */
-    public MonShop(int nInitialProductsInShop, int nCustomer, MonInfo sharedInfo) {
+    public MonShop(int nInitialProductsInShop, int nCustomer, MonInfo sharedInfo, int totalProducts) {
         this.sharedInfo = sharedInfo;
         shopState = CLOSED;
         customerInsideShop = 0;
@@ -88,6 +100,8 @@ public class MonShop {
         flagBringProductsFromFactory = 0;
         flagPrimeMaterialsNeeded = false;
         flagPurchaseMade = false;
+        nProductsDelivered = nInitialProductsInShop;
+        this.totalProducts = totalProducts;
     }
     
     /**
@@ -111,28 +125,31 @@ public class MonShop {
      * @return action to do
      */
     public synchronized int appraiseSit(){        
-        if(shopState == OPEN){
+        if(!endOper() || customersInTheShop()){
+            if(shopState == OPEN){
+                try{
+                    while(sitCustomer.isEmpty() && !isSupplyMaterialsToFactory() && !isTranfsProductsToShop()){
+                        wait();
+                        Thread.sleep(1000);
+                    }
+                }catch(Exception e){}
+                if((isSupplyMaterialsToFactory() || isTranfsProductsToShop())){
+                    return FACTORY_NEEDS_SOMETHING;
+                }
+                return ADDRESS_CUSTOMER;
+            }
             try{
-                while(sitCustomer.isEmpty() && !isSupplyMaterialsToFactory() && !isTranfsProductsToShop()){
+                while(sitCustomer.isEmpty() && customersInTheShop()){
                     wait();
                     Thread.sleep(1000);
                 }
             }catch(Exception e){}
-            if((isSupplyMaterialsToFactory() || isTranfsProductsToShop())){
+            if(!customersInTheShop()){
                 return FACTORY_NEEDS_SOMETHING;
             }
             return ADDRESS_CUSTOMER;
         }
-        try{
-            while(sitCustomer.isEmpty() && customersInTheShop()){
-                wait();
-                Thread.sleep(1000);
-            }
-        }catch(Exception e){}
-        if(!customersInTheShop()){
-            return FACTORY_NEEDS_SOMETHING;
-        }
-        return ADDRESS_CUSTOMER;
+        return FACTORY_NEEDS_SOMETHING;
     }
     
     /**
@@ -178,6 +195,7 @@ public class MonShop {
      */
     public synchronized void addnGoodsInDisplay(int goods) {
         nGoodsInDisplay += goods;
+        nProductsDelivered += goods;
         sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
     }
     
@@ -339,6 +357,14 @@ public class MonShop {
      */
     public boolean isTranfsProductsToShop() {
         return flagBringProductsFromFactory > 0;
+    }
+    
+    /**
+     * See if the owner and the customer can stop
+     * @return true if they can
+     */
+    public boolean endOper(){
+        return nProductsDelivered == totalProducts && nGoodsInDisplay == 0;
     }
     
 }
