@@ -64,6 +64,12 @@ public class Owner extends Thread {
      * @serialField nPrimeMaterials
      */
     private int nPrimeMaterials;
+    
+    /**
+     * Id of the customer that the owner is attending
+     * @serialField attendingCustomerId
+     */
+    private int attendingCustomerId;
 
     /**
      * Create owner thread
@@ -79,6 +85,7 @@ public class Owner extends Thread {
         this.shop = shop;
         this.storage = storage;
         ownerState = OPENING_THE_SHOP;
+        attendingCustomerId = -1;
     }
 
     /**
@@ -106,12 +113,12 @@ public class Owner extends Thread {
                         prepareToLeave();
                     }
                     if(decision == ADDRESS_CUSTOMER){
-                        cid = addressACustomer();
+                        addressACustomer();
                     }
                     break;
                 case ATTENDING_A_CUSTOMER:
                     serviceCustomer();
-                    sayGoodByeToCustomer(cid);
+                    sayGoodByeToCustomer();
                     break;
                 case CLOSING_THE_SHOP:
                     if(shop.isTranfsProductsToShop()){
@@ -180,9 +187,9 @@ public class Owner extends Thread {
     /**
      * Owner prepares to address a customer
      */
-    private int addressACustomer(){
+    private void addressACustomer(){
         setOwnerState(ATTENDING_A_CUSTOMER);
-        return shop.addressACustomer(); // atende cliente seguinte
+        attendingCustomerId = shop.addressACustomer(); // atende cliente seguinte
     }
     
     /**
@@ -195,11 +202,11 @@ public class Owner extends Thread {
     }
     
     //Incompleta
-    private void sayGoodByeToCustomer(int cid) {
+    private void sayGoodByeToCustomer() {
+        shop.sayGoodByeToCustomer(attendingCustomerId);
         if(shop.isShopStillOpen()){
             closeTheDoor();
         }
-        shop.removeSitCustomer(cid); // remove cliente da fila
         setOwnerState(WAITING_FOR_NEXT_TASK);
     }
     
