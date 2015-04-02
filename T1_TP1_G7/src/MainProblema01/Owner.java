@@ -162,6 +162,9 @@ public class Owner extends Thread {
      * Owner prepare to work, and is waiting for the next task
      */
     private void prepareToWork() {
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setOwnerState(WAITING_FOR_NEXT_TASK);
     }
 
@@ -170,6 +173,9 @@ public class Owner extends Thread {
      * @return 
      */
     private int appraiseSit(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         return shop.appraiseSit();
     }
     
@@ -177,6 +183,9 @@ public class Owner extends Thread {
      * Owner closes the door
      */
     private void closeTheDoor() {
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         shop.closeTheDoor();
     }
     
@@ -184,6 +193,9 @@ public class Owner extends Thread {
      * Owner sees if there is customers in the shop
      */
     private boolean customersInTheShop(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         return shop.customersInTheShop();
     }
     
@@ -191,6 +203,9 @@ public class Owner extends Thread {
      * Owner prepares to go to the factory
      */
     private void prepareToLeave(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setOwnerState(CLOSING_THE_SHOP);
     }
     
@@ -198,6 +213,9 @@ public class Owner extends Thread {
      * Owner prepares to address a customer
      */
     private void addressACustomer(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setOwnerState(ATTENDING_A_CUSTOMER);
         attendingCustomerId = shop.addressACustomer(); // atende cliente seguinte
     }
@@ -206,6 +224,9 @@ public class Owner extends Thread {
      * Service a Customer
      */
     private void serviceCustomer() {
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         int n = shop.serviceCustomer(attendingCustomerId);
         int i = 0;
         while(i<n){
@@ -220,6 +241,9 @@ public class Owner extends Thread {
     
     //Incompleta
     private void sayGoodByeToCustomer() {
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         shop.sayGoodByeToCustomer(attendingCustomerId);
         if(shop.isShopStillOpen()){
             closeTheDoor();
@@ -231,6 +255,9 @@ public class Owner extends Thread {
      * Owner goes to Factory to collect products
      */
     private void goToWorkShop(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setOwnerState(COLLECTING_A_BATCH_OF_PRODUCTS);
 
         shop.goToWorkshop();
@@ -243,6 +270,9 @@ public class Owner extends Thread {
      * Owner goes to the storage to collect some prime materials
      */
     private void visitSuppliers(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setOwnerState(BUYING_PRIME_MATERIALS);
         
         //primeMaterialsSoldOut = storage.isPrimeMaterialsAvailabe(); // verifica se materia prima esgotou
@@ -262,6 +292,9 @@ public class Owner extends Thread {
      * Owner returns to the shop and opens the door
      */
     private void returnToShop(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         try {
             sleep((long) (1 + 10 * Math.random()));
         } catch (InterruptedException e) {}
@@ -274,6 +307,9 @@ public class Owner extends Thread {
      * Owner delivers prime materials to the Factory
      */
     private void replenishStock(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setOwnerState(DELIVERING_PRIME_MATERIALS);
         shop.replenishStock();
         factory.replenishStock(nPrimeMaterials);

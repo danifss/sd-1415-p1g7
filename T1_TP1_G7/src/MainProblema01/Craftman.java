@@ -153,6 +153,9 @@ public class Craftman extends Thread {
      * Check for materials
      */
     private boolean checkForMaterials(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         return factory.checkForMaterials();
     }
     
@@ -160,6 +163,9 @@ public class Craftman extends Thread {
      * Collect materials
      */
     private void collectMaterials(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         nPrimeMaterials += factory.collectMaterials();
     }
     
@@ -167,6 +173,9 @@ public class Craftman extends Thread {
      * Prepare to produce
      */
     private void prepareToProduce(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setCraftmanState(PRODUCING_A_NEW_PIECE);
     }
     
@@ -175,7 +184,7 @@ public class Craftman extends Thread {
      */
     private void shapingItUp(){
         try{
-            sleep((long) (1+40*Math.random()));
+            sleep((long) (100+20*Math.random()));
         }catch(InterruptedException e){}
         nPrimeMaterials -= factory.getnPrimePerProduct();
         nProduct += 1;
@@ -198,6 +207,9 @@ public class Craftman extends Thread {
      * Batch ready for transfer
      */
     private void batchReadyForTransfer(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setCraftmanState(CONTACTING_THE_ENTREPRENEUR);
         factory.batchReadyForTransfer();
         shop.batchReadyForTransfer();
@@ -207,6 +219,9 @@ public class Craftman extends Thread {
      * Back to work
      */
     private void backToWork(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setCraftmanState(FETCHING_PRIME_MATERIALS);
     }
     
@@ -214,6 +229,9 @@ public class Craftman extends Thread {
      * Prime materials needed
      */
     private void primeMaterialsNeeded(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         if(factory.primeMaterialsNeeded()){
             setCraftmanState(CONTACTING_THE_ENTREPRENEUR);
             shop.primeMaterialsNeeded();
