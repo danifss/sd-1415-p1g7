@@ -59,6 +59,12 @@ public class MonFactory {
     private final int nTotalPrime;
     
     /**
+     * Amount of prime materials at the beginning in the factory
+     * @serialField nInitialPrime
+     */
+    private final int nInitialPrime;
+    
+    /**
      * Number of prime materials needed to produce a new product
      * @serialField nPrimePerProduct
      */
@@ -119,6 +125,7 @@ public class MonFactory {
         
         // Variáveis que não são necessárias no repositório geral
         this.nTotalPrime = nTotalPrime;
+        nInitialPrime = nPrimeMaterialsInFactory;
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
         this.nProductsCollect = nProductsCollect;
@@ -197,7 +204,7 @@ public class MonFactory {
         // Caso o número de produtos acabados a dividir pelo número de produtos que a owner pode levar
         // for diferente da quantidade de vezes que a flag foi ativada, significa que o Craftman necessita
         // que tem mais nProductsCollect para serem levados para a loja (Divisão de inteiros)
-        return nFinishedProductsInFactory / nProductsCollect != flagNProductsCall;
+        return (nFinishedProductsInFactory / nProductsCollect != flagNProductsCall) || (((nTotalPrime+nInitialPrime) / nPrimePerProduct == nProductsManufactured) && (nFinishedProductsInFactory > 0));
     }
     
     /**
