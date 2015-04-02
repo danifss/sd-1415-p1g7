@@ -56,7 +56,7 @@ public class Main {
         int nMaxProductsCollect = 5;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
         int nLimitOfProductsInFactory = 10;					// Limite de produtos na oficina
 
-        writeString("Usar valores predefinidos?(s/n) ");
+        /*writeString("Usar valores predefinidos?(s/n) ");
         if(readlnString().equalsIgnoreCase("n")){
             writeString("Nº inicial de materias primas no Armazem: ");
             nInitialPrimeMaterialsInStorage = Integer.parseInt(readlnString());
@@ -72,7 +72,7 @@ public class Main {
             nMaxProductsCollect = Integer.parseInt(readlnString());
             writeString("Nº maximo de bens na Oficina: ");
             nLimitOfProductsInFactory = Integer.parseInt(readlnString());
-        }
+        }*/
 
         int totalProducts = ((nPrimeMaterialsInFactory + nInitialPrimeMaterialsInStorage) / nPrimeMaterialsByProduct) + nInitialProductsInShop;
         sharedInfo = new MonInfo(
