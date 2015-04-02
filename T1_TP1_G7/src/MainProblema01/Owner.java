@@ -129,12 +129,12 @@ public class Owner extends Thread {
                     sayGoodByeToCustomer();
                     break;
                 case CLOSING_THE_SHOP:
-                    if(shop.isTranfsProductsToShop()){
-                        goToWorkShop();
-                        System.out.printf("Owner\t\t- Vou a oficina.\n");
-                    }else if(shop.isSupplyMaterialsToFactory()){ // && !primeMaterialsSoldOut
+                    if(shop.isSupplyMaterialsToFactory()){
                         visitSuppliers();
                         System.out.printf("Owner\t\t- Vou ao armazem comprar materia prima.\n");
+                    }else if(shop.isTranfsProductsToShop()){
+                        goToWorkShop();
+                        System.out.printf("Owner\t\t- Vou a oficina.\n");
                     }else{
                         System.out.printf("Owner\t\t- Fim.\n");
                         returnToShop();
