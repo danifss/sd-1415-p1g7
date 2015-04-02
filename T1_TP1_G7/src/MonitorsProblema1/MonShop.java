@@ -54,6 +54,18 @@ public class MonShop {
     private int nGoodsInDisplay;
     
     /**
+     * Id of the customer that the owner is attending
+     * @serialField attendingCustomerId;
+     */
+    private int attendingCustomerId;
+    
+    /**
+     * Number of goods that the customer is buying
+     * @serialField nGoodsCustomerHave
+     */
+    private int nGoodsCustomerHave;
+    
+    /**
      * Flag to see if the owner already finished the purchase
      * @serialField flagPurchaseMade
      */
@@ -97,6 +109,8 @@ public class MonShop {
         customerInsideShop = 0;
         sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
         nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
+        nGoodsCustomerHave = 0;
+        attendingCustomerId = -1;
         flagBringProductsFromFactory = 0;
         flagPrimeMaterialsNeeded = false;
         flagPurchaseMade = false;
@@ -228,24 +242,32 @@ public class MonShop {
     
     /**
      * Address a Customer on the queue
-     * @return customer on top of the queue
      */
     public synchronized int addressACustomer(){
-        return (int) this.sitCustomer.peek(); // retorna id do cliente
+        attendingCustomerId = (int) this.sitCustomer.peek(); // retorna id do cliente
+        notifyAll();
+        return attendingCustomerId;
     }
     
     /**
      * Service customer
      * @param customerId
+     * @return number of goods that the customer is buying
      */
-    public synchronized void serviceCustomer(int customerId){
-        notifyAll();
+    public synchronized int serviceCustomer(int customerId){
+        while(nGoodsCustomerHave < 0){
+            try{
+                wait();
+            }catch(Exception e){}
+        }
+        return nGoodsCustomerHave;
     }
     
     public synchronized void sayGoodByeToCustomer(int customerId){
         flagPurchaseMade = true;
         notifyAll();
         removeSitCustomer(customerId); // remove cliente da fila
+        attendingCustomerId = -1;
     }
     
     
@@ -298,20 +320,23 @@ public class MonShop {
         
         this.sitCustomer.write(customerId); // ir para a fila de atendimento
         notifyAll(); // acordar dona
-        while((int)this.sitCustomer.peek() != customerId){
+        while(attendingCustomerId != customerId){
             try{
                 wait(); // espera que a dona chame o proximo cliente
                 Thread.sleep(1000);
             }catch(InterruptedException ex){}
         }
-
+        
         flagPurchaseMade = false;
+        nGoodsCustomerHave = nGoods;
+        notifyAll();
         while(!flagPurchaseMade){
             try{
                 wait();
                 Thread.sleep(1000);
             }catch(Exception e){}
         }
+        nGoodsCustomerHave = -1;
     }
     
     /**

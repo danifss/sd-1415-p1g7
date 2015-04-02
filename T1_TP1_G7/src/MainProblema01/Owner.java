@@ -206,9 +206,16 @@ public class Owner extends Thread {
      * Service a Customer
      */
     private void serviceCustomer() {
-        try {
-            sleep((long) (1 + 10 * Math.random()));
-        } catch (InterruptedException e) {}
+        int n = shop.serviceCustomer(attendingCustomerId);
+        int i = 0;
+        while(i<n){
+            //Debug
+            System.out.println("--------Tratando produto: "+ (i+1) + " do customer: "+ attendingCustomerId);
+            try {
+                sleep((long) (1 + 10 * Math.random()));
+            } catch (InterruptedException e) {}
+            i++;
+        }
     }
     
     //Incompleta
