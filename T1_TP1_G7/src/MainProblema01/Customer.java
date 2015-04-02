@@ -123,7 +123,7 @@ public class Customer extends Thread {
      */
     private void livingNormalLife(){
         try{
-            sleep((long) (1+100*Math.random()));
+            sleep((long) (1000+100*Math.random()));
         }catch(InterruptedException e){}
     }
 
@@ -133,6 +133,9 @@ public class Customer extends Thread {
      * that he buy goods, and finally exit shop
      */
     private void goShopping(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setCustomerState(CHECKING_DOOR_OPEN);
     }
 
@@ -140,6 +143,9 @@ public class Customer extends Thread {
      * Customer checks if the shop is open
      */
     private boolean isDoorOpen(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         return shop.isDoorOpen();
     }
     
@@ -147,10 +153,13 @@ public class Customer extends Thread {
      * Try Again Later
      */
     private void tryAgainLater(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setCustomerState(CARRYING_OUT_DAILY_CHORES);
 
         try{
-            sleep((long) (1+100*Math.random()));
+            sleep((long) (500+100*Math.random()));
         }catch(InterruptedException e){}
     }
 
@@ -158,6 +167,9 @@ public class Customer extends Thread {
      * Customer enter in the shop
      */
     private void enterShop() {
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         shop.enterShop();
         setCustomerState(APPRAISING_OFFER_IN_DISPLAY);
     }
@@ -179,6 +191,9 @@ public class Customer extends Thread {
      * @param goods 
      */
     private void iWantThis(){
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         setCustomerState(BUYING_SOME_GOODS);
         
         shop.iWantThis(customerId, nProductsCustomer); // acao bloqueante
@@ -191,6 +206,9 @@ public class Customer extends Thread {
      * The Customer leaves the Shop
      */
     private void exitShop() {
+        try{
+            sleep((long) (20));
+        }catch(InterruptedException e){}
         shop.exitShop();
         setCustomerState(CARRYING_OUT_DAILY_CHORES);
     }
