@@ -150,7 +150,7 @@ public class Customer extends Thread {
         setCustomerState(CARRYING_OUT_DAILY_CHORES);
 
         try{
-            sleep((long) (1+40*Math.random()));
+            sleep((long) (1+100*Math.random()));
         }catch(InterruptedException e){}
     }
 

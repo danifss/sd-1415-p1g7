@@ -209,9 +209,14 @@ public class MonFactory {
     
     /**
      * Turn true the flag that indicates that prime materials is needed
+     * @return if it is really needed to call the owner
      */
-    public synchronized void primeMaterialsNeeded(){
+    public synchronized boolean primeMaterialsNeeded(){
+        if(flagPrimeCall){
+            return false;
+        }
         flagPrimeCall = true;
+        return true;
     }
     
     /**
