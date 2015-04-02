@@ -214,9 +214,10 @@ public class Craftman extends Thread {
      * Prime materials needed
      */
     private void primeMaterialsNeeded(){
-        factory.primeMaterialsNeeded();
-        setCraftmanState(CONTACTING_THE_ENTREPRENEUR);
-        shop.primeMaterialsNeeded();
+        if(factory.primeMaterialsNeeded()){
+            setCraftmanState(CONTACTING_THE_ENTREPRENEUR);
+            shop.primeMaterialsNeeded();
+        }
     }
     
     /**
