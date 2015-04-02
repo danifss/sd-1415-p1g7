@@ -266,7 +266,7 @@ public class MonShop {
     public synchronized void sayGoodByeToCustomer(int customerId){
         flagPurchaseMade = true;
         notifyAll();
-        removeSitCustomer(customerId); // remove cliente da fila
+        removeSitCustomer(attendingCustomerId); // remove cliente da fila
         attendingCustomerId = -1;
     }
     
@@ -276,7 +276,7 @@ public class MonShop {
      * See if the door is open
      * @return True if is open
      */
-    public boolean isDoorOpen() {
+    public synchronized boolean isDoorOpen() {
         return shopState == OPEN;
     }
     
