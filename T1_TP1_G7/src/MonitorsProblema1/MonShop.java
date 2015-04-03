@@ -37,9 +37,9 @@ public class MonShop implements MonShopInterface {
 
     /**
      * FIFO with Customers on the Shop
-     * @serialField sitCustomer
+     * @serialField queueCustomer
      */
-    private MemFIFO sitCustomer;
+    private MemFIFO queueCustomer;
     
     /**
      * Number of customers inside the shop
@@ -107,7 +107,7 @@ public class MonShop implements MonShopInterface {
         this.sharedInfo = sharedInfo;
         shopState = CLOSED;
         customerInsideShop = 0;
-        sitCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
+        queueCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
         nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
         nGoodsCustomerHave = 0;
         attendingCustomerId = -1;
@@ -133,7 +133,7 @@ public class MonShop implements MonShopInterface {
      */
     @Override
     public boolean customerInTheQueue(){
-        return !this.sitCustomer.isEmpty();
+        return !this.queueCustomer.isEmpty();
     }
     
     /**
@@ -145,7 +145,7 @@ public class MonShop implements MonShopInterface {
         if(!endOper() || customersInTheShop()){
             if(shopState == OPEN){
                 try{
-                    while(sitCustomer.isEmpty() && !isSupplyMaterialsToFactory() && !isTranfsProductsToShop() && !endOper()){
+                    while(queueCustomer.isEmpty() && !isSupplyMaterialsToFactory() && !isTranfsProductsToShop() && !endOper()){
                         wait();
                         Thread.sleep(1000);
                     }
@@ -156,7 +156,7 @@ public class MonShop implements MonShopInterface {
                 return ADDRESS_CUSTOMER;
             }
             try{
-                while(sitCustomer.isEmpty() && customersInTheShop()){
+                while(queueCustomer.isEmpty() && customersInTheShop()){
                     wait();
                     Thread.sleep(1000);
                 }
@@ -258,7 +258,7 @@ public class MonShop implements MonShopInterface {
      */
     @Override
     public synchronized int addressACustomer(){
-        attendingCustomerId = (int) this.sitCustomer.peek(); // retorna id do cliente
+        attendingCustomerId = (int) this.queueCustomer.peek(); // retorna id do cliente
         notifyAll();
         return attendingCustomerId;
     }
@@ -341,7 +341,7 @@ public class MonShop implements MonShopInterface {
     @Override
     public synchronized void iWantThis(int customerId, int nGoods) {
         
-        this.sitCustomer.write(customerId); // ir para a fila de atendimento
+        this.queueCustomer.write(customerId); // ir para a fila de atendimento
         notifyAll(); // acordar dona
         while(attendingCustomerId != customerId){
             try{
@@ -369,8 +369,8 @@ public class MonShop implements MonShopInterface {
     @Override
     public synchronized void removeSitCustomer(int customerId){
         //sitCustomer.remove(customerId); // nao sei se funciona bem
-        if((int)sitCustomer.peek() == customerId) // remove o cliente correto da fila
-            sitCustomer.read();
+        if((int)queueCustomer.peek() == customerId) // remove o cliente correto da fila
+            queueCustomer.read();
     }
     
     /**
