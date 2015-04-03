@@ -1,7 +1,6 @@
 package MainProblema01;
 
 import genclass.GenericIO;
-import static genclass.GenericIO.*;
 import genclass.FileOp;
 import MonitorsProblema1.*;
 
