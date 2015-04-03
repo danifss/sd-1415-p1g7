@@ -1,33 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package MonitorsProblema1;
 
 /**
- *
- * @author Daniel
+ * @author Daniel 51908
+ * @author Raphael 64044
+ * @version 1.0
  */
 public interface MemFIFOInterface {
 
     /**
-     * @return Estado da fila. (Vazia ou nao)
+     * Checks if the queue is empty.
+     * @return State of the queue (Empty or not)
      */
     boolean isEmpty();
 
     /**
-     * @return Objeto no topo da fila. (sem o tirar)
+     * Reads a value without removing it. 
+     * @return Object at the top of the queue (without removing it)
      */
     Object peek();
 
     /**
-     * fifo out -- leitura de um valor
+     * FIFO out -- reading a value.
+     * @return value read
      */
     Object read();
 
     /**
-     * fifo in -- escrita de um valor
+     * FIFO in -- writing a value.
+     * @param val value that will be writing
      */
     void write(Object val);
     
