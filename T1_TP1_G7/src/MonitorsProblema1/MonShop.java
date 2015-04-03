@@ -6,7 +6,7 @@ package MonitorsProblema1;
  * @version 1.0
  */
 
-public class MonShop {
+public class MonShop implements MonShopInterface {
     
      /**
       * Shop States
@@ -122,6 +122,7 @@ public class MonShop {
      * See if there is customers inside the shop
      * @return true if it is customers inside
      */
+    @Override
     public boolean customersInTheShop(){
         return customerInsideShop > 0;
     }
@@ -130,6 +131,7 @@ public class MonShop {
      * See if the Queue has customers
      * @return true if the queue has customers
      */
+    @Override
     public boolean customerInTheQueue(){
         return !this.sitCustomer.isEmpty();
     }
@@ -138,6 +140,7 @@ public class MonShop {
      * Owner sees the situation of the shop and decide what to do
      * @return action to do
      */
+    @Override
     public synchronized int appraiseSit(){        
         if(!endOper() || customersInTheShop()){
             if(shopState == OPEN){
@@ -169,6 +172,7 @@ public class MonShop {
     /**
      * Owner closes the door
      */
+    @Override
     public synchronized void closeTheDoor(){
         if(customersInTheShop()){
             setShopState(STILL_OPEN);
@@ -182,6 +186,7 @@ public class MonShop {
     /**
      * Owner opens the door
      */
+    @Override
     public synchronized void openTheDoor(){
         setShopState(OPEN);
         System.out.println("Shop\t\t- Porta Aberta.");
@@ -191,6 +196,7 @@ public class MonShop {
      * See if the shop is on state STILL_OPEN
      * @return true if the shop is STILL_OPEN
      */
+    @Override
     public synchronized boolean isShopStillOpen(){
         return shopState == STILL_OPEN;
     }
@@ -198,6 +204,7 @@ public class MonShop {
     /**
      * The owner goes to the Factory to collect products
      */
+    @Override
     public synchronized void goToWorkshop(){
         flagBringProductsFromFactory -= 1;
         if(flagBringProductsFromFactory > 0)
@@ -210,6 +217,7 @@ public class MonShop {
      * Update the number of products that the shop is selling
      * @param goods 
      */
+    @Override
     public synchronized void addnGoodsInDisplay(int goods) {
         nGoodsInDisplay += goods;
         nProductsDelivered += goods;
@@ -219,6 +227,7 @@ public class MonShop {
     /**
      * Owner goes to factory to restock prime materials
      */
+    @Override
     public synchronized void replenishStock(){
         flagPrimeMaterialsNeeded = false;
         sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
@@ -227,6 +236,7 @@ public class MonShop {
     /**
      * Prime materials is needed in the Factory
      */
+    @Override
     public synchronized void primeMaterialsNeeded(){
         flagPrimeMaterialsNeeded = true;
         sharedInfo.setSupplyMaterialsToFactory(flagPrimeMaterialsNeeded);
@@ -236,6 +246,7 @@ public class MonShop {
     /**
      * Owner can go to factory to collect products
      */
+    @Override
     public synchronized void batchReadyForTransfer(){
         flagBringProductsFromFactory += 1;
         sharedInfo.setTranfsProductsToShop(true);
@@ -245,6 +256,7 @@ public class MonShop {
     /**
      * Address a Customer on the queue
      */
+    @Override
     public synchronized int addressACustomer(){
         attendingCustomerId = (int) this.sitCustomer.peek(); // retorna id do cliente
         notifyAll();
@@ -256,6 +268,7 @@ public class MonShop {
      * @param customerId
      * @return number of goods that the customer is buying
      */
+    @Override
     public synchronized int serviceCustomer(int customerId){
         while(nGoodsCustomerHave < 0){
             try{
@@ -265,7 +278,11 @@ public class MonShop {
         return nGoodsCustomerHave;
     }
     
-    public synchronized void sayGoodByeToCustomer(int customerId){
+    /**
+     * Say goodbye to attending Customer
+     */
+    @Override
+    public synchronized void sayGoodByeToCustomer(){
         flagPurchaseMade = true;
         notifyAll();
         removeSitCustomer(attendingCustomerId); // remove cliente da fila
@@ -278,6 +295,7 @@ public class MonShop {
      * See if the door is open
      * @return True if is open
      */
+    @Override
     public synchronized boolean isDoorOpen() {
         return shopState == OPEN;
     }
@@ -285,6 +303,7 @@ public class MonShop {
     /**
      * A customer enters the shop
      */
+    @Override
     public synchronized void enterShop() {
         this.customerInsideShop++;
         sharedInfo.setnCustomersInsideShop(customerInsideShop);
@@ -296,6 +315,7 @@ public class MonShop {
      * of goods for sell and returns his remainder.
      * @return number of goods to buy
      */
+    @Override
     public synchronized int perusingAround(){
         // choose what to buy
         double r = Math.random();
@@ -318,6 +338,7 @@ public class MonShop {
      * @param customerId
      * @param nGoods 
      */
+    @Override
     public synchronized void iWantThis(int customerId, int nGoods) {
         
         this.sitCustomer.write(customerId); // ir para a fila de atendimento
@@ -345,6 +366,7 @@ public class MonShop {
      * Remove customer from queue
      * @param customerId 
      */
+    @Override
     public synchronized void removeSitCustomer(int customerId){
         //sitCustomer.remove(customerId); // nao sei se funciona bem
         if((int)sitCustomer.peek() == customerId) // remove o cliente correto da fila
@@ -354,6 +376,7 @@ public class MonShop {
     /**
      * The Customer leaves the Shop
      */
+    @Override
     public synchronized void exitShop() {
         customerInsideShop--; // decrementar clientes na loja
         sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
@@ -366,6 +389,7 @@ public class MonShop {
      * Set present Shop state
      * @param state
      */
+    @Override
     public synchronized void setShopState(int state) {
         shopState = state;
         sharedInfo.setShopState(state);
@@ -375,6 +399,7 @@ public class MonShop {
      * Check if the factory needs prime materials
      * @return true if is needed
      */
+    @Override
     public boolean isSupplyMaterialsToFactory() {
         return flagPrimeMaterialsNeeded;
     }
@@ -383,6 +408,7 @@ public class MonShop {
      * Check if the owner can collect products
      * @return true if he needs to go to the factory
      */
+    @Override
     public boolean isTranfsProductsToShop() {
         return flagBringProductsFromFactory > 0;
     }
@@ -393,6 +419,7 @@ public class MonShop {
      * all been sold.
      * @return true if they can
      */
+    @Override
     public boolean endOper(){
         return nProductsDelivered == totalProducts && nGoodsInDisplay == 0;
     }

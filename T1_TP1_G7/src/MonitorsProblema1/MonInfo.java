@@ -9,7 +9,7 @@ import genclass.TextFile;
  * @version 1.0
  */
 
-public class MonInfo {
+public class MonInfo implements MonInfoInterface {
 
     /**
      * Owner States
@@ -313,6 +313,7 @@ public class MonInfo {
      * Set Owner State
      * @param state State of the Owner
      */
+    @Override
     public synchronized void setOwnerState(int state) {
         this.stateOwner = state;
         reportStatus();
@@ -326,6 +327,7 @@ public class MonInfo {
      * @param customerId Customer id
      * @param state State of the customer
      */
+    @Override
     public synchronized void setCustomerState(int customerId, int state) {
         this.stateCustomer[customerId] = state;
         reportStatus();
@@ -336,6 +338,7 @@ public class MonInfo {
      * @param customerId Customer id
      * @param nGoodsByCustomer Number of goods bought by the customer
      */
+    @Override
     public synchronized void setnGoodsByCustomer(int customerId, int nGoodsByCustomer) {
         this.nGoodsByCustomer[customerId] = nGoodsByCustomer;
     }
@@ -349,6 +352,7 @@ public class MonInfo {
      * @param craftmanId
      * @param state 
      */
+    @Override
     public synchronized void setCraftmanState(int craftmanId, int state) {
         this.stateCraftman[craftmanId] = state;
         reportStatus();
@@ -359,6 +363,7 @@ public class MonInfo {
      * @param craftmanId
      * @param nGoodsCraftedByCraftman 
      */
+    @Override
     public synchronized void setnGoodsCraftedByCraftman(int craftmanId, int nGoodsCraftedByCraftman){
         this.nGoodsCraftedByCraftman[craftmanId] = nGoodsCraftedByCraftman;
     }
@@ -370,6 +375,7 @@ public class MonInfo {
      * Set Shop State
      * @param state State of the shop
      */
+    @Override
     public synchronized void setShopState(int state){
         this.stateShop = state;
         reportStatus();
@@ -379,6 +385,7 @@ public class MonInfo {
      * Set number of customers inside
      * @param nCustomersInsideShop Number of customers inside
      */
+    @Override
     public synchronized void setnCustomersInsideShop(int nCustomersInsideShop) {
         this.nCustomersInsideShop = nCustomersInsideShop;
     }
@@ -387,6 +394,7 @@ public class MonInfo {
      * Net number of goods in display
      * @param nGoodsInDisplay Number of goods in display
      */
+    @Override
     public synchronized void setnGoodsInDisplay(int nGoodsInDisplay) {
         this.nGoodsInDisplay = nGoodsInDisplay;
     }
@@ -395,6 +403,7 @@ public class MonInfo {
      * Set if the craftsman requested the transfer of finished products to the Shop
      * @param tranfsProductsToShop Boolean indicating if the Craftman requested
      */
+    @Override
     public synchronized void setTranfsProductsToShop(boolean tranfsProductsToShop) {
         this.transfProductsToShop = tranfsProductsToShop;
     }
@@ -403,6 +412,7 @@ public class MonInfo {
      * Set if the craftsman requested the supply of prime materials to the Factory
      * @param supplyMaterialsToFactory Boolean indicating if the Craftman requested
      */
+    @Override
     public synchronized void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory) {
         this.supplyMaterialsToFactory = supplyMaterialsToFactory;
     }
@@ -414,6 +424,7 @@ public class MonInfo {
      * Change the amount of prime materials presently in the Factory
      * @param nPrimeMaterialsInFactory 
      */
+    @Override
     public synchronized void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
         this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
     }
@@ -422,6 +433,7 @@ public class MonInfo {
      * Change the number of finished products presently in the Factory
      * @param nFinishedProductsInFactory 
      */
+    @Override
     public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory){
         this.nFinishedProductsInFactory = nFinishedProductsInFactory;
     }
@@ -430,6 +442,7 @@ public class MonInfo {
      * Change the number of times that a supply of prime materials was delivered to the workshop
      * @param nSuppliedTimes 
      */
+    @Override
     public synchronized void setnSuppliedTimes(int nSuppliedTimes){
         this.nSuppliedTimes = nSuppliedTimes;
     }
@@ -438,6 +451,7 @@ public class MonInfo {
      * Change the total amount of prime materials that have already been supplied (accumulation)
      * @param nPrimeMaterialsSupplied 
      */
+    @Override
     public synchronized void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied){
         this.nPrimeMaterialsSupplied = nPrimeMaterialsSupplied;
     }
@@ -446,6 +460,7 @@ public class MonInfo {
      * Change the total number of products that have already been manufactured (accumulation)
      * @param nProductsManufactured 
      */
+    @Override
     public synchronized void setnProductsManufactured(int nProductsManufactured){
         this.nProductsManufactured = nProductsManufactured;
     }

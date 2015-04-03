@@ -8,7 +8,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Customer extends Thread {
+public class Customer extends Thread implements CustomerInterface {
     
     /**
      * Customer States
