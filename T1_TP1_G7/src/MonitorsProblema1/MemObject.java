@@ -1,17 +1,18 @@
 package MonitorsProblema1;
 
 /**
- * Descrição geral: este tipo de dados define uma memória genérica.
+ * General Description: This data type defines a generic memory.
  */
 public abstract class MemObject {
 
     /**
-     * Definição da memória genérica
+     * Definition of generic memory.
      */
-    protected Object[] mem;     // área de armazenamento
+    protected Object[] mem;     // storage area
 
     /**
-     * Construtor de variáveis
+     * Variables builder.
+     * @param nElem number of elements
      */
     protected MemObject(int nElem) {
         if (nElem > 0) {
@@ -20,22 +21,29 @@ public abstract class MemObject {
     }
 
     /**
-     * escrita de um valor -- método virtual
+     * Writing a value. -- virtual method
+     * @param val value that will be writing
      */
     protected abstract void write(Object val);
 
     /**
      * leitura de um valor -- método virtual
      */
+    /**
+     * Reading a value. -- virtual method
+     * @return value read
+     */
     protected abstract Object read();
 
     /**
-     * leitura do valor no topo da fila -- metodo virtual
+     * Reads a value without removing it. -- virtual method
+     * @return Object at the top of the queue (without removing it)
      */
     protected abstract Object peek();
 
     /**
-     * verifica se a fila esta vazia ou nao -- metodo virtual
+     * Checks if the queue is empty. -- virtual method
+     * @return State of the queue (Empty or not)
      */
     protected abstract boolean isEmpty();
 }
