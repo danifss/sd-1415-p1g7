@@ -16,7 +16,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String fName;       // Nome do ficheiro de log
+        String fName = "log.txt";       // Nome do ficheiro de log
         boolean success;	// Validacao dos dados de entrada
         char opt;			// opcao
         /* Inicializacao do Log */
@@ -31,9 +31,6 @@ public class Main {
                 } while ((opt != 's') && (opt != 'n'));
                 if (opt == 's') success = true;
                 else success = false;
-            } else if(fName == null) {
-                fName = "log.txt";
-                success = true;
             } else success = true;
         } while (!success);
 
@@ -49,9 +46,9 @@ public class Main {
         Customer[] customer = new Customer[nCustomers];		// Array de threads de Clientes
         int nInitialPrimeMaterialsInStorage = 20;			// Materias Primas no armazem inicialmente
         int nPrimeMaterialsInFactory = 10;					// Materias Primas na oficina inicialmente
-        int nInitialProductsInShop = 0;						// Produtos na Loja inicialmente
+        int nInitialProductsInShop = 10;					// Produtos na Loja inicialmente
         int nPrimeMaterialsByProduct = 2;					// Materia Prima por produto
-        int nPrimeOwnerCarry = 10;          // Número de matérias primas que o Owner transporta de cada vez
+        int nPrimeOwnerCarry = 10;                          // Número de matérias primas que o Owner transporta de cada vez
         int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
         int nMaxProductsCollect = 5;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
         int nLimitOfProductsInFactory = 10;					// Limite de produtos na oficina
@@ -92,8 +89,8 @@ public class Main {
                 nLimitOfProductsInFactory
         ); // Creating Factory
         storage = new MonStorage(nInitialPrimeMaterialsInStorage, nPrimeOwnerCarry); // Creating Storage
+        
         owner = new Owner(sharedInfo, factory, shop, storage); // Create Owner
-
         for (int i = 0; i < nCraftsman; i++)
             craftman[i] = new Craftman(i, factory, shop, sharedInfo); // Create Craftsmans
         for (int i = 0; i < nCustomers; i++)
