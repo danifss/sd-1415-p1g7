@@ -172,8 +172,10 @@ public class MonShop {
     public synchronized void closeTheDoor(){
         if(customersInTheShop()){
             setShopState(STILL_OPEN);
+            System.out.println("Shop\t\t- Vai Fechar.");
         }else{
             setShopState(CLOSED);
+            System.out.println("Shop\t\t- Porta Fechada.");
         }
     }
     
@@ -181,8 +183,8 @@ public class MonShop {
      * Owner opens the door
      */
     public synchronized void openTheDoor(){
-        //if(nGoodsInDisplay > 0) // apenas abre se existirem produtos para vender
         setShopState(OPEN);
+        System.out.println("Shop\t\t- Porta Aberta.");
     }
     
     /**

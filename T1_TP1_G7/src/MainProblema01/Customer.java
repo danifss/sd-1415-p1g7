@@ -86,7 +86,6 @@ public class Customer extends Thread {
                 case CARRYING_OUT_DAILY_CHORES:
                     livingNormalLife();
                     goShopping();
-                    //System.out.printf("Cliente %d - Vai tentar ir a loja.\n",customerId);
                     break;
                 case CHECKING_DOOR_OPEN:
                     if(isDoorOpen()) {
@@ -94,7 +93,6 @@ public class Customer extends Thread {
                         System.out.printf("Cliente %d\t- Entrou na loja.\n",customerId);
                     }else{
                         tryAgainLater();
-                        //System.out.printf("Cliente %d - A loja nao esta aberta.\n",customerId);
                     }
                     break;
                 case APPRAISING_OFFER_IN_DISPLAY:
