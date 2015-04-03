@@ -33,11 +33,6 @@ public abstract class MemObject {
      * leitura do valor no topo da fila -- metodo virtual
      */
     protected abstract Object peek();
-	
-	/**
-	 * procura o valor dado e remove-o da fila -- metodo virtual
-	 */
-	protected abstract boolean remove(Object object);
 
     /**
      * verifica se a fila esta vazia ou nao -- metodo virtual

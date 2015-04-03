@@ -1,19 +1,20 @@
 package MonitorsProblema1;
 
 /**
- * Descrição geral: este tipo de dados define uma memória de tipo fifo derivada
- * a partir de uma memória genérica.
+ * General Description: This data type defines a FIFO memory type derived 
+ * from a generic memory.
  */
 public class MemFIFO extends MemObject implements MemFIFOInterface {
 
     /**
-     * Definição da memória de tipo fifo
+     * Setting the FIFO memory type.
      */
-    private int inPnt, outPnt;                   // ponteiros de inserção e de retirada de um valor
-    private boolean empty;                       // sinalização de memória vazia
+    private int inPnt, outPnt;                   // insert and removal pointers of a value
+    private boolean empty;                       // empty memory signaling
 
     /**
-     * Construtor de variáveis
+     * Variables builder.
+     * @param nElem number of elements
      */
     public MemFIFO(int nElem) {
         super(nElem);
@@ -22,7 +23,8 @@ public class MemFIFO extends MemObject implements MemFIFOInterface {
     }
 
     /**
-     * fifo in -- escrita de um valor
+     * FIFO in -- writing a value.
+     * @param val value that will be writing
      */
     @Override
     public void write(Object val) {
@@ -34,7 +36,8 @@ public class MemFIFO extends MemObject implements MemFIFOInterface {
     }
 
     /**
-     * fifo out -- leitura de um valor
+     * FIFO out -- reading a value.
+     * @return value read
      */
     @Override
     public Object read() {
@@ -49,7 +52,8 @@ public class MemFIFO extends MemObject implements MemFIFOInterface {
     }
 
     /**
-     * @return Objeto no topo da fila. (sem o tirar)
+     * Reads a value without removing it. 
+     * @return Object at the top of the queue (without removing it)
      */
     @Override
     public Object peek() {
@@ -58,29 +62,9 @@ public class MemFIFO extends MemObject implements MemFIFOInterface {
         return mem[outPnt];
     }
 	
-	/**
-	 * remove da fila um dado objeto
-	 */
-	@Override
-	public boolean remove(Object object){ // nao sei se funciona
-		int i = 0;
-		boolean flag = false;
-		for(i=0;i<mem.length;i++)
-			if(mem[i] == object){
-				flag = true;
-				break;
-			}
-		if(flag){
-			for(int j=i;j<mem.length-1;j++)
-				mem[j] = mem[j+1];
-			inPnt = (inPnt - 1) % mem.length;
-			empty = (inPnt == outPnt);
-		}
-		return flag;
-	}
-	
     /**
-     * @return Estado da fila. (Vazia ou nao)
+     * Checks if the queue is empty.
+     * @return State of the queue (Empty or not)
      */
     @Override
     public boolean isEmpty() {
