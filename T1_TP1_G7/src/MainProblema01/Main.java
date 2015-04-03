@@ -83,8 +83,7 @@ public class Main {
                 nInitialPrimeMaterialsInStorage,
                 nPrimeMaterialsByProduct,
                 nMinPrimeMaterialsForRestock,
-                nMaxProductsCollect,
-                nLimitOfProductsInFactory
+                nMaxProductsCollect
         ); // Creating Factory
         storage = new MonStorage(nInitialPrimeMaterialsInStorage, nPrimeOwnerCarry); // Creating Storage
         

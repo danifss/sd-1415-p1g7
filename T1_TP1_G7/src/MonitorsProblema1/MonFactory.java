@@ -18,7 +18,7 @@ public class MonFactory implements MonFactoryInterface {
     
     
     
-    // Variáveis que necessitam ser usadas no repositório
+    // Variables that need to be used in the repository
     /**
      * Amount of prime materials presently in the Factory
      * @serialField nPrimeMaterialsInFactory
@@ -26,7 +26,7 @@ public class MonFactory implements MonFactoryInterface {
     private int nPrimeMaterialsInFactory;
     
     /**
-     * Number of products in Factory to be delivered to the Shop by Owner
+     * Amount of products in Factory to be delivered to the Shop by the Owner
      * @serialField nFinishedProductsInFactory
      */
     private int nFinishedProductsInFactory;
@@ -51,7 +51,7 @@ public class MonFactory implements MonFactoryInterface {
     
     
     
-    // Variáveis que não são necessárias no repositório geral
+    // Variables that don't need to be used in the repository
     /**
      * Total number of prime materials in the Storage at the beginning
      * @serialField nTotalPrime
@@ -83,12 +83,6 @@ public class MonFactory implements MonFactoryInterface {
     private final int nProductsCollect;
     
     /**
-     * Maximum number of Products in Factory
-     * @serialField nLimitOfProductsInFactory
-     */
-    private final int nLimitOfProductsInFactory;
-    
-    /**
      * Flag to see if the owner was already contacted to bring prime materials
      * @serialField primeCall
      */
@@ -102,7 +96,7 @@ public class MonFactory implements MonFactoryInterface {
     
     
     /**
-     * Factory where Craftmans will work
+     * Constructor of the Factory where Craftmans will work
      * 
      * @param info General Repository
      * @param nPrimeMaterialsInFactory Amount of prime materials available in the Factory at the beginning
@@ -110,37 +104,39 @@ public class MonFactory implements MonFactoryInterface {
      * @param nPrimePerProduct Number of prime materials needed to produce a new product
      * @param nPrimeRestock Minimum number of prime materials in stock to call owner to restock
      * @param nProductsCollect Maximum number of finished products that the owner can collect
-     * @param nLimitOfProductsInFactory Maximum number of Products in Factory
      */
-    public MonFactory(MonInfo info, int nPrimeMaterialsInFactory, int nTotalPrime, int nPrimePerProduct, int nPrimeRestock, int nProductsCollect, int nLimitOfProductsInFactory) {
-        // Repositório
+    public MonFactory(MonInfo info, int nPrimeMaterialsInFactory, int nTotalPrime, int nPrimePerProduct, int nPrimeRestock, int nProductsCollect) {
+        // Repository
         this.info = info;
         
-        // Variáveis que necessitam ser usadas no repositório
+        // Variables that need to be used in the repository
         this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
         nFinishedProductsInFactory = 0;
         nSuppliedTimes = 0;
         nPrimeMaterialsSupplied = 0;
         nProductsManufactured = 0;
         
-        // Variáveis que não são necessárias no repositório geral
+        // Variables that don't need to be used in the repository
         this.nTotalPrime = nTotalPrime;
         nInitialPrime = nPrimeMaterialsInFactory;
         this.nPrimePerProduct = nPrimePerProduct;
         this.nPrimeRestock = nPrimeRestock;
         this.nProductsCollect = nProductsCollect;
-        this.nLimitOfProductsInFactory = nLimitOfProductsInFactory;
         flagPrimeCall = false;
         flagNProductsCall = 0;
     }
 
     /**
      * Check if the Craftman needs to contact owner to bring prime materials
+     * The Craftman needs to contact the Owner if the number of prime materials available in the Factory
+     * is less than the minimum number of prime materials in stock to call owner to restock, and the
+     * number of prime materials supplied is less than the total number of prime materials available
+     * in the storage at the beginning
      * @return true if needs to restock
      */
     @Override
     public synchronized boolean checkForRestock(){
-        return (nPrimeMaterialsInFactory < nPrimeRestock) && (nPrimeMaterialsSupplied != nTotalPrime);
+        return (nPrimeMaterialsInFactory < nPrimeRestock) && (nPrimeMaterialsSupplied < nTotalPrime);
     }
     
     /**
