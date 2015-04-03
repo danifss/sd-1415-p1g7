@@ -3,6 +3,10 @@ package MonitorsProblema1;
 /**
  * General Description: This data type defines a FIFO memory type derived 
  * from a generic memory.
+ * 
+ * @author Daniel 51908
+ * @author Raphael 64044
+ * @version 1.0
  */
 public class MemFIFO extends MemObject implements MemFIFOInterface {
 
