@@ -12,7 +12,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Craftman extends Thread {
+public class Craftman extends Thread implements CraftmanInterface {
     
     /**
      * Craftman States

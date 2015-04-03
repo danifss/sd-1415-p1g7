@@ -4,7 +4,7 @@ package MonitorsProblema1;
  * Descrição geral: este tipo de dados define uma memória de tipo fifo derivada
  * a partir de uma memória genérica.
  */
-public class MemFIFO extends MemObject {
+public class MemFIFO extends MemObject implements MemFIFOInterface {
 
     /**
      * Definição da memória de tipo fifo

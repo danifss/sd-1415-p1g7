@@ -11,7 +11,6 @@ import MonitorsProblema1.*;
  * @version 1.0
  */
 public class Main {
-
     /**
      * @param args the command line arguments
      */

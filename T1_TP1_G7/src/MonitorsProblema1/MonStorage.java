@@ -5,7 +5,7 @@ package MonitorsProblema1;
  * @author Raphael 64044
  * @version 1.0
  */
-public class MonStorage {
+public class MonStorage implements MonStorageInterface {
     
     /**
      * Present number of Prime Materials in Storage
@@ -47,6 +47,7 @@ public class MonStorage {
      * Get the number of prime materials already delivered
      * @return number of prime materials delivered
      */
+    @Override
     public int getnPrimeMaterialsDelivered() {
         return nPrimeMaterialsDelivered;
     }
@@ -55,6 +56,7 @@ public class MonStorage {
      * See if the storage has prime materials
      * @return true if it has
      */
+    @Override
     public boolean isPrimeMaterialsAvailabe() {
         return nPrimeMaterialsInStorage > 0;
     }
@@ -63,6 +65,7 @@ public class MonStorage {
      * Owner visit suppliers and get some prime materials to be delivered in the factory
      * @return Number of prime materials collected
      */
+    @Override
     public synchronized int visitSuppliers() {
         int primeMaterials;
         if(nPrimeMaterialsInStorage >= nPrimeOwnerCarry){
@@ -80,6 +83,7 @@ public class MonStorage {
      * Get the amount of prime materials that the owner should collect during the experience
      * @return number of prime materials to deliver
      */
+    @Override
     public int getnMaxPrimeMaterialsToDeliver() {
         return nMaxPrimeMaterialsToDeliver;
     }

@@ -8,7 +8,7 @@ import MonitorsProblema1.*;
  * @author Raphael 64044
  * @version 1.0
  */
-public class Owner extends Thread {
+public class Owner extends Thread implements OwnerInterface {
     
     /**
      * Owner States
@@ -102,7 +102,7 @@ public class Owner extends Thread {
     public void run() {
         System.out.println("Iniciado o Owner.");
         
-        int cid = 0;
+        //int cid = 0;
         shop.openTheDoor(); // Owner precisa de abrir a loja antes de começar a trabalhar
         
         while(!endOper()){
@@ -239,12 +239,14 @@ public class Owner extends Thread {
         }
     }
     
-    //Incompleta
+    /**
+     * Say goodbye to a Customer
+     */
     private void sayGoodByeToCustomer() {
         try{
             sleep((long) (20));
         }catch(InterruptedException e){}
-        shop.sayGoodByeToCustomer(attendingCustomerId);
+        shop.sayGoodByeToCustomer();
         if(shop.isShopStillOpen()){
             closeTheDoor();
         }

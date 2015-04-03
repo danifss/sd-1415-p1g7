@@ -7,7 +7,7 @@ package MonitorsProblema1;
  * @author Raphael 64044
  * @version 1.0
  */
-public class MonFactory {
+public class MonFactory implements MonFactoryInterface {
     
     /**
      * General Repository
@@ -138,6 +138,7 @@ public class MonFactory {
      * Check if the Craftman needs to contact owner to bring prime materials
      * @return true if needs to restock
      */
+    @Override
     public synchronized boolean checkForRestock(){
         return (nPrimeMaterialsInFactory < nPrimeRestock) && (nPrimeMaterialsSupplied != nTotalPrime);
     }
@@ -146,6 +147,7 @@ public class MonFactory {
      * Check For Materials
      * @return true if has materials
      */
+    @Override
     public synchronized boolean checkForMaterials(){
         try{
             while(nPrimeMaterialsInFactory<nPrimePerProduct && !endOfPrimeMaterials()){
@@ -162,6 +164,7 @@ public class MonFactory {
      * Collecting prime materials
      * @return number of collected prime materials
      */
+    @Override
     public synchronized int collectMaterials() {
         // Garante que há matérias primas para buscar
         if(checkForMaterials())
@@ -178,6 +181,7 @@ public class MonFactory {
      * @param nProd Number of products the Craftman has
      * @return number of products the Craftman stored
      */
+    @Override
     public synchronized int goToStore(int nProd){
         nFinishedProductsInFactory += nProd;
         nProductsManufactured += nProd;
@@ -192,6 +196,7 @@ public class MonFactory {
     /**
      * Indicates that the owner has products to collect
      */
+    @Override
     public synchronized void batchReadyForTransfer(){
         flagNProductsCall += 1;
     }
@@ -200,6 +205,7 @@ public class MonFactory {
      * Verifies if the Craftman needs to contact the owner
      * @return true if he needs to contact
      */
+    @Override
     public synchronized boolean checkContactProduct(){
         // Caso o número de produtos acabados a dividir pelo número de produtos que a owner pode levar
         // for diferente da quantidade de vezes que a flag foi ativada, significa que o Craftman necessita
@@ -211,6 +217,7 @@ public class MonFactory {
      * Turn true the flag that indicates that prime materials is needed
      * @return if it is really needed to call the owner
      */
+    @Override
     public synchronized boolean primeMaterialsNeeded(){
         if(flagPrimeCall){
             return false;
@@ -223,6 +230,7 @@ public class MonFactory {
      * The Craftman sees if someone already contacted the owner to restock the prime materials
      * @return true if someone already contacted the owner
      */
+    @Override
     public synchronized boolean flagPrimeActivated(){
         return flagPrimeCall;
     }
@@ -231,6 +239,7 @@ public class MonFactory {
      * Craftman sees how many prime materials needs to produce a new product
      * @return number of prime materials needed per products
      */
+    @Override
     public int getnPrimePerProduct() {
         return nPrimePerProduct;
     }
@@ -239,6 +248,7 @@ public class MonFactory {
      * Owner goes to factory to collect finished products
      * @return number of products collected
      */
+    @Override
     public synchronized int goToWorkshop(){
         int res;
         if(nFinishedProductsInFactory <= nProductsCollect){
@@ -257,6 +267,7 @@ public class MonFactory {
      * Owner brings prime materials
      * @param nPrimeMaterials Amount of prime materials to restock
      */
+    @Override
     public synchronized void replenishStock(int nPrimeMaterials){
         this.nPrimeMaterialsInFactory += nPrimeMaterials;
         nPrimeMaterialsSupplied += nPrimeMaterials;
@@ -275,6 +286,7 @@ public class MonFactory {
      * Sees if have more products to collect
      * @return true if no more products to collect
      */
+    @Override
     public boolean endProductsToCollect(){
         return nFinishedProductsInFactory == 0;
     }
@@ -283,6 +295,7 @@ public class MonFactory {
      * Sees if have more prime materials
      * @return true if no more prime materials
      */
+    @Override
     public boolean endOfPrimeMaterials(){
         return (nPrimeMaterialsSupplied == nTotalPrime);
     }
