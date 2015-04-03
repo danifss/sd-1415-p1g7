@@ -46,11 +46,7 @@ public interface MonFactoryInterface {
      */
     boolean endOfPrimeMaterials();
 
-    /**
-     * Sees if have more products to collect
-     * @return true if no more products to collect
-     */
-    boolean endProductsToCollect();
+
 
     /**
      * The Craftman sees if someone already contacted the owner to restock the prime materials
