@@ -27,11 +27,6 @@ public interface MemFIFOInterface {
     Object read();
 
     /**
-     * remove da fila um dado objeto
-     */
-    boolean remove(Object object);
-
-    /**
      * fifo in -- escrita de um valor
      */
     void write(Object val);
