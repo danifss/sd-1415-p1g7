@@ -43,8 +43,7 @@ public class Craftman extends Thread implements CraftmanInterface {
     
     
     
-    // Variáveis que necessitam ser usadas no repositório
-    
+    // Variables that need to be used in the repository
     /**
      * Craftman internal state
      * 
@@ -67,8 +66,7 @@ public class Craftman extends Thread implements CraftmanInterface {
     
     
     
-    // Variáveis que não são necessárias no repositório geral
-    
+    // Variables that don't need to be used in the repository
     /**
      * Number of prime materials collected
      * @serialField nPrimeMaterials
@@ -81,7 +79,6 @@ public class Craftman extends Thread implements CraftmanInterface {
      */
     private int nProduct;
     
-
     
     /**
      * Create Craftman thread
@@ -103,7 +100,7 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Life cycle of the Craftman
+     * Life cycle of the Craftman.
      */
     @Override
     public void run(){
@@ -115,11 +112,8 @@ public class Craftman extends Thread implements CraftmanInterface {
                         primeMaterialsNeeded();
                         System.out.printf("Artesao %d\t- A pedir materia prima.\n",craftmanId);
                     }else{
-                        // Craftman verifica se há materias para produzir um novo produto
                         if(checkForMaterials()){
-                            // Craftman coleta os materiais
                             collectMaterials();
-                            // Craftman prepara para produzir
                             if(nPrimeMaterials != 0){
                                 prepareToProduce();
                                 System.out.printf("Artesao %d\t- Obteu %d materias primas.\n",craftmanId,nPrimeMaterials);
@@ -128,9 +122,7 @@ public class Craftman extends Thread implements CraftmanInterface {
                     }
                     break;
                 case PRODUCING_A_NEW_PIECE:
-                    // Produz uma nova peca
                     shapingItUp();
-                    // Dirige-se a zona de armazenamento
                     goToStore();
                     System.out.printf("Artesao %d\t- Produziu um produto.\n",craftmanId);
                     break;
@@ -150,7 +142,7 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Check for materials
+     * He goes to the factory to see if he can collect prime materials.
      */
     private boolean checkForMaterials(){
         try{
@@ -160,7 +152,9 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Collect materials
+     * He goes to the factory to collect prime materials.
+     * He adds to the number of prime materials he has the number of prime materials
+     * collected.
      */
     private void collectMaterials(){
         try{
@@ -170,7 +164,7 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Prepare to produce
+     * He prepares to produce a new piece.
      */
     private void prepareToProduce(){
         try{
@@ -180,7 +174,11 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Producing new piece
+     * He produces a new products.
+     * He uses the prime materials he has to produce a new piece. He decrements the number
+     * of prime materials he has to the number of prime materials used, and increments
+     * the number of products he has at the moments and the total number of products
+     * produced.
      */
     private void shapingItUp(){
         try{
@@ -193,7 +191,8 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Goes to store
+     * He stores the product produced, decreasing the number of products he has
+     * with him at the moment.
      */
     private void goToStore(){
         try{
@@ -204,7 +203,9 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Batch ready for transfer
+     * He contacts the Owner to say that he has products in the Factory to collect.
+     * He goes to the factory to activate the flag (to prevent other Craftmans from
+     * calling the Owner), and then goes to the shop to contact the Owner.
      */
     private void batchReadyForTransfer(){
         try{
@@ -216,7 +217,7 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Back to work
+     * He goes back to work to produce a new product.
      */
     private void backToWork(){
         try{
@@ -226,7 +227,10 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Prime materials needed
+     * He contacts the Owner to say that prime materials is needed in the Factory.
+     * First he goes to the Factory to check if someone already contacted the Owner,
+     * if someone already done it, he doesn't do anything, if nobody done it, he goes
+     * to the Shop and contacts the Owner.
      */
     private void primeMaterialsNeeded(){
         try{
@@ -239,7 +243,11 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Verifies if the Craftman stops
+     * Verifies if the Craftman can stop working.
+     * He goes to the factory to check if all prime materials were supplied, he checks
+     * if there is no prime materials available in the Factory, his state should
+     * be the initial state and he should not have any prime material with him (if he
+     * has, he needs to produce the new product).
      * @return true if needs to stop
      */
     private boolean endOper() {
@@ -248,7 +256,7 @@ public class Craftman extends Thread implements CraftmanInterface {
     }
     
     /**
-     * Function to change the Craftman state (internal and in the repository)
+     * Function to change the Craftman state (internal and in the repository).
      * @param state State of the Craftman
      */
     private void setCraftmanState(int state){
