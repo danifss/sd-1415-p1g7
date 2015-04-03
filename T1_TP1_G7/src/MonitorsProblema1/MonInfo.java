@@ -4,6 +4,8 @@ import genclass.GenericIO;
 import genclass.TextFile;
 
 /**
+ * This class is responsible to host the Craftmans.
+ * 
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
@@ -12,7 +14,7 @@ import genclass.TextFile;
 public class MonInfo implements MonInfoInterface {
 
     /**
-     * Owner States
+     * Owner States.
      */
     private final static int
             OPENING_THE_SHOP = 0,
@@ -24,7 +26,7 @@ public class MonInfo implements MonInfoInterface {
             BUYING_PRIME_MATERIALS = 6;
     
     /**
-     * Customer States
+     * Customer States.
      */
     private final static int
             CARRYING_OUT_DAILY_CHORES = 0,
@@ -33,7 +35,7 @@ public class MonInfo implements MonInfoInterface {
             BUYING_SOME_GOODS = 3;
     
     /**
-     * Craftman States
+     * Craftman States.
      */
     private final static int
             FETCHING_PRIME_MATERIALS = 0,
@@ -42,7 +44,7 @@ public class MonInfo implements MonInfoInterface {
             CONTACTING_THE_ENTREPRENEUR = 3;
     
     /**
-     * Shop States
+     * Shop States.
      */
     private final static int
             CLOSED = 0,
@@ -50,13 +52,13 @@ public class MonInfo implements MonInfoInterface {
             OPEN = 2;
     
     /**
-     * Owner needed information
+     * Owner needed information.
      * @serialField stateOwner state of the Owner
      */
     private int stateOwner;
     
     /**
-     * Customers needed information
+     * Customers needed information.
      * @serialField nCustomer Number of Customers
      * @serialField stateCustomer State of the customer
      * @serialField nGoodsByCustomer Number of goods (accumulation) bought by the customer
@@ -66,7 +68,7 @@ public class MonInfo implements MonInfoInterface {
     private int[] nGoodsByCustomer;
     
     /**
-     * Craftman needed information
+     * Craftman needed information.
      * @serialField nCraftsman Number of Craftsman
      * @serialField stateCraftman State of the Craftman
      * @serialField nGoodsCraftedByCraftman Number of goods produced by each Craftman
@@ -76,7 +78,7 @@ public class MonInfo implements MonInfoInterface {
     private int[] nGoodsCraftedByCraftman;
 
     /**
-     * Shop needed information
+     * Shop needed information.
      * @serialField stateShop State of the shop
      * @serialField nCustomersInsideShop Number of customers inside
      * @serialField nGoodsInDisplay Number of goods in display
@@ -90,7 +92,7 @@ public class MonInfo implements MonInfoInterface {
     private boolean supplyMaterialsToFactory;
     
     /**
-     * Workshop needed information
+     * Workshop needed information.
      * @serialField nPrimeMaterialsInFactory Amount of prime materials presently in the workshop
      * @serialField nFinishedProductsInFactory Number of finished products presently in the workshop
      * @serialField nSuppliedTimes Number of times that a supply of prime materials was delivered to the workshop
@@ -104,14 +106,14 @@ public class MonInfo implements MonInfoInterface {
     private int nProductsManufactured;
     
     /**
-     * Name of the logging file
+     * Name of the logging file.
      * @serialField fName
      */
     private String fName = "log.txt";
 
 
     /**
-     * General Repository for manage all relevant information
+     * General Repository for manage of all relevant information.
      * 
      * @param nCraftsman Number of Craftmans
      * @param nCustomer	Number of Customers
@@ -119,7 +121,7 @@ public class MonInfo implements MonInfoInterface {
      * @param nPrimeMaterialsInFactory Initial number of prime materials in factory
      */
     public MonInfo(int nCraftsman, int nCustomer, String fName, int nPrimeMaterialsInFactory) {
-        // Inicialização das variáveis do Craftman
+        // Initialization of the Craftman's variables
         this.nCraftman = nCraftsman;
         stateCraftman = new int[this.nCraftman];
         for(int i=0;i<this.nCraftman; i++)
@@ -128,14 +130,14 @@ public class MonInfo implements MonInfoInterface {
         for(int i=0;i<this.nCraftman; i++) 
             nGoodsCraftedByCraftman[i] = 0;
         
-        // Inicialização das variáveis da Factory
+        // Initialization of the Factory's variables
         this.nPrimeMaterialsInFactory = nPrimeMaterialsInFactory;
         nFinishedProductsInFactory = 0;
         nSuppliedTimes = 0;
         nPrimeMaterialsSupplied = 0;
         nProductsManufactured = 0;
         
-        // Inicialização das variáveis do Customer
+        // Initialization of the Customer's variables
         this.nCustomer = nCustomer;
         this.stateCustomer = new int[this.nCustomer];
         for(int i=0;i<this.nCustomer; i++)
@@ -144,17 +146,17 @@ public class MonInfo implements MonInfoInterface {
         for(int i=0;i<this.nCustomer; i++) 
             nGoodsByCustomer[i] = 0;
         
-        // Inicialização da variável do Owner
+        // Initialization of the Owner's variables
         this.stateOwner = OPENING_THE_SHOP;
         
-        // Inicialização das variáveis do Shop
+        // Initialization of the Shop's variables
         this.stateShop = CLOSED;
         this.nCustomersInsideShop = 0;
         this.nGoodsInDisplay = 0;
         this.transfProductsToShop = false;
         this.supplyMaterialsToFactory = false;
 
-        // Inicialização do ficheiro de logging 
+        // Initialization of the logging file
         if ((fName != null) && !("".equals(fName))) {
             this.fName = fName;
         }
@@ -163,8 +165,7 @@ public class MonInfo implements MonInfoInterface {
     }
 
     /**
-     * Write initial state (internal operation)
-     * 
+     * Write initial state (internal operation).
      */
     private void reportInitialStatus() {
         TextFile log = new TextFile();                  // instanciacao de uma variavel de tipo ficheiro de texto
@@ -184,14 +185,13 @@ public class MonInfo implements MonInfoInterface {
     }
 
     /**
-     * Write the actual state (internal operation)
-     *
+     * Write the actual state (internal operation).
      * One line of text about the system is written in the file.
      */
     private void reportStatus() {
-        TextFile log = new TextFile();  // instanciação de uma variavel de tipo ficheiro de texto
+        TextFile log = new TextFile();
 
-        String lineStatus = "";     // linha a imprimir
+        String lineStatus = "";
 
         if (!log.openForAppending(".", fName)) {
             GenericIO.writelnString("A operação de criação do ficheiro " + fName + " falhou!");
@@ -308,9 +308,9 @@ public class MonInfo implements MonInfoInterface {
     
     
     
-    // Função destinada a alterar a variável pertencente ao Owner
+    // Function to change the Owner's variable
     /**
-     * Set Owner State
+     * Set Owner State.
      * @param state State of the Owner
      */
     @Override
@@ -321,11 +321,11 @@ public class MonInfo implements MonInfoInterface {
     
     
     
-    // Funções destinadas a alterar as variáveis pertencentes aos Customer
+    // Function to change the Customers' variables
     /**
-     * Set Customer[i] State
+     * Set Customer[i] State.
      * @param customerId Customer id
-     * @param state State of the customer
+     * @param state State of the Customer
      */
     @Override
     public synchronized void setCustomerState(int customerId, int state) {
@@ -334,7 +334,7 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Set number of goods (accumulation) bought by the customer
+     * Set number of goods (accumulation) bought by the customer.
      * @param customerId Customer id
      * @param nGoodsByCustomer Number of goods bought by the customer
      */
@@ -345,12 +345,11 @@ public class MonInfo implements MonInfoInterface {
     
     
     
-    // Funções destinadas a alterar as variáveis pertencentes aos Craftman
+    // Function to change the Craftmans' variables
     /**
-     * Set state of the Craftman[i]
-     * 
-     * @param craftmanId
-     * @param state 
+     * Set state of the Craftman[i].
+     * @param craftmanId Craftman id
+     * @param state State of the Craftman
      */
     @Override
     public synchronized void setCraftmanState(int craftmanId, int state) {
@@ -359,9 +358,9 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Change the number of products (accumulation) manufactured by the craftsman[i]
-     * @param craftmanId
-     * @param nGoodsCraftedByCraftman 
+     * Change the number of products (accumulation) manufactured by the craftsman[i].
+     * @param craftmanId Craftman id
+     * @param nGoodsCraftedByCraftman total number of the products crafted by the Craftman
      */
     @Override
     public synchronized void setnGoodsCraftedByCraftman(int craftmanId, int nGoodsCraftedByCraftman){
@@ -370,9 +369,9 @@ public class MonInfo implements MonInfoInterface {
     
     
     
-    // Funções destinadas a alterar as variáveis pertencentes ao Shop
+    // Function to change the Shop's variables
     /**
-     * Set Shop State
+     * Set Shop State.
      * @param state State of the shop
      */
     @Override
@@ -382,7 +381,7 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Set number of customers inside
+     * Set number of customers inside.
      * @param nCustomersInsideShop Number of customers inside
      */
     @Override
@@ -391,7 +390,7 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Net number of goods in display
+     * Set number of goods in display.
      * @param nGoodsInDisplay Number of goods in display
      */
     @Override
@@ -400,7 +399,7 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Set if the craftsman requested the transfer of finished products to the Shop
+     * Set if the craftsman requested the transfer of finished products to the Shop.
      * @param tranfsProductsToShop Boolean indicating if the Craftman requested
      */
     @Override
@@ -409,7 +408,7 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Set if the craftsman requested the supply of prime materials to the Factory
+     * Set if the craftsman requested the supply of prime materials to the Factory.
      * @param supplyMaterialsToFactory Boolean indicating if the Craftman requested
      */
     @Override
@@ -419,10 +418,10 @@ public class MonInfo implements MonInfoInterface {
         
 
     
-    // Funções destinadas a alterar as variáveis pertencentes à Factory
+    // Function to change the Factory's variables
     /**
-     * Change the amount of prime materials presently in the Factory
-     * @param nPrimeMaterialsInFactory 
+     * Change the amount of prime materials presently in the Factory.
+     * @param nPrimeMaterialsInFactory Amount of prime materials available in the Factory
      */
     @Override
     public synchronized void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory) {
@@ -430,8 +429,8 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Change the number of finished products presently in the Factory
-     * @param nFinishedProductsInFactory 
+     * Change the number of finished products presently in the Factory.
+     * @param nFinishedProductsInFactory Number of finished products in the Factory
      */
     @Override
     public synchronized void setnFinishedProductsInFactory(int nFinishedProductsInFactory){
@@ -439,8 +438,8 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Change the number of times that a supply of prime materials was delivered to the workshop
-     * @param nSuppliedTimes 
+     * Change the number of times that a supply of prime materials was delivered to the Factory.
+     * @param nSuppliedTimes Number of times that the owner delivered prime materials
      */
     @Override
     public synchronized void setnSuppliedTimes(int nSuppliedTimes){
@@ -448,8 +447,8 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Change the total amount of prime materials that have already been supplied (accumulation)
-     * @param nPrimeMaterialsSupplied 
+     * Change the total amount of prime materials that have already been supplied (accumulation).
+     * @param nPrimeMaterialsSupplied Number of prime materials supplied
      */
     @Override
     public synchronized void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied){
@@ -457,8 +456,8 @@ public class MonInfo implements MonInfoInterface {
     }
     
     /**
-     * Change the total number of products that have already been manufactured (accumulation)
-     * @param nProductsManufactured 
+     * Change the total number of products that have already been manufactured (accumulation).
+     * @param nProductsManufactured Total number of products produced
      */
     @Override
     public synchronized void setnProductsManufactured(int nProductsManufactured){
