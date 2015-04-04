@@ -5,6 +5,8 @@ import genclass.FileOp;
 import MonitorsProblema1.*;
 
 /**
+ * Main class.
+ * 
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
@@ -14,10 +16,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String fName = "log.txt";       // Nome do ficheiro de log
-        boolean success;	// Validacao dos dados de entrada
-        char opt;			// opcao
-        /* Inicializacao do Log */
+        String fName = "log.txt";       // Logging file name
+        boolean success;                // Validation of the input data
+        char opt;                       // option
+        /* Startup of the log */
         GenericIO.writelnString("\n" + "      Problema - Artesanato de Aveiro\n");
         do {
             GenericIO.writeString("Nome do ficheiro de armazenamento da simulação? ");
@@ -32,25 +34,24 @@ public class Main {
             } else success = true;
         } while (!success);
 
-        /* Inicializar e criar intervenientes */
-        int nCraftsman = 3;									// Numero de Artesaos
-        int nCustomers = 3;									// Numero de Clientes
-        MonInfo sharedInfo;							// Repositorio de informacao partilhada
-        MonShop shop;										// Loja
-        MonFactory factory;									// Fabrica
-        MonStorage storage;									// Armazem
-        Owner owner;										// Dona da loja
-        Craftman[] craftman = new Craftman[nCraftsman];		// Array de threads de Artesaos
-        Customer[] customer = new Customer[nCustomers];		// Array de threads de Clientes
-        int nInitialPrimeMaterialsInStorage = 20;			// Materias Primas no armazem inicialmente
-        int nPrimeMaterialsInFactory = 10;					// Materias Primas na oficina inicialmente
-        int nInitialProductsInShop = 10;					// Produtos na Loja inicialmente
-        int nPrimeMaterialsByProduct = 2;					// Materia Prima por produto
-        int nPrimeOwnerCarry = 10;                          // Número de matérias primas que o Owner transporta de cada vez
-        int nMinPrimeMaterialsForRestock = 10;				// Minimo de Materias Primas para o Restock
-        int nMaxProductsCollect = 5;                       // Maximo de produtos que o Owner pode trazer de cada vez da oficina
-        int nLimitOfProductsInFactory = 10;					// Limite de produtos na oficina
-
+        /* Initialize variables */
+        int nCraftsman = 3;                                     // Number of Craftmans
+        int nCustomers = 3;                                     // Number of Customers
+        MonInfo sharedInfo;                                     // General Repository
+        MonShop shop;                                           // Shop
+        MonFactory factory;                                     // Factory
+        MonStorage storage;                                     // Storage
+        Owner owner;                                            // Owner
+        Craftman[] craftman = new Craftman[nCraftsman];         // Threads array of Craftmans
+        Customer[] customer = new Customer[nCustomers];         // Threads array of Customers
+        int nInitialPrimeMaterialsInStorage = 20;               // Initial number of prime materials in the Storage
+        int nPrimeMaterialsInFactory = 10;                      // Initial number of prime materials in the Factory
+        int nInitialProductsInShop = 10;                        // Initial number of products in the Shop
+        int nPrimeMaterialsByProduct = 2;                       // Prime materials needed per product
+        int nPrimeOwnerCarry = 10;                              // Number of prime materials that the owner can carry
+        int nMinPrimeMaterialsForRestock = 10;                  // Minimum number of prime materials for restock
+        int nMaxProductsCollect = 5;                            // Maximum number of products that the owner can carry
+        
         /*writeString("Usar valores predefinidos?(s/n) ");
         if(readlnString().equalsIgnoreCase("n")){
             writeString("Nº inicial de materias primas no Armazem: ");
@@ -65,8 +66,6 @@ public class Main {
             nMinPrimeMaterialsForRestock = Integer.parseInt(readlnString());
             writeString("Nº maximo de bens que a dona levanta de cada vez da oficina: ");
             nMaxProductsCollect = Integer.parseInt(readlnString());
-            writeString("Nº maximo de bens na Oficina: ");
-            nLimitOfProductsInFactory = Integer.parseInt(readlnString());
         }*/
 
         int totalProducts = ((nPrimeMaterialsInFactory + nInitialPrimeMaterialsInStorage) / nPrimeMaterialsByProduct) + nInitialProductsInShop;
@@ -75,8 +74,8 @@ public class Main {
                 nCustomers,
                 fName,
                 nPrimeMaterialsInFactory
-        ); // Create general repository
-        shop = new MonShop(nInitialProductsInShop, nCustomers, sharedInfo, totalProducts); // Creating shop
+        );  // Create general repository
+        shop = new MonShop(nInitialProductsInShop, nCustomers, sharedInfo, totalProducts);  // Creating shop
         factory = new MonFactory(
                 sharedInfo,
                 nPrimeMaterialsInFactory,
@@ -84,16 +83,16 @@ public class Main {
                 nPrimeMaterialsByProduct,
                 nMinPrimeMaterialsForRestock,
                 nMaxProductsCollect
-        ); // Creating Factory
-        storage = new MonStorage(nInitialPrimeMaterialsInStorage, nPrimeOwnerCarry); // Creating Storage
+        );  // Creating Factory
+        storage = new MonStorage(nInitialPrimeMaterialsInStorage, nPrimeOwnerCarry);        // Creating Storage
         
-        owner = new Owner(sharedInfo, factory, shop, storage); // Create Owner
+        owner = new Owner(sharedInfo, factory, shop, storage);              // Create Owner
         for (int i = 0; i < nCraftsman; i++)
-            craftman[i] = new Craftman(i, factory, shop, sharedInfo); // Create Craftsmans
+            craftman[i] = new Craftman(i, factory, shop, sharedInfo);       // Create Craftsmans
         for (int i = 0; i < nCustomers; i++)
-            customer[i] = new Customer(sharedInfo, i, shop); // Create Customers
+            customer[i] = new Customer(sharedInfo, i, shop);                // Create Customers
         
-        /* Arranque da simulacao */
+        /* Start of the simulation */
         for (int i = 0; i < nCraftsman; i++)
             craftman[i].start();
         for (int i = 0; i < nCustomers; i++)
