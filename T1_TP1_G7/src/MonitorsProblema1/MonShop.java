@@ -1,6 +1,8 @@
 package MonitorsProblema1;
 
 /**
+ * This class is responsible to host the Shop
+ * 
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
@@ -9,7 +11,7 @@ package MonitorsProblema1;
 public class MonShop implements MonShopInterface {
     
      /**
-      * Shop States
+      * Shop States.
       */
     private final static int
             CLOSED = 0,
@@ -17,98 +19,98 @@ public class MonShop implements MonShopInterface {
             OPEN = 2;
     
     /**
-     * Decision taken in AppraiseSit
+     * Decision taken in AppraiseSit.
      */
     private final static int
             FACTORY_NEEDS_SOMETHING = 0,
             ADDRESS_CUSTOMER = 1;
     
     /**
-     * Present State of Shop
+     * Present State of Shop.
      * @serialField shopState
      */
     private int shopState;
     
     /**
-     * General Repository
+     * General Repository.
      * @serialField sharedInfo
      */
     private final MonInfo sharedInfo;
 
     /**
-     * FIFO with Customers on the Shop
+     * FIFO with Customers waiting for their turn to buy something.
      * @serialField queueCustomer
      */
     private MemFIFO queueCustomer;
     
     /**
-     * Number of customers inside the shop
+     * Number of customers inside the shop.
      * @serialField customerInsideShop
      */
     private int customerInsideShop;
     
     /**
-     * Number of goods that the shop has to sell
+     * Number of goods that the shop has to sell.
      * @serialField nGoodsInDisplay
      */
     private int nGoodsInDisplay;
     
     /**
-     * Id of the customer that the owner is attending
+     * Id of the customer that the owner is attending.
      * @serialField attendingCustomerId;
      */
     private int attendingCustomerId;
     
     /**
-     * Number of goods that the customer is buying
+     * Number of goods that the customer is buying.
      * @serialField nGoodsCustomerHave
      */
     private int nGoodsCustomerHave;
     
     /**
-     * Flag to see if the owner already finished the purchase
+     * Flag to see if the owner already finished the purchase.
      * @serialField flagPurchaseMade
      */
     private boolean flagPurchaseMade;
     
     /**
-     * Flag to see if the Factory has products to bring
+     * Flag to see if the Factory has products to bring.
      * @serialField flagBringProductsFromFactory
      */
     private int flagBringProductsFromFactory;
     
     /**
-     * Flag to see if the Factory needs prime materials
+     * Flag to see if the Factory needs prime materials.
      * @serialField flagPrimeMaterialsNeeded
      */
     private boolean flagPrimeMaterialsNeeded;
     
-    
     /**
-     * Total amount of products delivered
+     * Total amount of products delivered.
      * @serialField nProductsDelivered
      */
     private int nProductsDelivered;
     
     /**
-     * Total number of products that the shop can have in this experience
+     * Total number of products that the shop can have in this experience.
      * @serialField totalProducts
      */
     private final int totalProducts;
     
     /**
-     * Create Monitor of the Shop
+     * Create Monitor of the Shop.
      * 
      * @param nInitialProductsInShop Initial number of products in the shop at the beginning
      * @param nCustomer Number of customers
      * @param sharedInfo General repository
+     * @param totalProducts Total number of products that the shop can have in this experience
      */
     public MonShop(int nInitialProductsInShop, int nCustomer, MonInfo sharedInfo, int totalProducts) {
         this.sharedInfo = sharedInfo;
         shopState = CLOSED;
         customerInsideShop = 0;
-        queueCustomer = new MemFIFO(nCustomer); // create FIFO for wainting Customers
-        nGoodsInDisplay = nInitialProductsInShop; // Bens a venda inicialmente
+        queueCustomer = new MemFIFO(nCustomer);
+        nGoodsInDisplay = nInitialProductsInShop;
         nGoodsCustomerHave = 0;
         attendingCustomerId = -1;
         flagBringProductsFromFactory = 0;
@@ -119,8 +121,8 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * See if there is customers inside the shop
-     * @return true if it is customers inside
+     * See if there is customers inside the shop.
+     * @return true if the number of Customers inside the shop is greater than 0
      */
     @Override
     public boolean customersInTheShop(){
@@ -128,7 +130,7 @@ public class MonShop implements MonShopInterface {
     }
 
     /**
-     * See if the Queue has customers
+     * See if the Queue has customers.
      * @return true if the queue has customers
      */
     @Override
@@ -137,7 +139,12 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Owner sees the situation of the shop and decide what to do
+     * Owner sees the situation of the shop and decide what to do.
+     * If the shop is open, he waits until a Customer or a Craftman calls him. 
+     * If the shop is still open, he wait until all Customers leave the shop, and 
+     * then proceeds to the request from the Factory.
+     * FACTORY_NEEDS_SOMETHING can also indicates that the Owner can stop, because
+     * this action makes the Owner close the Shop.
      * @return action to do
      */
     @Override
@@ -170,7 +177,9 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Owner closes the door
+     * Owner closes the door.
+     * If the shop has Customers inside, the shop change his state to STILL_OPEN,
+     * if the shop doesn't have Customers, the shop change his state to CLOSED.
      */
     @Override
     public synchronized void closeTheDoor(){
@@ -184,7 +193,8 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Owner opens the door
+     * Owner opens the door.
+     * The state of the Shop is changed to OPEN.
      */
     @Override
     public synchronized void openTheDoor(){
@@ -193,7 +203,7 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * See if the shop is on state STILL_OPEN
+     * See if the shop is on state STILL_OPEN.
      * @return true if the shop is STILL_OPEN
      */
     @Override
@@ -202,7 +212,7 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * The owner goes to the Factory to collect products
+     * The owner goes to the Factory to collect products.
      */
     @Override
     public synchronized void goToWorkshop(){
@@ -214,8 +224,8 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Update the number of products that the shop is selling
-     * @param goods 
+     * Update the number of products that the shop is selling.
+     * @param goods Number of products to add to the number of products in display
      */
     @Override
     public synchronized void addnGoodsInDisplay(int goods) {
@@ -225,7 +235,7 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Owner goes to factory to restock prime materials
+     * Owner goes to Factory to restock prime materials.
      */
     @Override
     public synchronized void replenishStock(){
@@ -234,7 +244,8 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Prime materials is needed in the Factory
+     * The Craftman indicates that prime materials is needed in the Factory.
+     * He changes the flag and wakes up the Owner.
      */
     @Override
     public synchronized void primeMaterialsNeeded(){
@@ -244,7 +255,8 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Owner can go to factory to collect products
+     * The Craftman indicates that the Owner can go to factory to collect products.
+     * He changes the flag and wakes up the Owner.
      */
     @Override
     public synchronized void batchReadyForTransfer(){
@@ -254,7 +266,9 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Address a Customer on the queue
+     * The Owner address a Customer on the queue.
+     * The owner wakes up the first Customer in the queue.
+     * @return id of the Customer that the Owner is attending
      */
     @Override
     public synchronized int addressACustomer(){
@@ -264,12 +278,13 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Service customer
-     * @param customerId
+     * The Owner services a customer.
+     * The Owner waits until the Customer updates the number of products he wants 
+     * to buy.
      * @return number of goods that the customer is buying
      */
     @Override
-    public synchronized int serviceCustomer(int customerId){
+    public synchronized int serviceCustomer(){
         while(nGoodsCustomerHave < 0){
             try{
                 wait();
@@ -279,21 +294,23 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Say goodbye to attending Customer
+     * The Owner says goodbye to the Customer he is attending.
+     * He updates the flag that indicates that the purchase was made and wakes up
+     * the Customer. Then removes the Customer from the queue.
      */
     @Override
     public synchronized void sayGoodByeToCustomer(){
         flagPurchaseMade = true;
         notifyAll();
-        removeSitCustomer(attendingCustomerId); // remove cliente da fila
+        removeSitCustomer(attendingCustomerId);
         attendingCustomerId = -1;
     }
     
     
-    //Funcions of customer
+    // Funcions of customer
     /**
-     * See if the door is open
-     * @return True if is open
+     * The Customer sees if the door is open
+     * @return True if the shop is OPEN
      */
     @Override
     public synchronized boolean isDoorOpen() {
@@ -301,7 +318,7 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * A customer enters the shop
+     * The customer enters the shop.
      */
     @Override
     public synchronized void enterShop() {
@@ -310,6 +327,7 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
+     * The Customer is perusing around.
      * A random number is generated, then if it is less than 0.5 and 
      * exists goods to buy, that number*100 is divided by the number 
      * of goods for sell and returns his remainder.
@@ -322,30 +340,30 @@ public class MonShop implements MonShopInterface {
         if((r <= 0.5) && (nGoodsInDisplay > 0)){ // 50% probability to buy
             r = r * 100;
             int goods = (int) r % nGoodsInDisplay;
-            if(nGoodsInDisplay == 1) // para quando tem apenas 1 produto a venda
+            if(nGoodsInDisplay == 1) // When there is only one product to sell
                 goods = 1;
-            nGoodsInDisplay -= goods; // retirar de exposicao os produtos
-            sharedInfo.setnGoodsInDisplay(nGoodsInDisplay); // reduz produtos disponiveis na loja
+            nGoodsInDisplay -= goods;
+            sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
             return goods;
         }
         return 0;
     }
     
     /**
-     * Customer goes to the queue, and waits till the owner call him.
-     * When the owner call and he is in the front of the queue 
-     * he buys the goods 
-     * @param customerId
-     * @param nGoods 
+     * The Customer goes to the queue, and waits till the owner call him.
+     * When the owner calls a Customer and he is in the front of the queue, he 
+     * makes the purchase.
+     * @param customerId Id of the customer that wants to buy something
+     * @param nGoods Number of goods that the Customer wants to buy
      */
     @Override
     public synchronized void iWantThis(int customerId, int nGoods) {
         
-        this.queueCustomer.write(customerId); // ir para a fila de atendimento
-        notifyAll(); // acordar dona
+        this.queueCustomer.write(customerId); // Goes to the queue
+        notifyAll(); // wakes up the Owner
         while(attendingCustomerId != customerId){
             try{
-                wait(); // espera que a dona chame o proximo cliente
+                wait(); // Waits until the Owner calls the next Customer
                 Thread.sleep(1000);
             }catch(InterruptedException ex){}
         }
@@ -363,31 +381,33 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Remove customer from queue
+     * Remove Customer from queue.
      * @param customerId 
      */
     @Override
     public synchronized void removeSitCustomer(int customerId){
-        //sitCustomer.remove(customerId); // nao sei se funciona bem
-        if((int)queueCustomer.peek() == customerId) // remove o cliente correto da fila
+        if((int)queueCustomer.peek() == customerId) // Removes the correct Customer Id
             queueCustomer.read();
     }
     
     /**
-     * The Customer leaves the Shop
+     * The Customer leaves the Shop.
+     * If he his the last one leaving the Shop, wakes up the Owner (important to Owner
+     * finish working, if he his waiting for all the Customers to buy products,
+     * but the last one don't buy anything).
      */
     @Override
     public synchronized void exitShop() {
-        customerInsideShop--; // decrementar clientes na loja
-        sharedInfo.setnCustomersInsideShop(customerInsideShop); // decrementar clientes dentro da loja
+        customerInsideShop--;
+        sharedInfo.setnCustomersInsideShop(customerInsideShop);
         if(!customersInTheShop()){
             notifyAll();
         }
     }  
 
     /**
-     * Set present Shop state
-     * @param state
+     * Set present Shop state.
+     * @param state State of the Shop
      */
     @Override
     public synchronized void setShopState(int state) {
@@ -396,8 +416,8 @@ public class MonShop implements MonShopInterface {
     }
 
     /**
-     * Check if the factory needs prime materials
-     * @return true if is needed
+     * Check if the factory needs prime materials.
+     * @return true if the Factory needs prime materials
      */
     @Override
     public boolean isSupplyMaterialsToFactory() {
@@ -405,7 +425,7 @@ public class MonShop implements MonShopInterface {
     }
     
     /**
-     * Check if the owner can collect products
+     * Check if the owner can collect products.
      * @return true if he needs to go to the factory
      */
     @Override
@@ -415,13 +435,12 @@ public class MonShop implements MonShopInterface {
     
     /**
      * See if the owner and the customer can stop.
-     * Checks if all products have been transferred to Shop, and it have
-     * all been sold.
-     * @return true if they can
+     * Checks if all products have been transferred to Shop, and all the products
+     * are sold.
+     * @return true if they can stop working
      */
     @Override
     public boolean endOper(){
         return nProductsDelivered == totalProducts && nGoodsInDisplay == 0;
     }
-    
 }
