@@ -1,18 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package MainProblema01;
 
 /**
- *
- * @author Daniel
+ * @author Daniel 51908
+ * @author Raphael 64044
+ * @version 1.0
  */
 public interface CustomerInterface {
 
     /**
-     * Life cycle of the customer
+     * Life cycle of the customer.
      */
     void run();
     
