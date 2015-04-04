@@ -43,14 +43,12 @@ public class Craftman extends Thread implements CraftmanInterface {
     // Variables that need to be used in the repository
     /**
      * Craftman internal state
-     * 
      * @serialField stateCraftman
      */
     private int stateCraftman;
     
     /**
      * Craftman thread id
-     * 
      * @serialField craftmanId
      */
     private final int craftmanId;
