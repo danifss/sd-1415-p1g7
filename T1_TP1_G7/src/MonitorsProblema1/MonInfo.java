@@ -179,14 +179,14 @@ public class MonInfo implements MonInfoInterface {
         String line1 = "ENTREPRE";
         String line2 = "  Stat  ";
         for(int i=0;i<nCustomer;i++){
-            line1 += "  CUST_"+i;
-            line2 += " Stat BP";
+            line1 += String.format("%10s","CUST_"+i);
+            line2 += String.format("%10s", "Stat BP");
         }
         line1 += "  ";
         line2 += "  ";
         for(int i=0;i<nCraftman;i++){
-            line1 += " CRAFT_"+i;
-            line2 += " Stat PP";
+            line1 += String.format("%11s","CRAFT_"+i);
+            line2 += String.format("%11s","Stat PP");
         }
         line1 += "          SHOP                WORKSHOP";
         line2 += "  Stat NCI NPI PCR PMR  APMI NPI NSPM TAPM TNP";
@@ -243,16 +243,16 @@ public class MonInfo implements MonInfoInterface {
         for (int i = 0; i < nCustomer; i++) {
             switch (stateCustomer[i]) {
                 case CARRYING_OUT_DAILY_CHORES:
-                    lineStatus += String.format("%4s", "CODC");
+                    lineStatus += String.format("%6s", "CODC");
                     break;
                 case CHECKING_DOOR_OPEN:
-                    lineStatus += String.format("%4s", "CDO");
+                    lineStatus += String.format("%6s", "CDO");
                     break;
                 case APPRAISING_OFFER_IN_DISPLAY:
-                    lineStatus += String.format("%4s", "AOID");
+                    lineStatus += String.format("%6s", "AOID");
                     break;
                 case BUYING_SOME_GOODS:
-                    lineStatus += String.format("%4s", "BSG");
+                    lineStatus += String.format("%6s", "BSG");
                     break;
             }
             lineStatus += " ";
@@ -263,16 +263,16 @@ public class MonInfo implements MonInfoInterface {
         for (int i = 0; i < nCraftman; i++) {
             switch (stateCraftman[i]) {
                 case FETCHING_PRIME_MATERIALS:
-                    lineStatus += String.format("%4s", "FPM");
+                    lineStatus += String.format("%7s", "FPM");
                     break;
                 case PRODUCING_A_NEW_PIECE:
-                    lineStatus += String.format("%4s", "PANP");
+                    lineStatus += String.format("%7s", "PANP");
                     break;
                 case STORING_IT_FOR_TRANSFER:
-                    lineStatus += String.format("%4s", "SIFT");
+                    lineStatus += String.format("%7s", "SIFT");
                     break;
                 case CONTACTING_THE_ENTREPRENEUR:
-                    lineStatus += String.format("%4s", "CTE");
+                    lineStatus += String.format("%7s", "CTE");
                     break;
             }
             lineStatus += " ";
