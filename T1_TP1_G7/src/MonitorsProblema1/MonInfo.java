@@ -175,8 +175,26 @@ public class MonInfo implements MonInfoInterface {
             System.exit(1);
         }
         log.writelnString("        Aveiro Handicraft SARL - Description of the internal state\n");
-        log.writelnString("ENTREPRE  CUST_0  CUST_1  CUST_2   CRAFT_0 CRAFT_1 CRAFT_2          SHOP                WORKSHOP");
-        log.writelnString("  Stat   Stat BP Stat BP Stat BP   Stat PP Stat PP Stat PP  Stat NCI NPI PCR PMR  APMI NPI NSPM TAPM TNP");
+        
+        String line1 = "ENTREPRE";
+        String line2 = "  Stat  ";
+        for(int i=0;i<nCustomer;i++){
+            line1 += "  CUST_"+i;
+            line2 += " Stat BP";
+        }
+        line1 += "  ";
+        line2 += "  ";
+        for(int i=0;i<nCraftman;i++){
+            line1 += " CRAFT_"+i;
+            line2 += " Stat PP";
+        }
+        line1 += "          SHOP                WORKSHOP";
+        line2 += "  Stat NCI NPI PCR PMR  APMI NPI NSPM TAPM TNP";
+        log.writelnString(line1);
+        log.writelnString(line2);
+        
+        //log.writelnString("ENTREPRE  CUST_0  CUST_1  CUST_2   CRAFT_0 CRAFT_1 CRAFT_2          SHOP                WORKSHOP");
+        //log.writelnString("  Stat   Stat BP Stat BP Stat BP   Stat PP Stat PP Stat PP  Stat NCI NPI PCR PMR  APMI NPI NSPM TAPM TNP");
         if (!log.close()) {
             GenericIO.writelnString("A operação de fecho do ficheiro " + this.fName + " falhou!");
             System.exit(1);
