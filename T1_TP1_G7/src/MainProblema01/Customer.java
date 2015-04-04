@@ -3,6 +3,7 @@ package MainProblema01;
 import MonitorsProblema1.*;
 
 /**
+ * This class is responsible to host the Customers
  *
  * @author Daniel 51908
  * @author Raphael 64044
@@ -21,35 +22,30 @@ public class Customer extends Thread implements CustomerInterface {
     
     /**
      * Customer identity
-     *
      * @serialField customerId
      */
     private final int customerId;
     
     /**
      * Present Customer State
-     * 
      * @serialField customerState
      */
     private int customerState;
     
     /**
      * Shop
-     * 
      * @serialField shop
      */
     private MonShop shop;
 	
     /**
      * General Repository
-     * 
      * @serialField sharedInfo
      */
     private final MonInfo sharedInfo;
     
     /**
      * Total number of goods bought buy the customer
-     * 
      * @serialField nGoodsBought
      */
     private int nGoodsBought;
@@ -76,7 +72,7 @@ public class Customer extends Thread implements CustomerInterface {
     }
     
     /**
-     * Life cycle of the customer
+     * Life cycle of the customer.
      */
     @Override
     public void run(){
@@ -98,7 +94,6 @@ public class Customer extends Thread implements CustomerInterface {
                 case APPRAISING_OFFER_IN_DISPLAY:
                     perusingAround();
                     System.out.printf("Cliente %d\t- A escolher produtos.\n",customerId);
-                    // ver se tem produtos
                     if(nProductsCustomer > 0){
                         iWantThis();
                         System.out.printf("Cliente %d\t- Comprou %d produtos.\n",customerId,nProductsCustomer);
@@ -117,7 +112,7 @@ public class Customer extends Thread implements CustomerInterface {
     }
 
     /**
-     * Living normal life
+     * Living normal life.
      */
     private void livingNormalLife(){
         try{
@@ -126,9 +121,8 @@ public class Customer extends Thread implements CustomerInterface {
     }
 
     /**
-     * Customer go shopping, first check if the shop door is open
-     * then enter shop and appraising offer on display and if he wants 
-     * that he buy goods, and finally exit shop
+     * Customer goes shopping.
+     * First, he will need to check if the door is open.
      */
     private void goShopping(){
         try{
@@ -138,7 +132,7 @@ public class Customer extends Thread implements CustomerInterface {
     }
 
     /**
-     * Customer checks if the shop is open
+     * Customer checks if the shop is open.
      */
     private boolean isDoorOpen(){
         try{
@@ -148,7 +142,7 @@ public class Customer extends Thread implements CustomerInterface {
     }
     
     /**
-     * Try Again Later
+     * If the shop is not open, he will try again later.
      */
     private void tryAgainLater(){
         try{
@@ -162,7 +156,7 @@ public class Customer extends Thread implements CustomerInterface {
     }
 
     /**
-     * Customer enter in the shop
+     * Customer enters the shop.
      */
     private void enterShop() {
         try{
@@ -173,19 +167,21 @@ public class Customer extends Thread implements CustomerInterface {
     }
     
     /**
-     * Customer chooses what to buy
-     * @return number of goods to buy
+     * Customer chooses if he wants to buy something.
+     * If he wants, he collects some products.
+     * @return Number of goods to buy
      */
     private void perusingAround(){
         try{
             sleep((long) (1+40*Math.random()));
         }catch(InterruptedException e){}
         
-        nProductsCustomer = shop.perusingAround(); // retorna num. de bens a comprar
+        nProductsCustomer = shop.perusingAround();
     }
     
     /**
-     * Customer goes to the queue to buy the goods
+     * Customer goes to the queue to buy the products.
+     * He will wait until is his turn in the queue.
      * @param goods 
      */
     private void iWantThis(){
@@ -194,14 +190,13 @@ public class Customer extends Thread implements CustomerInterface {
         }catch(InterruptedException e){}
         setCustomerState(BUYING_SOME_GOODS);
         
-        shop.iWantThis(customerId, nProductsCustomer); // acao bloqueante
-        nGoodsBought += nProductsCustomer; // adiciona bens comprados ao total
+        shop.iWantThis(customerId, nProductsCustomer); 
+        nGoodsBought += nProductsCustomer;
         sharedInfo.setnGoodsByCustomer(customerId, nGoodsBought);
-        //nProductsCustomer = 0; // nao precisa de limpar e assim facilita o debug
     }
 
     /**
-     * The Customer leaves the Shop
+     * Customer leaves the Shop.
      */
     private void exitShop() {
         try{
@@ -212,16 +207,17 @@ public class Customer extends Thread implements CustomerInterface {
     }
     
     /**
-     * Check if Customer can die or not
-     * @return if customer dies or not
+     * Verifies if the Owner can stop working.
+     * From the shop, he checks if all products have been transferred to Shop, and all the products
+     * are sold. He needs to be in the state CARRYING_OUT_DAILY_CHORES
+     * @return true if needs to stop
      */
     private boolean endOper() {
-        // valida se o cliente deve terminar ou nao
         return shop.endOper() && customerState == CARRYING_OUT_DAILY_CHORES;
     }
     
     /**
-     * Change the Present Customer State
+     * Change the present Customer state.
      * @param customerState 
      */
     private void setCustomerState(int customerState) {
