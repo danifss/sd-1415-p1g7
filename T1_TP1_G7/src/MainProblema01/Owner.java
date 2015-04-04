@@ -3,6 +3,7 @@ package MainProblema01;
 import MonitorsProblema1.*;
 
 /**
+ * This class is responsible to host the Owner
  *
  * @author Daniel 51908
  * @author Raphael 64044
@@ -70,15 +71,9 @@ public class Owner extends Thread implements OwnerInterface {
      * @serialField attendingCustomerId
      */
     private int attendingCustomerId;
-    
-    /**
-     * This is to see if prime material has sold out
-     * @serialField primeMaterialsSoldOut
-     */
-    private boolean primeMaterialsSoldOut;
 
     /**
-     * Create owner thread
+     * Create owner thread.
      *
      * @param sharedInfo General repository
      * @param factory Factory
@@ -92,18 +87,16 @@ public class Owner extends Thread implements OwnerInterface {
         this.storage = storage;
         ownerState = OPENING_THE_SHOP;
         attendingCustomerId = -1;
-        this.primeMaterialsSoldOut = false;
     }
 
     /**
-     * Life cycle of the owner
+     * Life cycle of the Owner.
      */
     @Override
     public void run() {
         System.out.println("Iniciado o Owner.");
-        
-        //int cid = 0;
-        shop.openTheDoor(); // Owner precisa de abrir a loja antes de começar a trabalhar
+
+        shop.openTheDoor(); // Owner needs to open the shop before he starts working
         
         while(!endOper()){
             switch(ownerState){
@@ -111,7 +104,7 @@ public class Owner extends Thread implements OwnerInterface {
                     prepareToWork();
                     break;
                 case WAITING_FOR_NEXT_TASK:
-                    int decision = appraiseSit(); // acao bloqueante
+                    int decision = appraiseSit();
                     if(decision == FACTORY_NEEDS_SOMETHING){
                         closeTheDoor();
                         if(customersInTheShop()){
@@ -145,7 +138,7 @@ public class Owner extends Thread implements OwnerInterface {
                     break;
                 case BUYING_PRIME_MATERIALS:
                     if(nPrimeMaterials > 0) {
-                        replenishStock(); // so repoe stock se conseguiu comprar materia prima
+                        replenishStock();
                         System.out.printf("Owner\t\t- Repor stock da oficina.\n");
                     }else
                         setOwnerState(DELIVERING_PRIME_MATERIALS);
@@ -159,7 +152,7 @@ public class Owner extends Thread implements OwnerInterface {
     }
 
     /**
-     * Owner prepare to work, and is waiting for the next task
+     * Owner prepares to work, changing his state to waiting for the next task.
      */
     private void prepareToWork() {
         try{
@@ -169,8 +162,8 @@ public class Owner extends Thread implements OwnerInterface {
     }
 
     /**
-     * Owner appraise the situation of the shop
-     * @return 
+     * Owner waits to see what he needs to do.
+     * @return action he will do
      */
     private int appraiseSit(){
         try{
@@ -180,7 +173,7 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Owner closes the door
+     * Owner closes the door of the Shop.
      */
     private void closeTheDoor() {
         try{
@@ -190,7 +183,7 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Owner sees if there is customers in the shop
+     * Owner sees if there is customers in the shop.
      */
     private boolean customersInTheShop(){
         try{
@@ -200,7 +193,7 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Owner prepares to go to the factory
+     * Owner prepares to go to the Factory.
      */
     private void prepareToLeave(){
         try{
@@ -210,7 +203,7 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Owner prepares to address a customer
+     * Owner prepares to address a customer.
      */
     private void addressACustomer(){
         try{
@@ -221,13 +214,14 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Service a Customer
+     * Owner services a Customer.
+     * He will take more time if the Customer is buying more products.
      */
     private void serviceCustomer() {
         try{
             sleep((long) (20));
         }catch(InterruptedException e){}
-        int n = shop.serviceCustomer(attendingCustomerId);
+        int n = shop.serviceCustomer();
         int i = 0;
         while(i<n){
             //Debug
@@ -240,7 +234,8 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Say goodbye to a Customer
+     * Owner finish the purchase and say goodbye to the Customer.
+     * Then he wait for the next task.
      */
     private void sayGoodByeToCustomer() {
         try{
@@ -254,7 +249,8 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Owner goes to Factory to collect products
+     * Owner goes to Factory to collect products.
+     * Then he adds the products collected to the display.
      */
     private void goToWorkShop(){
         try{
@@ -269,15 +265,13 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Owner goes to the storage to collect some prime materials
+     * Owner goes to the storage to collect some prime materials.
      */
     private void visitSuppliers(){
         try{
             sleep((long) (20));
         }catch(InterruptedException e){}
         setOwnerState(BUYING_PRIME_MATERIALS);
-        
-        //primeMaterialsSoldOut = storage.isPrimeMaterialsAvailabe(); // verifica se materia prima esgotou
         
         try {
             sleep((long) (1 + 10 * Math.random()));
@@ -291,22 +285,19 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Owner returns to the shop and opens the door
+     * Owner returns to the shop and opens the door.
      */
     private void returnToShop(){
         try{
             sleep((long) (20));
         }catch(InterruptedException e){}
-        try {
-            sleep((long) (1 + 10 * Math.random()));
-        } catch (InterruptedException e) {}
 
         setOwnerState(OPENING_THE_SHOP);
         shop.openTheDoor();
     }
     
     /**
-     * Owner delivers prime materials to the Factory
+     * Owner delivers prime materials to the Factory.
      */
     private void replenishStock(){
         try{
@@ -319,18 +310,18 @@ public class Owner extends Thread implements OwnerInterface {
     }
     
     /**
-     * Verifies if the Owner stops
+     * Verifies if the Owner can stop working.
+     * From the shop, he checks if all products have been transferred to Shop, and all the products
+     * are sold. He needs to be in the State CLOSING_THE_SHOP and the shop can't have Customers
+     * inside.
      * @return true if needs to stop
      */
     private boolean endOper() {
-        // valida se o Owner deve terminar ou nao
-        // Esta versao comentada é a que contem interaçao com factory
-        //return factory.endOfPrimeMaterials() && !factory.checkForMaterials() && factory.endProductsToCollect();
         return shop.endOper() && (ownerState == CLOSING_THE_SHOP) && !shop.customersInTheShop();
     }
     
     /**
-     * Change the owner state
+     * Change the owner state.
      * @param ownerState state of the owner
      */
     private void setOwnerState(int ownerState) {
