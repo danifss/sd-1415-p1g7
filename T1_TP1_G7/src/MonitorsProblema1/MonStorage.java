@@ -1,6 +1,8 @@
 package MonitorsProblema1;
 
 /**
+ * This class is responsible to host the Storage
+ * 
  * @author Daniel 51908
  * @author Raphael 64044
  * @version 1.0
@@ -8,31 +10,31 @@ package MonitorsProblema1;
 public class MonStorage implements MonStorageInterface {
     
     /**
-     * Present number of Prime Materials in Storage
+     * Present number of Prime Materials in Storage.
      * @serialField nPrimeMaterialsInStorage
      */
     private int nPrimeMaterialsInStorage;
     
     /**
-     * Maximum number of Prime Materials available to be delivered to the factory
+     * Maximum number of Prime Materials available to be delivered to the factory.
      * @serialField nMaxPrimeMaterialsToDeliver
      */
     private final int nMaxPrimeMaterialsToDeliver;
     
     /**
-     * Number of Prime Materials delivered to the factory
+     * Number of Prime Materials delivered to the factory.
      * @serialField nPrimeMaterialsDelivered
      */
     private int nPrimeMaterialsDelivered;
     
     /**
-     * Number of prime materials that the owner can carry
+     * Number of prime materials that the owner can carry.
      * @serialField nPrimeOwnerCarry
      */
     private final int nPrimeOwnerCarry;
 
     /**
-     * Create monitor of the storage
+     * Create monitor of the storage.
      * @param nInitialPrimeMaterialsInStorage Number of prime materials at the beginning
      * @param nPrimeOwnerCarry Number of prime materials that the owner can carry
      */
@@ -44,7 +46,7 @@ public class MonStorage implements MonStorageInterface {
     }
 
     /**
-     * Get the number of prime materials already delivered
+     * Get the number of prime materials already delivered.
      * @return number of prime materials delivered
      */
     @Override
@@ -53,8 +55,8 @@ public class MonStorage implements MonStorageInterface {
     }
     
     /**
-     * See if the storage has prime materials
-     * @return true if it has
+     * See if the storage has prime materials.
+     * @return true if the storage has prime materials
      */
     @Override
     public boolean isPrimeMaterialsAvailabe() {
@@ -62,7 +64,11 @@ public class MonStorage implements MonStorageInterface {
     }
 
     /**
-     * Owner visit suppliers and get some prime materials to be delivered in the factory
+     * Owner visit suppliers and get some prime materials to be delivered in the factory.
+     * If the storage has more or the same prime materials than the number of prime materials that
+     * the Owner can carry, the Owner collects all prime materials he can. If the storage has
+     * less than the number of prime materials that the Owner can carry, he collects
+     * the prime materials available.
      * @return Number of prime materials collected
      */
     @Override
@@ -80,7 +86,7 @@ public class MonStorage implements MonStorageInterface {
     }
 
     /**
-     * Get the amount of prime materials that the owner should collect during the experience
+     * Get the amount of prime materials that the owner should collect during the experience.
      * @return number of prime materials to deliver
      */
     @Override
