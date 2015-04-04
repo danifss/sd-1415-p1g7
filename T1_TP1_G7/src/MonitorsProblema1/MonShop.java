@@ -337,11 +337,12 @@ public class MonShop implements MonShopInterface {
     public synchronized int perusingAround(){
         // choose what to buy
         double r = Math.random();
-        if((r <= 0.5) && (nGoodsInDisplay > 0)){ // 50% probability to buy
-            r = r * 100;
-            int goods = (int) r % nGoodsInDisplay;
+        if((r < 0.5) && (nGoodsInDisplay > 0)){ // 50% probability to buy
+            r = r * 10;
+            int goods = (int) (r+1) % nGoodsInDisplay;
             if(nGoodsInDisplay == 1) // When there is only one product to sell
                 goods = 1;
+            //System.out.printf("\t\tR : %f - Goods : %d - Produtos Disponiveis: %d\n",r,goods,nGoodsInDisplay);
             nGoodsInDisplay -= goods;
             sharedInfo.setnGoodsInDisplay(nGoodsInDisplay);
             return goods;
