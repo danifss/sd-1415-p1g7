@@ -1,114 +1,116 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package MonitorsProblema1;
 
 /**
- *
- * @author Daniel
+ * @author Daniel 51908
+ * @author Raphael 64044
+ * @version 1.0
  */
 public interface MonInfoInterface {
 
-    // Funções destinadas a alterar as variáveis pertencentes aos Craftman
+    // Function to change the Owner's variable
     /**
-     * Set state of the Craftman[i]
-     *
-     * @param craftmanId
-     * @param state
-     */
-    void setCraftmanState(int craftmanId, int state);
-
-    // Funções destinadas a alterar as variáveis pertencentes aos Customer
-    /**
-     * Set Customer[i] State
-     * @param customerId Customer id
-     * @param state State of the customer
-     */
-    void setCustomerState(int customerId, int state);
-
-    // Função destinada a alterar a variável pertencente ao Owner
-    /**
-     * Set Owner State
+     * Set Owner State.
      * @param state State of the Owner
      */
     void setOwnerState(int state);
-
-    // Funções destinadas a alterar as variáveis pertencentes ao Shop
+    
+    
+    
+    // Function to change the Customers' variables
     /**
-     * Set Shop State
+     * Set Customer[i] State.
+     * @param customerId Customer id
+     * @param state State of the Customer
+     */
+    void setCustomerState(int customerId, int state);
+    
+    /**
+     * Set number of goods (accumulation) bought by the customer.
+     * @param customerId Customer id
+     * @param nGoodsByCustomer Number of goods bought by the customer
+     */
+    void setnGoodsByCustomer(int customerId, int nGoodsByCustomer);
+    
+    
+    
+    // Function to change the Craftmans' variables
+    /**
+     * Set state of the Craftman[i].
+     * @param craftmanId Craftman id
+     * @param state State of the Craftman
+     */
+    void setCraftmanState(int craftmanId, int state);
+
+    /**
+     * Change the number of products (accumulation) manufactured by the craftsman[i].
+     * @param craftmanId Craftman id
+     * @param nGoodsCraftedByCraftman total number of the products crafted by the Craftman
+     */
+    void setnGoodsCraftedByCraftman(int craftmanId, int nGoodsCraftedByCraftman);
+    
+    
+    
+    // Function to change the Shop's variables
+    /**
+     * Set Shop State.
      * @param state State of the shop
      */
     void setShopState(int state);
 
     /**
-     * Set if the craftsman requested the supply of prime materials to the Factory
+     * Set number of customers inside.
+     * @param nCustomersInsideShop Number of customers inside
+     */
+    void setnCustomersInsideShop(int nCustomersInsideShop);   
+    
+    /**
+     * Set number of goods in display.
+     * @param nGoodsInDisplay Number of goods in display
+     */
+    void setnGoodsInDisplay(int nGoodsInDisplay);
+    
+    /**
+     * Set if the craftsman requested the transfer of finished products to the Shop.
+     * @param tranfsProductsToShop Boolean indicating if the Craftman requested
+     */
+    void setTranfsProductsToShop(boolean tranfsProductsToShop);    
+    
+    /**
+     * Set if the craftsman requested the supply of prime materials to the Factory.
      * @param supplyMaterialsToFactory Boolean indicating if the Craftman requested
      */
     void setSupplyMaterialsToFactory(boolean supplyMaterialsToFactory);
 
-    /**
-     * Set if the craftsman requested the transfer of finished products to the Shop
-     * @param tranfsProductsToShop Boolean indicating if the Craftman requested
-     */
-    void setTranfsProductsToShop(boolean tranfsProductsToShop);
 
-    /**
-     * Set number of customers inside
-     * @param nCustomersInsideShop Number of customers inside
-     */
-    void setnCustomersInsideShop(int nCustomersInsideShop);
 
+    // Function to change the Factory's variables
     /**
-     * Change the number of finished products presently in the Factory
-     * @param nFinishedProductsInFactory
-     */
-    void setnFinishedProductsInFactory(int nFinishedProductsInFactory);
-
-    /**
-     * Set number of goods (accumulation) bought by the customer
-     * @param customerId Customer id
-     * @param nGoodsByCustomer Number of goods bought by the customer
-     */
-    void setnGoodsByCustomer(int customerId, int nGoodsByCustomer);
-
-    /**
-     * Change the number of products (accumulation) manufactured by the craftsman[i]
-     * @param craftmanId
-     * @param nGoodsCraftedByCraftman
-     */
-    void setnGoodsCraftedByCraftman(int craftmanId, int nGoodsCraftedByCraftman);
-
-    /**
-     * Net number of goods in display
-     * @param nGoodsInDisplay Number of goods in display
-     */
-    void setnGoodsInDisplay(int nGoodsInDisplay);
-
-    // Funções destinadas a alterar as variáveis pertencentes à Factory
-    /**
-     * Change the amount of prime materials presently in the Factory
-     * @param nPrimeMaterialsInFactory
+     * Change the amount of prime materials presently in the Factory.
+     * @param nPrimeMaterialsInFactory Amount of prime materials available in the Factory
      */
     void setnPrimeMaterialsInFactory(int nPrimeMaterialsInFactory);
 
     /**
-     * Change the total amount of prime materials that have already been supplied (accumulation)
-     * @param nPrimeMaterialsSupplied
+     * Change the number of finished products presently in the Factory.
+     * @param nFinishedProductsInFactory Number of finished products in the Factory
+     */
+    void setnFinishedProductsInFactory(int nFinishedProductsInFactory);
+
+    /**
+     * Change the number of times that a supply of prime materials was delivered to the Factory.
+     * @param nSuppliedTimes Number of times that the owner delivered prime materials
+     */
+    void setnSuppliedTimes(int nSuppliedTimes);
+    
+    /**
+     * Change the total amount of prime materials that have already been supplied (accumulation).
+     * @param nPrimeMaterialsSupplied Number of prime materials supplied
      */
     void setnPrimeMaterialsSupplied(int nPrimeMaterialsSupplied);
 
     /**
-     * Change the total number of products that have already been manufactured (accumulation)
-     * @param nProductsManufactured
+     * Change the total number of products that have already been manufactured (accumulation).
+     * @param nProductsManufactured Total number of products produced
      */
     void setnProductsManufactured(int nProductsManufactured);
-
-    /**
-     * Change the number of times that a supply of prime materials was delivered to the workshop
-     * @param nSuppliedTimes
-     */
-    void setnSuppliedTimes(int nSuppliedTimes);
-    
 }
