@@ -52,6 +52,7 @@ public class Main {
         int nMinPrimeMaterialsForRestock = 10;                  // Minimum number of prime materials for restock
         int nMaxProductsCollect = 5;                            // Maximum number of products that the owner can carry
         
+        // Option to select values when the program starts.
         /*writeString("Usar valores predefinidos?(s/n) ");
         if(readlnString().equalsIgnoreCase("n")){
             writeString("Nº inicial de materias primas no Armazem: ");

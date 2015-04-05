@@ -177,7 +177,7 @@ public class Craftman extends Thread implements CraftmanInterface {
      */
     private void shapingItUp(){
         try{
-            sleep((long) (100+20*Math.random()));
+            sleep((long) (500+100*Math.random()));
         }catch(InterruptedException e){}
         nPrimeMaterials -= factory.getnPrimePerProduct();
         nProduct += 1;
@@ -191,7 +191,7 @@ public class Craftman extends Thread implements CraftmanInterface {
      */
     private void goToStore(){
         try{
-            sleep((long) (1+40*Math.random()));
+            sleep((long) (200+20*Math.random()));
         }catch(InterruptedException e){}
         setCraftmanState(STORING_IT_FOR_TRANSFER);
         nProduct -= factory.goToStore(nProduct);

@@ -116,7 +116,7 @@ public class Customer extends Thread implements CustomerInterface {
      */
     private void livingNormalLife(){
         try{
-            sleep((long) (1000+100*Math.random()));
+            sleep((long) (1000+200*Math.random()));
         }catch(InterruptedException e){}
     }
 
@@ -151,7 +151,7 @@ public class Customer extends Thread implements CustomerInterface {
         setCustomerState(CARRYING_OUT_DAILY_CHORES);
 
         try{
-            sleep((long) (500+100*Math.random()));
+            sleep((long) (750+200*Math.random()));
         }catch(InterruptedException e){}
     }
 
@@ -173,7 +173,7 @@ public class Customer extends Thread implements CustomerInterface {
      */
     private void perusingAround(){
         try{
-            sleep((long) (1+40*Math.random()));
+            sleep((long) (100+20*Math.random()));
         }catch(InterruptedException e){}
         
         nProductsCustomer = shop.perusingAround();
@@ -200,7 +200,7 @@ public class Customer extends Thread implements CustomerInterface {
      */
     private void exitShop() {
         try{
-            sleep((long) (20));
+            sleep((long) (100+25*Math.random()));
         }catch(InterruptedException e){}
         shop.exitShop();
         setCustomerState(CARRYING_OUT_DAILY_CHORES);

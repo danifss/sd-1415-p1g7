@@ -207,7 +207,7 @@ public class Owner extends Thread implements OwnerInterface {
      */
     private void addressACustomer(){
         try{
-            sleep((long) (20));
+            sleep((long) (100));
         }catch(InterruptedException e){}
         setOwnerState(ATTENDING_A_CUSTOMER);
         attendingCustomerId = shop.addressACustomer(); // atende cliente seguinte
@@ -227,7 +227,7 @@ public class Owner extends Thread implements OwnerInterface {
             //Debug
             System.out.println("--------Tratando produto: "+ (i+1) + " do customer: "+ attendingCustomerId);
             try {
-                sleep((long) (1 + 10 * Math.random()));
+                sleep((long) (25 + 10 * Math.random()));
             } catch (InterruptedException e) {}
             i++;
         }
@@ -272,10 +272,6 @@ public class Owner extends Thread implements OwnerInterface {
             sleep((long) (20));
         }catch(InterruptedException e){}
         setOwnerState(BUYING_PRIME_MATERIALS);
-        
-        try {
-            sleep((long) (1 + 10 * Math.random()));
-        } catch (InterruptedException e) {}
 
         if(storage.isPrimeMaterialsAvailabe())
             nPrimeMaterials = storage.visitSuppliers();

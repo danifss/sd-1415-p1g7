@@ -176,20 +176,20 @@ public class MonInfo implements MonInfoInterface {
         }
         log.writelnString("        Aveiro Handicraft SARL - Description of the internal state\n");
         
-        String line1 = "ENTREPRE";
-        String line2 = "  Stat  ";
+        String line1 = "ENTREPRE ";
+        String line2 = "  Stat   ";
         for(int i=0;i<nCustomer;i++){
-            line1 += String.format("%10s","CUST_"+i);
-            line2 += String.format("%10s", "Stat BP");
+            line1 += String.format("%9s","CUST_"+i);
+            line2 += String.format("%9s", "Stat BP");
         }
         line1 += "  ";
         line2 += "  ";
         for(int i=0;i<nCraftman;i++){
-            line1 += String.format("%11s","CRAFT_"+i);
-            line2 += String.format("%11s","Stat PP");
+            line1 += String.format("%9s","CRAFT_"+i);
+            line2 += String.format("%9s","Stat PP");
         }
-        line1 += "          SHOP                WORKSHOP";
-        line2 += "  Stat NCI NPI PCR PMR  APMI NPI NSPM TAPM TNP";
+        line1 += "            SHOP                  WORKSHOP";
+        line2 += "    Stat NCI NPI PCR PMR    APMI NPI NSPM TAPM TNP";
         log.writelnString(line1);
         log.writelnString(line2);
         
@@ -239,20 +239,20 @@ public class MonInfo implements MonInfoInterface {
                 lineStatus += String.format("%6s", "BPM");
                 break;
         }
-        lineStatus += "   ";
+        lineStatus += "    ";
         for (int i = 0; i < nCustomer; i++) {
             switch (stateCustomer[i]) {
                 case CARRYING_OUT_DAILY_CHORES:
-                    lineStatus += String.format("%6s", "CODC");
+                    lineStatus += String.format("%5s", "CODC");
                     break;
                 case CHECKING_DOOR_OPEN:
-                    lineStatus += String.format("%6s", "CDO");
+                    lineStatus += String.format("%5s", "CDO");
                     break;
                 case APPRAISING_OFFER_IN_DISPLAY:
-                    lineStatus += String.format("%6s", "AOID");
+                    lineStatus += String.format("%5s", "AOID");
                     break;
                 case BUYING_SOME_GOODS:
-                    lineStatus += String.format("%6s", "BSG");
+                    lineStatus += String.format("%5s", "BSG");
                     break;
             }
             lineStatus += " ";
@@ -263,23 +263,23 @@ public class MonInfo implements MonInfoInterface {
         for (int i = 0; i < nCraftman; i++) {
             switch (stateCraftman[i]) {
                 case FETCHING_PRIME_MATERIALS:
-                    lineStatus += String.format("%7s", "FPM");
+                    lineStatus += String.format("%5s", "FPM");
                     break;
                 case PRODUCING_A_NEW_PIECE:
-                    lineStatus += String.format("%7s", "PANP");
+                    lineStatus += String.format("%5s", "PANP");
                     break;
                 case STORING_IT_FOR_TRANSFER:
-                    lineStatus += String.format("%7s", "SIFT");
+                    lineStatus += String.format("%5s", "SIFT");
                     break;
                 case CONTACTING_THE_ENTREPRENEUR:
-                    lineStatus += String.format("%7s", "CTE");
+                    lineStatus += String.format("%5s", "CTE");
                     break;
             }
             lineStatus += " ";
             lineStatus += String.format("%2d", nGoodsCraftedByCraftman[i]);
             lineStatus += " ";
         }
-        lineStatus += " ";
+        lineStatus += "   ";
         switch(stateShop){
             case CLOSED:
                 lineStatus += String.format("%4s", "CLOS");
@@ -305,7 +305,7 @@ public class MonInfo implements MonInfoInterface {
             lineStatus += String.format("%3s", "T");
         else
             lineStatus += String.format("%3s", "F");
-        lineStatus += "  ";
+        lineStatus += "    ";
         lineStatus += String.format("%4d", nPrimeMaterialsInFactory);
         lineStatus += " ";
         lineStatus += String.format("%3d", nFinishedProductsInFactory);
