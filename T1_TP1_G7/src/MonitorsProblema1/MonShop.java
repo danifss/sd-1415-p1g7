@@ -22,7 +22,7 @@ public class MonShop implements MonShopInterface {
      * Decision taken in AppraiseSit.
      */
     private final static int
-            FACTORY_NEEDS_SOMETHING = 0,
+            NEED_TO_CLOSE_SHOP = 0,
             ADDRESS_CUSTOMER = 1;
     
     /**
@@ -141,10 +141,10 @@ public class MonShop implements MonShopInterface {
     /**
      * Owner sees the situation of the shop and decide what to do.
      * If the shop is open, he waits until a Customer or a Craftman calls him. 
-     * If the shop is still open, he wait until all Customers leave the shop, and 
-     * then proceeds to the request from the Factory.
-     * FACTORY_NEEDS_SOMETHING can also indicates that the Owner can stop, because
-     * this action makes the Owner close the Shop.
+ If the shop is still open, he wait until all Customers leave the shop, and 
+ then proceeds to the request from the Factory.
+ NEED_TO_CLOSE_SHOP can also indicates that the Owner can stop, because
+ this action makes the Owner close the Shop.
      * @return action to do
      */
     @Override
@@ -157,8 +157,9 @@ public class MonShop implements MonShopInterface {
                         Thread.sleep(1000);
                     }
                 }catch(Exception e){}
+                
                 if(isSupplyMaterialsToFactory() || isTranfsProductsToShop() || endOper()){
-                    return FACTORY_NEEDS_SOMETHING;
+                    return NEED_TO_CLOSE_SHOP;
                 }
                 return ADDRESS_CUSTOMER;
             }
@@ -169,11 +170,11 @@ public class MonShop implements MonShopInterface {
                 }
             }catch(Exception e){}
             if(!customersInTheShop()){
-                return FACTORY_NEEDS_SOMETHING;
+                return NEED_TO_CLOSE_SHOP;
             }
             return ADDRESS_CUSTOMER;
         }
-        return FACTORY_NEEDS_SOMETHING;
+        return NEED_TO_CLOSE_SHOP;
     }
     
     /**
