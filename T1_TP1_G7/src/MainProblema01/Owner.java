@@ -27,7 +27,7 @@ public class Owner extends Thread implements OwnerInterface {
      * Decision taken in AppraiseSit
      */
     private final static int
-            FACTORY_NEEDS_SOMETHING = 0,
+            NEED_TO_CLOSE_SHOP = 0,
             ADDRESS_CUSTOMER = 1;
     
     /**
@@ -105,7 +105,7 @@ public class Owner extends Thread implements OwnerInterface {
                     break;
                 case WAITING_FOR_NEXT_TASK:
                     int decision = appraiseSit();
-                    if(decision == FACTORY_NEEDS_SOMETHING){
+                    if(decision == NEED_TO_CLOSE_SHOP){
                         closeTheDoor();
                         if(customersInTheShop()){
                             break;
