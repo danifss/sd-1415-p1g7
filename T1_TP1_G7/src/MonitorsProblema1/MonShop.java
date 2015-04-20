@@ -141,10 +141,8 @@ public class MonShop implements MonShopInterface {
     /**
      * Owner sees the situation of the shop and decide what to do.
      * If the shop is open, he waits until a Customer or a Craftman calls him. 
- If the shop is still open, he wait until all Customers leave the shop, and 
- then proceeds to the request from the Factory.
- NEED_TO_CLOSE_SHOP can also indicates that the Owner can stop, because
- this action makes the Owner close the Shop.
+     * If the shop is still open, he wait until all Customers leave the shop, and 
+     * then proceeds to the request from the Factory.
      * @return action to do
      */
     @Override
