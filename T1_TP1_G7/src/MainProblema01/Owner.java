@@ -111,8 +111,7 @@ public class Owner extends Thread implements OwnerInterface {
                             break;
                         }
                         prepareToLeave();
-                    }
-                    if(decision == ADDRESS_CUSTOMER){
+                    } else if(decision == ADDRESS_CUSTOMER){
                         addressACustomer();
                     }
                     break;
