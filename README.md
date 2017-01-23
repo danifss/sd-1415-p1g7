@@ -1,5 +1,5 @@
 ### Sistemas Distribuídos (Distributed Systems)
-> Ano lectivo de 2014 / 2015
+> Ano lectivo de 2014 / 2015 - Universidade de Aveiro
 
 # Artesanato de Aveiro
 
